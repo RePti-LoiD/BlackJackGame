@@ -1,7 +1,6 @@
 using TMPro;
 using System;
 using UnityEngine;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class MainMenuCardsHandler : MonoBehaviour
 {
