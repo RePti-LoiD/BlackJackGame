@@ -6,6 +6,11 @@ public class PreviewPage : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI continueText;
 
+    private void Start()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     private void Update()
     {
         continueText.color = new Color(continueText.color.r, continueText.color.g, continueText.color.b, Mathf.PingPong(Time.time, 1));

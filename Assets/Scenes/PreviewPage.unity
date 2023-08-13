@@ -2572,8 +2572,6 @@ GameObject:
   - component: {fileID: 721601980}
   - component: {fileID: 721601979}
   - component: {fileID: 721601978}
-  - component: {fileID: 721601981}
-  - component: {fileID: 721601982}
   - component: {fileID: 721601983}
   m_Layer: 0
   m_Name: Canvas
@@ -2672,44 +2670,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &721601981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 721601976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd5006f870bb4aa458661b96a18c89d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameInputField: {fileID: 1321838302}
-  firstNameInputField: {fileID: 201821116}
-  passwordInputField: {fileID: 1367261715}
-  createUserButton: {fileID: 39005837}
-  signInNameInputField: {fileID: 905386306}
-  signInPasswordInputField: {fileID: 109129721}
-  signInButton: {fileID: 218728098}
---- !u!114 &721601982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 721601976}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28dbcf4d9a3cd924688c34cb7173bd57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panelHandler: {fileID: 945908822}
-  buttonList:
-  - {fileID: 1338162598}
-  - {fileID: 434757862}
-  startPage: 0
-  pageSize: 1080
-  transitionSpeed: 10
 --- !u!114 &721601983
 MonoBehaviour:
   m_ObjectHideFlags: 0
