@@ -507,8 +507,8 @@ MonoBehaviour:
   countText: {fileID: 1379223375}
   cardDragPrefab: {fileID: 1141959881609304348, guid: e9f2951ee9ce22041ad28262054c238d, type: 3}
   cards: []
-  cardCount: 3
-  cardOffset: 30
+  cardCount: 4
+  cardOffset: 25
 --- !u!1 &1365270323
 GameObject:
   m_ObjectHideFlags: 0
