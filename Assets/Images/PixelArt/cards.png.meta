@@ -21,11 +21,11 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -77,6 +77,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -89,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -101,6 +103,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -113,6 +116,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -1305,63 +1309,63 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      cards_1: 243435247
-      cards_27: -1167606568
-      cards_8: -1480435372
-      cards_33: 2120716453
-      cards_52: 515134210
-      cards_7: -635595112
-      cards_47: 1434570023
-      cards_3: -870297304
-      cards_35: 327163231
-      cards_24: 494066791
-      cards_6: -123195615
-      cards_54: -803153994
-      cards_37: 1670260214
-      cards_20: 1852824570
-      cards_41: -1136007817
-      cards_11: 406800238
-      cards_19: 841087662
-      cards_44: -713916199
-      cards_34: -2146385346
-      cards_42: 736986820
-      cards_5: -393542715
-      cards_48: -1890182358
-      cards_14: -1124048600
-      cards_29: -1009661383
-      cards_26: 1160443646
-      cards_38: 452205939
       cards_0: -460862200
-      cards_40: 1369519985
+      cards_1: 243435247
       cards_10: 2006168602
-      cards_4: -1864938633
+      cards_11: 406800238
       cards_12: 2142975348
-      cards_32: -1365411500
-      cards_55: -1113589566
-      cards_22: -1624565945
-      cards_45: 1120288685
-      cards_16: 346857386
-      cards_39: 178938249
-      cards_36: 1291353841
-      cards_43: 1782688467
-      cards_46: -138782605
-      cards_2: 1881294565
-      cards_28: -1724422633
-      cards_23: -2000161157
-      cards_49: 443853362
       cards_13: 624353904
-      cards_50: 602182563
+      cards_14: -1124048600
       cards_15: 2023189397
-      cards_21: -535820223
-      cards_18: -1827554781
-      cards_30: -391273253
-      cards_53: -1751185898
-      cards_31: 1425609908
-      cards_51: 232821262
-      cards_25: 564150913
+      cards_16: 346857386
       cards_17: 1867825439
+      cards_18: -1827554781
+      cards_19: 841087662
+      cards_2: 1881294565
+      cards_20: 1852824570
+      cards_21: -535820223
+      cards_22: -1624565945
+      cards_23: -2000161157
+      cards_24: 494066791
+      cards_25: 564150913
+      cards_26: 1160443646
+      cards_27: -1167606568
+      cards_28: -1724422633
+      cards_29: -1009661383
+      cards_3: -870297304
+      cards_30: -391273253
+      cards_31: 1425609908
+      cards_32: -1365411500
+      cards_33: 2120716453
+      cards_34: -2146385346
+      cards_35: 327163231
+      cards_36: 1291353841
+      cards_37: 1670260214
+      cards_38: 452205939
+      cards_39: 178938249
+      cards_4: -1864938633
+      cards_40: 1369519985
+      cards_41: -1136007817
+      cards_42: 736986820
+      cards_43: 1782688467
+      cards_44: -713916199
+      cards_45: 1120288685
+      cards_46: -138782605
+      cards_47: 1434570023
+      cards_48: -1890182358
+      cards_49: 443853362
+      cards_5: -393542715
+      cards_50: 602182563
+      cards_51: 232821262
+      cards_52: 515134210
+      cards_53: -1751185898
+      cards_54: -803153994
+      cards_55: -1113589566
+      cards_6: -123195615
+      cards_7: -635595112
+      cards_8: -1480435372
       cards_9: -1576352399
-  spritePackingTag: 
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
   assetBundleName: 
