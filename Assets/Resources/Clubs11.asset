@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Clubs11
   m_EditorClassIdentifier: 
   cardSprite: {fileID: -1167606568, guid: 2da71e03588a3744dacae7f2b022fc89, type: 3}
-  cardWeight: 10
+  cardWeight: 11

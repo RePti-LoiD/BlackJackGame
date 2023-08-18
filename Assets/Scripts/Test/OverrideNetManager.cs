@@ -7,7 +7,8 @@ public class OverrideNetManager : NetworkManager
 {    
     [SerializeField] private TMP_InputField userNameText;
 
-    private UserData userData;
+    public Action OnLastClientConnected;
+    private int clientCount;
 
     public override void Start()
     {
@@ -16,12 +17,19 @@ public class OverrideNetManager : NetworkManager
         userNameText.onEndEdit.AddListener((text) =>
         {
             if (!string.IsNullOrEmpty(text))
-            {
-                userData = UserData.Init(Guid.NewGuid(), text);
-
-                Debug.Log("User data added");
-            }
+                UserData.Init(Guid.NewGuid(), text);
         });
+    }
+
+    public override void OnServerAddPlayer(NetworkConnectionToClient conn)
+    {
+        base.OnServerAddPlayer(conn);
+
+        clientCount++;
+        
+        if (clientCount == maxConnections)
+            OnLastClientConnected?.Invoke();
+
     }
 }
 
