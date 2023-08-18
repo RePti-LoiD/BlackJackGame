@@ -10,14 +10,11 @@ public class NetworkCardManager : NetworkBehaviour, IPointerClickHandler
 
     [SerializeField] [SyncVar] private int currentCardIndex = 0; 
 
-    private NetworkCard[] networkCards;
 
     private OverrideNetManager overrideNetManager;
 
     private void Start()
     {
-        networkCards = FindObjectsOfType<NetworkCard>();
-
         overrideNetManager = FindObjectOfType<OverrideNetManager>();
         
         overrideNetManager.OnLastClientConnected += () =>
@@ -34,10 +31,7 @@ public class NetworkCardManager : NetworkBehaviour, IPointerClickHandler
         {
             foreach (CardStruct card in cards)
             {
-                GameObject networkCardInstance = Instantiate(networkCardPrefab, transform);
-                networkCardInstance.GetComponent<NetworkCard>().SetCardStruct(card);
 
-                NetworkServer.Spawn(networkCardInstance);
             }
         };
     }

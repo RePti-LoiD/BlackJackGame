@@ -1,8 +1,7 @@
 using TMPro;
 using Mirror;
-using UnityEngine;
-using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 public class CardList : NetworkBehaviour
 {
@@ -28,24 +27,6 @@ public class CardList : NetworkBehaviour
         }
 
         OnCardListGenerated?.Invoke(cards);
-    }
-}
-
-public static class CardListExtension
-{
-    public static void Shuffle<T>(this IList<T> list)
-    {
-        System.Random rand = new System.Random();
-
-        for (int i = 0; i < list.Count - 1; i++)
-            list.Swap(i, rand.Next(i, list.Count - 1));
-    }
-
-    public static void Swap<T>(this IList<T> list, int i, int randIndex)
-    {
-        T temp = list[i];
-        list[i] = list[randIndex];
-        list[randIndex] = temp;
     }
 }
 
