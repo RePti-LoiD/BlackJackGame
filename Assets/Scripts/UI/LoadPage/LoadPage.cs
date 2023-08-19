@@ -29,7 +29,10 @@ public class LoadPage : MonoBehaviour
     private void Update()
     {
         if (continueText.gameObject.activeSelf)
-            continueText.color = new Color(continueText.color.r, continueText.color.g, continueText.color.b, Mathf.PingPong(Time.time, 1));
+            continueText.color = new Color(continueText.color.r, 
+                continueText.color.g, 
+                continueText.color.b, 
+                Mathf.PingPong(Time.time, 1));
     }
 
     private IEnumerator LoadSceneAsync(int sceneIndex)

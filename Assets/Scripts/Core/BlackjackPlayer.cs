@@ -14,6 +14,9 @@ public class BlackjackPlayer : MonoBehaviour, IOnTurn, IOnTurnEnd
     [SerializeField] protected Button hitButton;
     [SerializeField] protected Button standButton;
 
+    [Header("Other")]
+    [SerializeField] protected CardStackHandler cardStackHandler;
+
     protected List<Card> cards = new List<Card>();
     protected TurnState turnState; 
 
@@ -45,14 +48,16 @@ public class BlackjackPlayer : MonoBehaviour, IOnTurn, IOnTurnEnd
         else
             card.ShowCard();
 
-        card.gameObject.transform.SetParent(cardHandler, false);
+        card.gameObject.transform.SetParent(cardHandler, true);
+
+        cardStackHandler.SetCard(card);
 
         cards.Add(card.cardData);
 
-        ShowScore(CalculateScore().ToString());
+        ShowScore(CalculateScore());
     }
 
-    protected virtual int CalculateScore()
+    public virtual int CalculateScore()
     {
         int score = 0;
         
@@ -62,7 +67,7 @@ public class BlackjackPlayer : MonoBehaviour, IOnTurn, IOnTurnEnd
         return score;
     }
 
-    protected virtual void ShowScore(string scoreText) => this.scoreText.text = scoreText;
+    protected virtual void ShowScore(int score) => scoreText.text = score.ToString();
 
     public virtual void OnTurn(BlackjackCardManager cardManager)
     {

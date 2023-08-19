@@ -9,7 +9,7 @@ public class BlackjackBotPlayer : BlackjackPlayer
         int currentScore = CalculateScore();
         bool isRisk = Convert.ToBoolean(UnityEngine.Random.Range(0, 1));
 
-        if (currentScore < cardManager.MaxBlackjackScore || (cardManager.MaxBlackjackScore - currentScore > 4 && isRisk))
+        if (currentScore < cardManager.MaxBlackjackScore && (cardManager.MaxBlackjackScore - currentScore > 4 || isRisk))
             turnState = TurnState.Hit;
         else
             turnState = TurnState.Stand;
@@ -20,18 +20,8 @@ public class BlackjackBotPlayer : BlackjackPlayer
         return turnState;
     }
 
-    protected override int CalculateScore()
+    protected override void ShowScore(int score)
     {
-        int score = 0;
-
-        for (int i = 1; i < cards.Count; i++)
-            score += cards[i].CardWeight;
-
-        return score;
-    }
-
-    protected override void ShowScore(string scoreText)
-    {
-        this.scoreText.text = $"X + {scoreText}";
+        scoreText.text = $"X + {score - cards[0].CardWeight}";
     }
 }

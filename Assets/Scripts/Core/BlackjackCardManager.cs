@@ -1,7 +1,9 @@
-using UnityEngine;
-using System.Collections.Generic;
 using TMPro;
+using System;
+using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class BlackjackCardManager : MonoBehaviour
 {
@@ -14,6 +16,17 @@ public class BlackjackCardManager : MonoBehaviour
     
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI turnText;
+    
+    [Header("Game end UI")]
+    [SerializeField] private GameObject gameEndPanel;
+    [SerializeField] private TextMeshProUGUI playerScoreText;
+    [SerializeField] private TextMeshProUGUI botScoreText;
+    [SerializeField] private TextMeshProUGUI resultText;
+    [SerializeField] private TextMeshProUGUI continueText;
+
+    [SerializeField] private string onPlayerWinMessage;
+    [SerializeField] private string onBotWinMessage;
+    [SerializeField] private string onDrawMessage;
 
     [Header("Other")]
     [SerializeField] private float botTimeToThink = 2f;
@@ -40,13 +53,28 @@ public class BlackjackCardManager : MonoBehaviour
         }
         Debug.Log(listToStr);
 
-        player.SetCard(PutCard());
-        player.SetCard(PutCard());
+        // это какой-то пиздец и надо будет убрать
+        StartCoroutine(Duration(.0f, () => 
+        {
+            player.SetCard(PutCard());
 
-        bot.SetCard(PutCard());
-        bot.SetCard(PutCard());
+            StartCoroutine(Duration(.5f, () =>
+            {
+                bot.SetCard(PutCard());
 
-        SetCurrentPlayer(player);
+                StartCoroutine(Duration(.5f, () =>
+                {
+                    player.SetCard(PutCard());
+
+                    StartCoroutine(Duration(.5f, () =>
+                    {
+                        bot.SetCard(PutCard());
+
+                        SetCurrentPlayer(player);
+                    }));
+                }));
+            }));
+        }));
     }
 
     public void NextTurn()
@@ -56,6 +84,40 @@ public class BlackjackCardManager : MonoBehaviour
         if (bot.TurnState == TurnState.Stand && player.TurnState == TurnState.Stand)
         {
             turnText.text = "Game ended";
+
+            StartCoroutine(Duration(1f, () => 
+            {
+                gameEndPanel.SetActive(true);
+
+                int playerScore = player.CalculateScore(), botScore = bot.CalculateScore();
+
+                playerScoreText.text = playerScore.ToString();
+
+                botScoreText.text = botScore.ToString();
+
+                if (playerScore <= MaxBlackjackScore && botScore <= MaxBlackjackScore)
+                {
+                    if (playerScore > botScore) 
+                        resultText.text = onPlayerWinMessage;
+                    else if (playerScore == botScore) 
+                        resultText.text = onDrawMessage;
+                    else if (playerScore < botScore) 
+                        resultText.text = onBotWinMessage;
+                }
+                else
+                {
+                    if (playerScore > botScore)
+                        resultText.text = onPlayerWinMessage;
+                    else if (Mathf.Abs(MaxBlackjackScore - playerScore) < Mathf.Abs(MaxBlackjackScore - botScore))
+                        resultText.text = onPlayerWinMessage;
+                    else    
+                        resultText.text = onBotWinMessage;
+                }
+
+
+            }));
+
+            StartCoroutine(WaitToRestart());
 
             return;
         }
@@ -69,7 +131,7 @@ public class BlackjackCardManager : MonoBehaviour
         {
             SetCurrentPlayer(bot);
 
-            StartCoroutine(Duration(botTimeToThink));
+            StartCoroutine(Duration(botTimeToThink, () => EndTurn()));
         }
     }
 
@@ -110,10 +172,52 @@ public class BlackjackCardManager : MonoBehaviour
         return blackjackCard;
     }
 
-    IEnumerator Duration(float seconds) 
+    IEnumerator Duration(float seconds, Action action) 
     {
         yield return new WaitForSeconds(seconds);
 
-        EndTurn();
+        action?.Invoke();
+    }
+
+    IEnumerator WaitToRestart()
+    {   
+        float timer = 0;
+
+        while (true)
+        {
+            continueText.color = new Color(continueText.color.r, 
+                continueText.color.g, 
+                continueText.color.b, 
+                Mathf.PingPong(Time.time, 1));
+
+            timer += Time.deltaTime;
+
+            #if UNITY_ANDROID && !UNITY_EDITOR
+            if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            {
+                SceneManager.LoadScene(3);
+                yield break;
+            }
+            #endif
+
+            #if UNITY_STANDALONE_WIN || UNITY_EDITOR
+            if (Input.anyKey)
+            {
+                SceneManager.LoadScene(3);
+                yield break;
+            }
+            #endif
+
+            if (timer > 5)
+                break;
+
+            yield return null;
+        }
+
+        NextSceneData nextSceneData = NextSceneData.Init();
+        nextSceneData.SceneName = "MainMenu";
+        nextSceneData.SceneIndex = 2;
+
+        SceneManager.LoadScene(1);
     }
 }
