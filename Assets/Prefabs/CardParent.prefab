@@ -55,7 +55,7 @@ MonoBehaviour:
   positionalObject: {fileID: 1141959881609304348}
   returnSpeed: 8
   yAxis: 1
-  deleteMaximum: 400
+  deleteMaximum: 350
   instantPosition: {x: 0, y: 0}
 --- !u!1 &7351748072358169358
 GameObject:

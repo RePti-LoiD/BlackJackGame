@@ -9,6 +9,7 @@ public class MainMenuCardsHandler : MonoBehaviour
     [SerializeField] private Card[] cards;
     [SerializeField] private int cardCount = 2;
     [SerializeField] private int cardOffset = 30;
+    [SerializeField] private float cardAdditionalScale = 0.05f;
 
     private GameObject[] cardList;
 
@@ -25,6 +26,7 @@ public class MainMenuCardsHandler : MonoBehaviour
         for (int i = 0; i < cardCount; i++) 
         {
             cardList[i] = InstantiateObject(cardDragPrefab, cards[UnityEngine.Random.Range(0, cards.Length - 1)], new Vector2(0, cardOffset * i), ReloadCards);
+            cardList[i].transform.localScale = new Vector2(1 + cardAdditionalScale * i, 1 + cardAdditionalScale * i);
         }
 
         cardList[cardList.Length - 1].GetComponent<CardDragInteraction>().enabled = true;
@@ -42,6 +44,8 @@ public class MainMenuCardsHandler : MonoBehaviour
         {
             cardList[i] = cardList[i - 1];
             cardList[i].GetComponent<CardDragInteraction>().SetInstantPosition(new Vector2(0, cardOffset * i));
+
+            cardList[i].transform.localScale = new Vector2(1 + cardAdditionalScale * i, 1 + cardAdditionalScale * i);
             cardList[i].GetComponent<CardDragInteraction>().enabled = false;
         }
 
