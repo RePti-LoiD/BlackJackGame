@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
+[Obsolete("Use UiChangeAction as aggregation component for ui event invoker")]
 public class ButtonSpriteChanger : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private Image targetButton;

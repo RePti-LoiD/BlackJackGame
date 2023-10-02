@@ -24,7 +24,7 @@ public class CrossPanelNavigator : MonoBehaviour
 
             buttonList[j].onClick.AddListener(() =>
             {
-                currentOffset = (-(pageSize * j)) + 540;
+                currentOffset = (-(pageSize * j));
             });
         }
 

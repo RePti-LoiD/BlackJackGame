@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class MainMenuCardsHandler : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI countText;
+    [Header("Links")]
     [SerializeField] private GameObject cardDragPrefab;
     [SerializeField] private Card[] cards;
+
+    [Header("Preferences")]
     [SerializeField] private int cardCount = 2;
     [SerializeField] private int cardOffset = 30;
     [SerializeField] private float cardAdditionalScale = 0.05f;
+
+    public Action<int> OnCardSwipe;
 
     private GameObject[] cardList;
 
@@ -34,7 +38,7 @@ public class MainMenuCardsHandler : MonoBehaviour
 
     private void ReloadCards(CardDragInteraction cardDragInteraction)
     {
-        countText.text = (Convert.ToInt32(countText.text) + cardDragInteraction.cardData.CardWeight).ToString();
+        OnCardSwipe?.Invoke(cardDragInteraction.cardData.CardWeight);
 
         cardDragInteraction.onDelete -= ReloadCards;
         Destroy(cardDragInteraction.gameObject);

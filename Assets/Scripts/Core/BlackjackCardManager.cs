@@ -4,6 +4,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Firebase.Auth;
+using Firebase.Database;
 
 public class BlackjackCardManager : MonoBehaviour
 {
@@ -12,17 +15,26 @@ public class BlackjackCardManager : MonoBehaviour
     [Header("---------------")]
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] public List<Card> cards = new List<Card>();
-    [SerializeField] private List<BlackjackCard> spawnedCards = new List<BlackjackCard>(); 
-    
+    [SerializeField] private List<BlackjackCard> spawnedCards = new List<BlackjackCard>();
+    [SerializeField] private PlayerBet playerBet; 
+    [SerializeField] private UserDataLoader userDataLoader;
+
+
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI turnText;
-    
+    [SerializeField] private TextMeshProUGUI nickNameText;
+    [SerializeField] private TextMeshProUGUI playerBetText;
+    [SerializeField] private TextMeshProUGUI botBetText;
+
     [Header("Game end UI")]
     [SerializeField] private GameObject gameEndPanel;
-    [SerializeField] private TextMeshProUGUI playerScoreText;
     [SerializeField] private TextMeshProUGUI botScoreText;
+    [SerializeField] private TextMeshProUGUI playerScoreText;
     [SerializeField] private TextMeshProUGUI resultText;
-    [SerializeField] private TextMeshProUGUI continueText;
+    [SerializeField] private TextMeshProUGUI moneyText;
+
+    [SerializeField] private Button playAgainButton;
+    [SerializeField] private Button returnToMenuButton;
 
     [SerializeField] private string onPlayerWinMessage;
     [SerializeField] private string onBotWinMessage;
@@ -35,26 +47,61 @@ public class BlackjackCardManager : MonoBehaviour
 
     private int currentCard = 0;
 
+    private int playerBetAmount, botBetAmount;
+
     private BlackjackPlayer currentPlayer;
+    private User userData;
 
     private void Start()
     {
+        if (PlayerPrefs.GetString(PlayerPrefsKeys.IsGuest) == IsGuest.Guest.ToString())
+            nickNameText.text = "Guest";
+
+        playAgainButton.onClick.AddListener(() =>
+        {
+            SceneManager.LoadScene(3);
+        });
+
+        returnToMenuButton.onClick.AddListener(() =>
+        {
+            NextSceneData nextSceneData = NextSceneData.Init();
+            nextSceneData.SceneName = "MainMenu";
+            nextSceneData.SceneIndex = 2;
+
+            SceneManager.LoadScene(1);
+        });
+
+        playerBet.OnPlayerBet += (count, userData) =>
+        {
+            playerBetAmount = botBetAmount = count;
+
+            playerBetText.text = count.ToString();
+            botBetText.text = count.ToString();
+            this.userData = userData;
+
+            StartGame();
+        };
+
+        userDataLoader.OnDataLoad += (data) =>
+        {
+            nickNameText.text = data.NickName;
+        };
+    }
+
+    private void StartGame()
+    {
         cards = cards.ShuffleList();
 
-        string listToStr = string.Empty;
         foreach (Card card in cards)
         {
             GameObject spawnedCard = Instantiate(cardPrefab, transform);
             spawnedCard.GetComponent<BlackjackCard>().SetCardStruct(card);
 
             spawnedCards.Add(spawnedCard.GetComponent<BlackjackCard>());
-
-            listToStr += card.CardWeight + " ";
         }
-        Debug.Log(listToStr);
 
         // это какой-то пиздец и надо будет убрать
-        StartCoroutine(Duration(.0f, () => 
+        StartCoroutine(Duration(.0f, () =>
         {
             player.SetCard(PutCard());
 
@@ -78,9 +125,7 @@ public class BlackjackCardManager : MonoBehaviour
     }
 
     public void NextTurn()
-    {
-        print($"{currentPlayer.gameObject.name} is player {currentPlayer is BlackjackPlayer}");
-        
+    {        
         if (bot.TurnState == TurnState.Stand && player.TurnState == TurnState.Stand)
         {
             turnText.text = "Game ended";
@@ -97,27 +142,31 @@ public class BlackjackCardManager : MonoBehaviour
 
                 if (playerScore <= MaxBlackjackScore && botScore <= MaxBlackjackScore)
                 {
-                    if (playerScore > botScore) 
-                        resultText.text = onPlayerWinMessage;
-                    else if (playerScore == botScore) 
-                        resultText.text = onDrawMessage;
-                    else if (playerScore < botScore) 
-                        resultText.text = onBotWinMessage;
+                    if (playerScore > botScore)
+                        PlayerWin();
+                    else if (playerScore < botScore)
+                        BotWin();
+                }
+                else if (playerScore > MaxBlackjackScore && botScore > MaxBlackjackScore)
+                {
+                    if (playerScore < botScore)
+                        PlayerWin();
+                    else if (playerScore > botScore)
+                        BotWin();
+                }
+                else if (playerScore > MaxBlackjackScore && botScore <= MaxBlackjackScore)
+                {
+                    BotWin();
+                }
+                else if (botScore > MaxBlackjackScore && playerScore <= MaxBlackjackScore)
+                {
+                    PlayerWin();
                 }
                 else
                 {
-                    if (playerScore > botScore)
-                        resultText.text = onPlayerWinMessage;
-                    else if (Mathf.Abs(MaxBlackjackScore - playerScore) < Mathf.Abs(MaxBlackjackScore - botScore))
-                        resultText.text = onPlayerWinMessage;
-                    else    
-                        resultText.text = onBotWinMessage;
+                    Draw();
                 }
-
-
             }));
-
-            StartCoroutine(WaitToRestart());
 
             return;
         }
@@ -133,6 +182,37 @@ public class BlackjackCardManager : MonoBehaviour
 
             StartCoroutine(Duration(botTimeToThink, () => EndTurn()));
         }
+    }
+
+    void PlayerWin()
+    {
+        resultText.text = onPlayerWinMessage;
+        moneyText.text = $"<color=yellow><s>{userData.PlayerBalance}</s></color> -> <color=green>{userData.PlayerBalance + botBetAmount}</color>";
+        userData.PlayerBalance += botBetAmount;
+
+        if (PlayerPrefs.GetString(PlayerPrefsKeys.IsGuest) == IsGuest.Guest.ToString())
+            PlayerPrefs.SetInt(PlayerPrefsKeys.UserScore, userData.PlayerBalance);
+        else
+            userDataLoader.LoadUserBalance(userData.PlayerBalance);
+    }
+
+    void BotWin()
+    {
+        resultText.text = onBotWinMessage;
+        moneyText.text = $"<color=yellow><s>{userData.PlayerBalance}</s></color> -> <color=red>{userData.PlayerBalance - playerBetAmount}</color>";
+        userData.PlayerBalance -= playerBetAmount;
+       
+        if (PlayerPrefs.GetString(PlayerPrefsKeys.IsGuest) == IsGuest.Guest.ToString())
+            PlayerPrefs.SetInt(PlayerPrefsKeys.UserScore, userData.PlayerBalance);
+        else
+            userDataLoader.LoadUserBalance(userData.PlayerBalance);
+    }
+
+    void Draw()
+    {
+        resultText.text = onDrawMessage;
+
+        moneyText.text = $"<s>{UserDataLoader.UserData.PlayerBalance}</s> -> {UserDataLoader.UserData.PlayerBalance}";
     }
 
     public void EndTurn()
@@ -177,47 +257,5 @@ public class BlackjackCardManager : MonoBehaviour
         yield return new WaitForSeconds(seconds);
 
         action?.Invoke();
-    }
-
-    IEnumerator WaitToRestart()
-    {   
-        float timer = 0;
-
-        while (true)
-        {
-            continueText.color = new Color(continueText.color.r, 
-                continueText.color.g, 
-                continueText.color.b, 
-                Mathf.PingPong(Time.time, 1));
-
-            timer += Time.deltaTime;
-
-            #if UNITY_ANDROID && !UNITY_EDITOR
-            if (Input.GetTouch(0).phase == TouchPhase.Ended)
-            {
-                SceneManager.LoadScene(3);
-                yield break;
-            }
-            #endif
-
-            #if UNITY_STANDALONE_WIN || UNITY_EDITOR
-            if (Input.anyKey)
-            {
-                SceneManager.LoadScene(3);
-                yield break;
-            }
-            #endif
-
-            if (timer > 5)
-                break;
-
-            yield return null;
-        }
-
-        NextSceneData nextSceneData = NextSceneData.Init();
-        nextSceneData.SceneName = "MainMenu";
-        nextSceneData.SceneIndex = 2;
-
-        SceneManager.LoadScene(1);
     }
 }
