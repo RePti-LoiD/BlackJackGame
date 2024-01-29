@@ -5,19 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PreviewPage.unity
     guid: 20441431df2493545aa829f694cba544
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LoadingPage.unity
     guid: f672921b2ab79a54db27bc3b310f9ef5
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: 1530717acf3eee2449cd43460848d0b9
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/BlackjackGame.unity
     guid: 3798acb9623093247afb6be3e36324ba
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/RegistrationScene.unity
     guid: 8e571be6a94ef184283030b080a0e894
   - enabled: 0
@@ -26,4 +26,8 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Other/GameList.unity
     guid: 1ae8cff46432de541b0457a1445a6f83
+  - enabled: 1
+    path: Assets/Scenes/QrReaderTest.unity
+    guid: 0f38ad637faa8ec4aa52085cb6ebdf8e
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
