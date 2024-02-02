@@ -1,4 +1,3 @@
-using Firebase.Auth;
 using System;
 using TMPro;
 using UnityEngine;
@@ -11,14 +10,10 @@ public class PreviewPage : MonoBehaviour
     [SerializeField] private TextMeshProUGUI continueText;
     [SerializeField] private TextMeshProUGUI currentDate;
 
-    private FirebaseAuth firebaseAuth;
-
     private void Start()
     {
         Application.targetFrameRate = 60;
         currentDate.text = DateTime.Now.ToString("d MMMM");
-
-        firebaseAuth = FirebaseAuth.DefaultInstance;
 
         userDataLoader.OnDataLoad += (user) => 
         {
@@ -49,7 +44,7 @@ public class PreviewPage : MonoBehaviour
         {
             NextSceneData data = NextSceneData.Init();
             
-            if (firebaseAuth?.CurrentUser != null || PlayerPrefs.HasKey(PlayerPrefsKeys.IsGuest))
+            if (PlayerPrefs.HasKey(PlayerPrefsKeys.IsGuest))
             {
                 data.SceneIndex = 2;
                 data.SceneName = "MainMenu";

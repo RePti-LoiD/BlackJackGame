@@ -56,7 +56,7 @@ public class PlayerBet : MonoBehaviour
         if (PlayerPrefs.GetString(PlayerPrefsKeys.IsGuest) == IsGuest.Guest.ToString())
             currentMoney.text = $"{PlayerPrefs.GetInt(PlayerPrefsKeys.UserScore)}$";
 
-        userDataLoader.UpdateUserData();
+        //userDataLoader.UpdateUserData();
 
         userDataLoader.OnDataLoad += (userData) =>
         {

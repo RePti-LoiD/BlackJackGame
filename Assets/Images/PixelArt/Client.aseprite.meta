@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f8f26ed70930352468d3cff9c9647048
+guid: 8adba6c8a82ab924385baf55b41daf94
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -95,7 +95,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638421718037150856
+  platformSettingsDirtyTick: 638421718247547078
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -119,9 +119,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: LanBlackJackButtonAction
+  - name: Client
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -130,7 +130,7 @@ ScriptedImporter:
       y: 4
       width: 64
       height: 32
-    spriteID: c05d1389d50c7b54db095bbc80d38457
+    spriteID: e04edbe3b5d344744bd09948678894a0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -142,20 +142,20 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -741081561
-    name: LanBlackJackButtonAction
+    guid: -285459771
+    name: Client
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: LanBlackJackButtonAction
+    - name: Client
       frameIndex: 0
       cellRect:
         x: 0
         y: 0
         width: 64
         height: 32
-      spriteId: c05d1389d50c7b54db095bbc80d38457
+      spriteId: e04edbe3b5d344744bd09948678894a0
     linkedCells: []
     parentIndex: -1
   platformSettings:

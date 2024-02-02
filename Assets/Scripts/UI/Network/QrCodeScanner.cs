@@ -2,6 +2,7 @@ using UnityEngine;
 using ZXing;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class QrCodeScanner : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class QrCodeScanner : MonoBehaviour
     [SerializeField] private AspectRatioFitter aspectRation;
     [SerializeField] private TextMeshProUGUI outputText;
     [SerializeField] private RectTransform scanZone;
+
+    public Action<string> OnQrScan;
 
     private bool isCamAvaible;
     private WebCamTexture cameraTexture;
@@ -70,7 +73,8 @@ public class QrCodeScanner : MonoBehaviour
             Result result = barcodeReader.Decode(cameraTexture.GetPixels32(), cameraTexture.width, cameraTexture.height);
             if (result != null)
             {
-                outputText.text = result.Text;
+                //outputText.text = result.Text;
+                OnQrScan?.Invoke(result.Text);
             }
             else
             {

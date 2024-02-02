@@ -5,8 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Firebase.Auth;
-using Firebase.Database;
 
 public class BlackjackCardManager : MonoBehaviour
 {
@@ -192,8 +190,6 @@ public class BlackjackCardManager : MonoBehaviour
 
         if (PlayerPrefs.GetString(PlayerPrefsKeys.IsGuest) == IsGuest.Guest.ToString())
             PlayerPrefs.SetInt(PlayerPrefsKeys.UserScore, userData.PlayerBalance);
-        else
-            userDataLoader.LoadUserBalance(userData.PlayerBalance);
     }
 
     void BotWin()
@@ -204,8 +200,6 @@ public class BlackjackCardManager : MonoBehaviour
        
         if (PlayerPrefs.GetString(PlayerPrefsKeys.IsGuest) == IsGuest.Guest.ToString())
             PlayerPrefs.SetInt(PlayerPrefsKeys.UserScore, userData.PlayerBalance);
-        else
-            userDataLoader.LoadUserBalance(userData.PlayerBalance);
     }
 
     void Draw()

@@ -1,5 +1,3 @@
-using Firebase.Auth;
-using Firebase.Database;
 using System;
 using TMPro;
 using UnityEngine;
@@ -9,9 +7,6 @@ public class UserScore : MonoBehaviour
     [SerializeField] private UserDataLoader userDataLoader;
     [SerializeField] private MainMenuCardsHandler mainMenuCardsHandler;
     [SerializeField] private TextMeshProUGUI scoreText;
-
-    private DatabaseReference databaseReference;
-    private FirebaseAuth firebaseAuth;
 
     private void Start()
     {
@@ -24,12 +19,7 @@ public class UserScore : MonoBehaviour
 
             if (PlayerPrefs.GetString(PlayerPrefsKeys.IsGuest) == IsGuest.Guest.ToString())
                 PlayerPrefs.SetInt(PlayerPrefsKeys.UserScore, Convert.ToInt32(scoreText.text));
-            else
-                databaseReference.Child("users").Child(firebaseAuth.CurrentUser.UserId).Child("PlayerBalance").SetValueAsync(scoreText.text);
         };
-
-        databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
-        firebaseAuth = FirebaseAuth.DefaultInstance;
 
         userDataLoader.OnDataLoad += (userData) =>
         {
