@@ -13,16 +13,16 @@ public class WalletViewModel : MonoBehaviour
         if (wallet == null) enabled = false;
     }
 
-    public void WalletAddMoney(object sender, ulong amount)
+    public void WalletAddMoney(object sender, long amount)
     {
-        ulong oldMoney = wallet.Money;
+        long oldMoney = wallet.Balance;
 
         wallet.AddMoney(amount);
 
         OnWalletMoneyChanged?.Invoke(new WalletOperationEventArgs
         (
             oldMoney,
-            wallet.Money,
+            wallet.Balance,
             $"{sender} add money on your balance",
             OperationStatus.Success,
             OperationType.AddMoney,
@@ -31,15 +31,15 @@ public class WalletViewModel : MonoBehaviour
         ));
     }
 
-    public void WalletGetMoney(object sender, ulong amount)
+    public void WalletGetMoney(object sender, long amount)
     {
-        ulong oldMoney = wallet.Money;
+        long oldMoney = wallet.Balance;
         bool isSuccess = wallet.TryGetMoney(amount);
 
         OnWalletMoneyChanged?.Invoke(new WalletOperationEventArgs
         (
             oldMoney,
-            wallet.Money,
+            wallet.Balance,
             isSuccess ? $"{sender} get money from your balance" : $"{sender} can't get money from your balance",
             isSuccess ? OperationStatus.Success : OperationStatus.Denied,
             OperationType.GetMoney,

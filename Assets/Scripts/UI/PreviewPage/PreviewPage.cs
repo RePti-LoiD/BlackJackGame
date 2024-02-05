@@ -1,30 +1,17 @@
-using Firebase.Auth;
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PreviewPage : MonoBehaviour
 {
-    [SerializeField] private UserDataLoader userDataLoader;
-
     [SerializeField] private TextMeshProUGUI continueText;
     [SerializeField] private TextMeshProUGUI currentDate;
-
-    private FirebaseAuth firebaseAuth;
 
     private void Start()
     {
         Application.targetFrameRate = 60;
-        currentDate.text = DateTime.Now.ToString("d MMMM");
 
-        firebaseAuth = FirebaseAuth.DefaultInstance;
-
-        userDataLoader.OnDataLoad += (user) => 
-        {
-            if (user != null)
-                continueText.text = "Hello, " + user.NickName;
-        };
+        continueText.text = "Hello, " + UserDataWrapper.UserData?.NickName ?? "guest";
     }
 
     private void Update()
@@ -38,7 +25,6 @@ public class PreviewPage : MonoBehaviour
 
 #if UNITY_EDITOR
         isTouch = Input.anyKeyDown;
-        print("editor");
 #endif
 
 #if UNITY_ANDROID && !UNITY_EDITOR 
@@ -49,17 +35,10 @@ public class PreviewPage : MonoBehaviour
         {
             NextSceneData data = NextSceneData.Init();
             
-            if (firebaseAuth?.CurrentUser != null || PlayerPrefs.HasKey(PlayerPrefsKeys.IsGuest))
-            {
-                data.SceneIndex = 2;
-                data.SceneName = "MainMenu";
-
-                SceneManager.LoadScene(1);
-            }
+            if (UserDataWrapper.UserData != null)
+                SceneManager.LoadScene(2);
             else
-            {
                 SceneManager.LoadScene(4);
-            }
         }
     }
 }

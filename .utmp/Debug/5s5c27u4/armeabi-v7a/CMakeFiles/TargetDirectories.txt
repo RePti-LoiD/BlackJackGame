@@ -1,0 +1,5 @@
+E:/UnityProjects/BlackJackUnityGame/.utmp/Debug/5s5c27u4/armeabi-v7a/CMakeFiles/edit_cache.dir
+E:/UnityProjects/BlackJackUnityGame/.utmp/Debug/5s5c27u4/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+E:/UnityProjects/BlackJackUnityGame/.utmp/Debug/5s5c27u4/armeabi-v7a/FramePacing/CMakeFiles/swappywrapper.dir
+E:/UnityProjects/BlackJackUnityGame/.utmp/Debug/5s5c27u4/armeabi-v7a/FramePacing/CMakeFiles/edit_cache.dir
+E:/UnityProjects/BlackJackUnityGame/.utmp/Debug/5s5c27u4/armeabi-v7a/FramePacing/CMakeFiles/rebuild_cache.dir
