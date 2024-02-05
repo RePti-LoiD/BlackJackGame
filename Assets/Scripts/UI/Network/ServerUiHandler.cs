@@ -5,20 +5,31 @@ public class ServerUiHandler : NetworkUiInterface
     [SerializeField] private LobbyServer lobbyServer;
     [SerializeField] private QrGenerator generator;
     [SerializeField] private GameObject serverUiFrame;
+    [SerializeField] private ActivatableObject activatableObject;
+
+    private void Awake()
+    {
+        activatableObject.OnActivate += () =>
+        {
+            var endpoint = lobbyServer.GetLocalEndpoint();
+            lobbyServer.PrepareServer();
+
+            generator.CreateQrAndShow(endpoint.ToString() ?? "Server internal error. Try againg.");
+        };
+
+        activatableObject.OnDeactivate += () =>
+        {
+            lobbyServer.CloseServer();
+        };
+    }
 
     public override void DisableUi()
     {
-        lobbyServer.CloseServer();
-        serverUiFrame.SetActive(false);
+        //serverUiFrame.SetActive(false);
     }
 
     public override void EnableUi()
     {
-        var endpoint = lobbyServer.GetLocalEndpoint();
-        lobbyServer.PrepareServer();
-
-        serverUiFrame.SetActive(true);
-
-        generator.CreateQrAndShow(endpoint.ToString() ?? "Server internal error. Try againg.");
+        //serverUiFrame.SetActive(true);
     }
 }

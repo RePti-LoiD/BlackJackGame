@@ -15,7 +15,7 @@ public class BlackjackCardManager : MonoBehaviour
     [SerializeField] public List<Card> cards = new List<Card>();
     [SerializeField] private List<BlackjackCard> spawnedCards = new List<BlackjackCard>();
     [SerializeField] private PlayerBet playerBet; 
-    [SerializeField] private UserDataLoader userDataLoader;
+    [SerializeField] private User user;
 
 
     [Header("UI")]
@@ -57,16 +57,12 @@ public class BlackjackCardManager : MonoBehaviour
 
         playAgainButton.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene(3);
+            ReloadScene();
         });
 
         returnToMenuButton.onClick.AddListener(() =>
         {
-            NextSceneData nextSceneData = NextSceneData.Init();
-            nextSceneData.SceneName = "MainMenu";
-            nextSceneData.SceneIndex = 2;
-
-            SceneManager.LoadScene(1);
+            BackToMenu();
         });
 
         playerBet.OnPlayerBet += (count, userData) =>
@@ -80,10 +76,17 @@ public class BlackjackCardManager : MonoBehaviour
             StartGame();
         };
 
-        userDataLoader.OnDataLoad += (data) =>
-        {
-            nickNameText.text = data.NickName;
-        };
+        nickNameText.text = UserDataWrapper.UserData.NickName;
+    }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(3);
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(2);
     }
 
     private void StartGame()
@@ -185,28 +188,26 @@ public class BlackjackCardManager : MonoBehaviour
     void PlayerWin()
     {
         resultText.text = onPlayerWinMessage;
-        moneyText.text = $"<color=yellow><s>{userData.PlayerBalance}</s></color> -> <color=green>{userData.PlayerBalance + botBetAmount}</color>";
-        userData.PlayerBalance += botBetAmount;
+        moneyText.text = $"<color=yellow><s>{userData.UserWallet.Balance}</s></color> -> <color=green>{userData.UserWallet.Balance + botBetAmount}</color>";
+        userData.UserWallet.AddMoney(botBetAmount);
 
-        if (PlayerPrefs.GetString(PlayerPrefsKeys.IsGuest) == IsGuest.Guest.ToString())
-            PlayerPrefs.SetInt(PlayerPrefsKeys.UserScore, userData.PlayerBalance);
+        print("Player win " + userData.UserWallet.Balance);
     }
 
     void BotWin()
     {
         resultText.text = onBotWinMessage;
-        moneyText.text = $"<color=yellow><s>{userData.PlayerBalance}</s></color> -> <color=red>{userData.PlayerBalance - playerBetAmount}</color>";
-        userData.PlayerBalance -= playerBetAmount;
-       
-        if (PlayerPrefs.GetString(PlayerPrefsKeys.IsGuest) == IsGuest.Guest.ToString())
-            PlayerPrefs.SetInt(PlayerPrefsKeys.UserScore, userData.PlayerBalance);
+        moneyText.text = $"<color=yellow><s>{userData.UserWallet.Balance}</s></color> -> <color=red>{userData.UserWallet.Balance - playerBetAmount}</color>";
+        userData.UserWallet.AddMoney(-playerBetAmount);
+
+        print("Bot win " + userData.UserWallet.Balance);
     }
 
     void Draw()
     {
         resultText.text = onDrawMessage;
 
-        moneyText.text = $"<s>{UserDataLoader.UserData.PlayerBalance}</s> -> {UserDataLoader.UserData.PlayerBalance}";
+        moneyText.text = $"<s>{userData.UserWallet.Balance}</s> -> {userData.UserWallet.Balance}";
     }
 
     public void EndTurn()

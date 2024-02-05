@@ -1,23 +1,31 @@
-﻿using System;
-
-public class User
+﻿public class User
 {
-    public string FirstName;
-    public string NickName;
-    public string Email;
-    public int PlayerBalance;
-    public string LinkToAvatar;
-    public long CreationDate;
+    private static User userData;
+    public static User UserData => userData;
 
-    public User() { }
+    private string firstName;
+    private string nickName;
+    private string linkToAvatar;
+    private long creationDate;
+    private Wallet userWallet;
 
-    public User(string firstName, string nickName, string email, int balance, string linkToAvatar, long creationDate)
+    public string FirstName { get => firstName; private set => firstName = value; }
+    public string NickName { get => nickName; private set => nickName = value; }
+    public string LinkToAvatar { get => linkToAvatar; private set => linkToAvatar = value; }
+    public long CreationDate { get => creationDate; private set => creationDate = value; }
+    public Wallet UserWallet { get => userWallet; private set => userWallet = value; }
+
+    public User(string firstName, string nickName, string linkToAvatar, long creationDate, Wallet userWallet)
     {
-        this.FirstName = firstName;
-        this.NickName = nickName;
-        this.Email = email;
-        this.PlayerBalance = balance;
-        this.LinkToAvatar = linkToAvatar;
-        this.CreationDate = creationDate;
+        this.firstName = firstName;
+        this.nickName = nickName;
+        this.linkToAvatar = linkToAvatar;
+        this.creationDate = creationDate;
+        this.userWallet = userWallet;
+    }
+
+    public override string ToString()
+    {
+        return $"First name {firstName}, nick {nickName}";
     }
 }

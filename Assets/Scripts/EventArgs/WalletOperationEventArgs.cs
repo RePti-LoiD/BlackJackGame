@@ -2,7 +2,7 @@
 
 public struct WalletOperationEventArgs
 {
-    public ulong OldMoney, CurrentMoney;
+    public long OldMoney, CurrentMoney;
     public string OperationDescription; 
 
     public OperationStatus IsOperationSuccess;
@@ -11,7 +11,7 @@ public struct WalletOperationEventArgs
 
     public DateTime DateTime;
 
-    public WalletOperationEventArgs(ulong oldMoney, ulong currentMoney, string description, OperationStatus status, OperationType type, object sender, DateTime dateTime)
+    public WalletOperationEventArgs(long oldMoney, long currentMoney, string description, OperationStatus status, OperationType type, object sender, DateTime dateTime)
     {
         OldMoney = oldMoney;
         CurrentMoney = currentMoney;
