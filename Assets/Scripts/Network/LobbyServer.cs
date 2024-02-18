@@ -4,13 +4,15 @@ using UnityEngine;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
+using Newtonsoft.Json;
+using System;
 
 public class LobbyServer : MonoBehaviour
 {
     [SerializeField] private GameObject modalFrame;
-    [SerializeField] private TMP_Text serverText;
     [SerializeField] private TMP_Text serverLocation;
     [SerializeField] private short serverPort;
+    [SerializeField] private UserDataVisualization visualization;
 
     private IPEndPoint serverEndpoint;
     private TcpListener tcpListener;
@@ -39,14 +41,11 @@ public class LobbyServer : MonoBehaviour
     private async void StartServer(TcpListener listener)
     {
         serverLocation.text = $"server started at: {listener.Server.LocalEndPoint}";
-        while (true)
-        {
-            print("Waiting next client.. ");
-            TcpClient tcpClient = await listener?.AcceptTcpClientAsync();
-            print($"Client connected: {tcpClient.Client.LocalEndPoint}");
 
-            await ListenClient(tcpClient);
-        }
+        TcpClient tcpClient = await listener?.AcceptTcpClientAsync();
+        print($"Client connected: {tcpClient.Client.LocalEndPoint}");
+
+        await ListenClient(tcpClient);
     }
 
     private async Task ListenClient(TcpClient client)
@@ -54,13 +53,14 @@ public class LobbyServer : MonoBehaviour
         using (var stream = client.GetStream())
         {
             modalFrame.SetActive(true);
-            print("Listening client");
+
             while (true)
             {
                 byte[] buffer = new byte[256];
                 int byteCount = await stream.ReadAsync(buffer);
 
-                serverText.text = Encoding.UTF8.GetString(buffer);
+                string message = Encoding.UTF8.GetString(buffer);
+                HandleClientMessage(message);
 
                 if (byteCount == 0)
                 {
@@ -70,7 +70,16 @@ public class LobbyServer : MonoBehaviour
             }
         }
     }
-    
+
+    private void HandleClientMessage(string message)
+    {
+        print(Enum.GetName(typeof(TCPDataMarkers), message.Split("\n")[0]));
+
+        if ((TCPDataMarkers)Enum.Parse(typeof(TCPDataMarkers), message.Split("\n")[0]) == TCPDataMarkers.UserDataMarker)
+            visualization.VisualizeUserData(JsonConvert.DeserializeObject<User>(message));
+
+    }
+
     public void OnDestroy()
     {
         CloseServer();

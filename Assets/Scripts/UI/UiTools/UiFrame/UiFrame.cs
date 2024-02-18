@@ -71,4 +71,10 @@ public class UiFrame : ActivatableObject
     }
 
     private void DisableObject() => gameObject.SetActive(false);
+
+    public override void OnEnable()
+    { }
+
+    public override void OnDisable()
+    { }
 }

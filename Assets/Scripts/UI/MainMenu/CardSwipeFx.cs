@@ -34,11 +34,12 @@ public class CardSwipeFx : MonoBehaviour
             actionOnDestroy: (particleText) => Destroy(particleText)
         );
 
-        balanceChange.OnBalanceChangeAction += (balanceChangeMessage) =>
+        balanceChange.OnBalanceChangeAction += (balanceAdded, multiplier, currencySymbol) =>
         {
             GameObject text = objectPool.Get();
             MainMenuFxHandler fxHandler = text.GetComponent<MainMenuFxHandler>();
-            fxHandler.SetText(balanceChangeMessage);
+            string stringMultiplier = multiplier != 1 ? $"{multiplier}x" : string.Empty;
+            fxHandler.SetText($"{stringMultiplier}{balanceAdded}{currencySymbol}");
             
             Vector2 randomPoint = Random.insideUnitCircle;
             text.gameObject.transform.position = instantTransform.position + new Vector3(randomPoint.x * randomWeight, randomPoint.y * randomWeight);
@@ -46,22 +47,23 @@ public class CardSwipeFx : MonoBehaviour
                     targetTransform.position.y + (randomPoint.y * randomWeight)));
 
 
-            if (balanceChangeMessage.Contains("x"))
+            if (multiplier > 1)
                 fxHandler.SetColor(plusDoubleBalanceColor);
             else
-            {
-                int balance = int.Parse(balanceChangeMessage[0..^1]);
-                
-                if (balance <= 4)
-                    fxHandler.SetColor(plusLowBalanceColor);
-                else if (balance >= 5 && balance <= 7)
-                    fxHandler.SetColor(plusMiddleBalanceColor);
-                else
-                    fxHandler.SetColor(plusHugeBalanceColor);
-            }
+                GetColorByAddedBalance(fxHandler, balanceAdded);
 
             StartCoroutine(ReturnToPoolWithDuration(text, 1f));
         };
+    }
+
+    private void GetColorByAddedBalance(MainMenuFxHandler fxHandler, int balance)
+    {
+        if (balance <= 4)
+            fxHandler.SetColor(plusLowBalanceColor);
+        else if (balance >= 5 && balance <= 7)
+            fxHandler.SetColor(plusMiddleBalanceColor);
+        else
+            fxHandler.SetColor(plusHugeBalanceColor);
     }
 
     private IEnumerator ReturnToPoolWithDuration(GameObject text, float lifeTime)

@@ -52,9 +52,6 @@ public class BlackjackCardManager : MonoBehaviour
 
     private void Start()
     {
-        if (PlayerPrefs.GetString(PlayerPrefsKeys.IsGuest) == IsGuest.Guest.ToString())
-            nickNameText.text = "Guest";
-
         playAgainButton.onClick.AddListener(() =>
         {
             ReloadScene();
@@ -93,15 +90,17 @@ public class BlackjackCardManager : MonoBehaviour
     {
         cards = cards.ShuffleList();
 
+        int renderIndex = 0;
         foreach (Card card in cards)
         {
+            renderIndex++;
             GameObject spawnedCard = Instantiate(cardPrefab, transform);
-            spawnedCard.GetComponent<BlackjackCard>().SetCardStruct(card);
+            spawnedCard.GetComponent<BlackjackCard>().SetCardStruct(card, renderIndex);
 
             spawnedCards.Add(spawnedCard.GetComponent<BlackjackCard>());
         }
 
-        // это какой-то пиздец и надо будет убрать
+        // это какой-то пиздец. надо будет убрать
         StartCoroutine(Duration(.0f, () =>
         {
             player.SetCard(PutCard());
@@ -189,7 +188,7 @@ public class BlackjackCardManager : MonoBehaviour
     {
         resultText.text = onPlayerWinMessage;
         moneyText.text = $"<color=yellow><s>{userData.UserWallet.Balance}</s></color> -> <color=green>{userData.UserWallet.Balance + botBetAmount}</color>";
-        userData.UserWallet.AddMoney(botBetAmount);
+        userData.UserWallet.AddMoney(botBetAmount * 2);
 
         print("Player win " + userData.UserWallet.Balance);
     }
@@ -198,7 +197,7 @@ public class BlackjackCardManager : MonoBehaviour
     {
         resultText.text = onBotWinMessage;
         moneyText.text = $"<color=yellow><s>{userData.UserWallet.Balance}</s></color> -> <color=red>{userData.UserWallet.Balance - playerBetAmount}</color>";
-        userData.UserWallet.AddMoney(-playerBetAmount);
+        /*userData.UserWallet.AddMoney(-playerBetAmount);*/
 
         print("Bot win " + userData.UserWallet.Balance);
     }

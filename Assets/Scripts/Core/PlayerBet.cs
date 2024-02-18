@@ -26,7 +26,8 @@ public class PlayerBet : MonoBehaviour
             
             if ((int)UserDataWrapper.UserData.UserWallet.Balance - Convert.ToInt32(betCount.text) < 0) return;
 
-            OnPlayerBet?.Invoke(Convert.ToInt32(betCount.text), UserDataWrapper.UserData);
+            OnPlayerBet?.Invoke(int.Parse(betCount.text), UserDataWrapper.UserData);
+            UserDataWrapper.UserData.UserWallet.TryGetMoney(int.Parse(betCount.text));
 
             gameObject.transform.parent.gameObject.SetActive(false);
         });

@@ -20,17 +20,15 @@ public class LanLobbyController : MonoBehaviour
 
     public void ClientEmulation(GameObject ipEndpoint)
     {
-        try
-        {
-            string[] endpointSplitted = ipEndpoint.GetComponent<TMP_InputField>().text.Split(':');
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(endpointSplitted[0]), int.Parse(endpointSplitted[1]));
+        string[] endpointSplitted = ipEndpoint.GetComponent<TMP_InputField>().text.Split(':');
+        IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(endpointSplitted[0]), int.Parse(endpointSplitted[1]));
+        print($"Client connecting to: {endPoint}");
 
-            print($"Client connecting to: {endPoint}");
-            client.StartClient(endPoint);
-        }
-        catch (Exception ex)
-        {
-            exceptionText.text = $"{ex.Message}\n{ex.StackTrace}";
-        }
+        client.StartClient(endPoint);
+    }
+
+    public void DisposeClient()
+    {
+        client.CloseClient();
     }
 }

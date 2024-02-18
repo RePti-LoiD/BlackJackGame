@@ -4,23 +4,17 @@ public class UserScoreCounter : IAction
 {
     [SerializeField] private MainMenuCardsHandler cardsHandler;
     [SerializeField] [Range(0, 10000)] private int minDoubleBalanceChance;
-    [SerializeField] private string currencyChar;
+    [SerializeField] private string currencySymbol;
 
     private void Start()
     {
         cardsHandler.OnCardSwipe += (cardWeight) =>
         {
             int addBalance = cardWeight;
-            string balanceChangeStr = $"{cardWeight}{currencyChar}";
+            int bonusMultiplier = Random.Range(0, 10000) > minDoubleBalanceChance ? 2 : 1;
 
-            if (Random.Range(0, 10000) > minDoubleBalanceChance)
-            {
-                addBalance *= 2;
-                balanceChangeStr = "2x" + balanceChangeStr;
-            }
-
-            UserDataWrapper.UserData.UserWallet.AddMoney(addBalance);
-            OnBalanceChangeAction?.Invoke(balanceChangeStr);
+            UserDataWrapper.UserData.UserWallet.AddMoney(addBalance * bonusMultiplier);
+            OnBalanceChangeAction?.Invoke(cardWeight, bonusMultiplier, currencySymbol);
         };
     }
 }

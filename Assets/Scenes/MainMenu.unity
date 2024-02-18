@@ -663,6 +663,7 @@ GameObject:
   - component: {fileID: 1227243701}
   - component: {fileID: 1227243700}
   - component: {fileID: 1227243703}
+  - component: {fileID: 1227243704}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -771,6 +772,103 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offlineBlackJackButton: {fileID: 1402338365}
   lanBlackJackButton: {fileID: 1524807821}
+--- !u!82 &1227243704
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227243698}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1235926418
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,6 +879,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1235926419}
   - component: {fileID: 1235926420}
+  - component: {fileID: 1235926421}
   m_Layer: 5
   m_Name: UserCard
   m_TagString: Untagged
@@ -827,6 +926,19 @@ MonoBehaviour:
   firstNameText: {fileID: 1365270325}
   balanceText: {fileID: 1873597562}
   currencyChar: $
+--- !u!114 &1235926421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235926418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b1192dad7a0e3a4a887d8fa3ae9ead7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataVisualization: {fileID: 1235926420}
 --- !u!1 &1251649674
 GameObject:
   m_ObjectHideFlags: 0
@@ -964,6 +1076,7 @@ GameObject:
   - component: {fileID: 1278290067}
   - component: {fileID: 1278290068}
   - component: {fileID: 1278290069}
+  - component: {fileID: 1278290070}
   m_Layer: 5
   m_Name: CardHandler
   m_TagString: Untagged
@@ -1029,6 +1142,21 @@ MonoBehaviour:
   plusLowBalanceColor: {r: 0.5664119, g: 0.6792453, b: 0.36845854, a: 1}
   plusMiddleBalanceColor: {r: 0.8509804, g: 0.8428856, b: 0.15686272, a: 1}
   plusHugeBalanceColor: {r: 1, g: 0.46523395, b: 0.19607842, a: 1}
+--- !u!114 &1278290070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278290066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40a118d4c158927488642eeb8da2eb5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardSwipeSound: {fileID: 8300000, guid: 880c2c750f1f9b3459b2dd428bfe352d, type: 3}
+  source: {fileID: 1227243704}
+  cardSwipeEventHandler: {fileID: 1873597564}
 --- !u!1 &1279228974
 GameObject:
   m_ObjectHideFlags: 0
@@ -1111,8 +1239,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1341691922}
   m_HandleRect: {fileID: 1341691921}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.78
+  m_Value: 0.00000032452675
+  m_Size: 0.74923426
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2269,7 +2397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsHandler: {fileID: 1278290068}
   minDoubleBalanceChance: 6548
-  currencyChar: $
+  currencySymbol: 
 --- !u!1 &1894761553
 GameObject:
   m_ObjectHideFlags: 0
@@ -2553,7 +2681,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 456045043460303372, guid: 3ae3a86a051fbea4287aeaf7b135835f, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 456045043460303372, guid: 3ae3a86a051fbea4287aeaf7b135835f, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2561,7 +2689,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 456045043460303372, guid: 3ae3a86a051fbea4287aeaf7b135835f, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 456045043460303372, guid: 3ae3a86a051fbea4287aeaf7b135835f, type: 3}
       propertyPath: m_AnchorMin.y
@@ -2569,7 +2697,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 456045043460303372, guid: 3ae3a86a051fbea4287aeaf7b135835f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1080
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 456045043460303372, guid: 3ae3a86a051fbea4287aeaf7b135835f, type: 3}
       propertyPath: m_SizeDelta.y

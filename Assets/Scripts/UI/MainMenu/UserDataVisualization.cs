@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class UserDataVisualization : MonoBehaviour
 {
-    [SerializeField] private User userData;
-
     [SerializeField] private TMP_Text nickNameText;
     [SerializeField] private TMP_Text firstNameText;
     [SerializeField] private TMP_Text balanceText;
@@ -12,16 +10,19 @@ public class UserDataVisualization : MonoBehaviour
     [Header("other")]
     [SerializeField] private string currencyChar;
 
-    private void Start()
+    public void VisualizeUserData(User data)
     {
-        UserDataWrapper.UserData.UserWallet.OnWalletMoneyChanged += (balance) =>
-        {
-            balanceText.text = UserDataWrapper.UserData.UserWallet.Balance.ToString() + currencyChar;
-        };
+        if (balanceText != null)
+        { 
+            data.UserWallet.OnWalletMoneyChanged += (balance) =>
+            {
+                balanceText.text = data.UserWallet.Balance.ToString() + currencyChar;
+            };
+        }
 
-        nickNameText.text = UserDataWrapper.UserData.NickName;
-        firstNameText.text = UserDataWrapper.UserData.FirstName;
+        if (nickNameText.text != null) nickNameText.text = data.NickName;
+        if (firstNameText.text != null) firstNameText.text = data.FirstName;
 
-        balanceText.text = UserDataWrapper.UserData.UserWallet.Balance.ToString() + currencyChar;
+        if (balanceText.text != null) balanceText.text = data.UserWallet.Balance.ToString() + currencyChar;
     }
 }

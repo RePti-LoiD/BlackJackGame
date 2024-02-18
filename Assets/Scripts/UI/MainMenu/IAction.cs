@@ -3,5 +3,5 @@ using UnityEngine;
 
 public class IAction : MonoBehaviour
 {
-    public Action<string> OnBalanceChangeAction;
+    public Action<int, int, string> OnBalanceChangeAction;
 }

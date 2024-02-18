@@ -15,7 +15,7 @@
 
     public bool TryGetMoney(long count)
     {
-        if (balance - count > 0) return false;
+        if (balance - count < 0) return false;
 
         balance -= count;
         

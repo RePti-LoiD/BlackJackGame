@@ -27,8 +27,12 @@ public class PreviewPage : MonoBehaviour
         isTouch = Input.anyKeyDown;
 #endif
 
-#if UNITY_ANDROID && !UNITY_EDITOR 
+#if UNITY_ANDROID && !UNITY_EDITOR
         isTouch = Input.GetTouch(0).phase == TouchPhase.Ended;
+#endif
+
+#if UNITY_STANDALONE
+        isTouch = Input.anyKey;
 #endif
 
         if (isTouch)
