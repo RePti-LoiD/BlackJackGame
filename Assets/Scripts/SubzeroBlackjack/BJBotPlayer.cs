@@ -2,13 +2,15 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class BotBJPlayer : BJPlayer
+public class BJBotPlayer : BJPlayer
 {
+    [SerializeField] private CardStackHandler cardStackHandler;
+
     public override void StartMove(BJGameManager manager)
     {
         StartCoroutine(
             DoAfterDelay(2, () => 
-                manager.PlayerStep(this, UnityEngine.Random.Range(0, 2) == 1 ? true : false)));
+                manager.PlayerStep(this, (BJStepState)UnityEngine.Random.Range(0, 2))));
     }
 
     private IEnumerator DoAfterDelay(int sec, Action action)

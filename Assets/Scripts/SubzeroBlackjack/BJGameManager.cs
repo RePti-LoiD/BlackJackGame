@@ -1,34 +1,22 @@
 using UnityEngine;
 
-public class BJGameManager : MonoBehaviour
+public abstract class BJGameManager : MonoBehaviour
 {
-    [SerializeField] private BJPlayer localPlayer;
-    [SerializeField] private BJPlayer enemyPlayer;
+    [Header("Player links")]
+    [SerializeField] protected BJPlayer localPlayer;
+    [SerializeField] protected BJPlayer enemyPlayer;
 
-    private BJPlayer currentPlayer;
-    private bool lastStepData;
+    [Header("Other links")]
+    [SerializeField] protected BJCardManager cardManager;
 
-    private void Start()
-    {
-        localPlayer.StartMove(this);
-    }
+    protected BJPlayer currentPlayer;
+    protected BJStepState lastStepData;
 
-    public void PlayerStep(BJPlayer sender, bool data)
-    {
-        if (sender == currentPlayer)
-        {
-            if (lastStepData == data)
-            {
-                print("Game end");
-                return;
-            }
+    public bool IsGameEnd { get; protected set; } = false;
 
-            lastStepData = data;
-            print($"{sender} -> {data}");
-        }
-        sender.EndMove();
+    public abstract void PlayerStep(BJPlayer sender, BJStepState stepState);
 
-        currentPlayer = localPlayer == currentPlayer ? enemyPlayer : localPlayer;
-        currentPlayer.StartMove(this);
-    }
+    public abstract void GameEnd();
+    public abstract void SetCardToHandler(BJPlayer player);
+    protected abstract void SetCardToHandler(BJPlayer player, BlackjackCard card);
 }

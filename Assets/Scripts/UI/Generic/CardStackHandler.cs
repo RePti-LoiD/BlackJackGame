@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CardStackHandler : MonoBehaviour
 {
@@ -11,13 +12,11 @@ public class CardStackHandler : MonoBehaviour
     [SerializeField] private float transitionSpeed = 5;
     [SerializeField] private bool backNumeration = false;
 
-    private int cardCount = 0;
-
     public bool TryGetCard(out BlackjackCard blackjackCard, int index)
     {
         if (index >= 0 && index < cards.Count)
         {
-            blackjackCard = cards[index];
+            blackjackCard = cards.ToList()[index];
         } 
         else
         {
@@ -28,32 +27,41 @@ public class CardStackHandler : MonoBehaviour
         return true;
     }
 
-    public BlackjackCard GetCard(int index)
+    public BlackjackCard PeekCard(int index)
     {
-        return cards[index];
+        return cards.ToList()[index];
     }
 
     public void SetCard(BlackjackCard blackjackCard)
     {
-        cardCount += 1;
+        blackjackCard.transform.parent = transform;
+        if (cards.Count > 0) 
+            blackjackCard.ShowCard();
         cards.Add(blackjackCard);
+    }
+
+    public int GetTotalCardWeight()
+    {
+        return cards.Sum((x) => x.CardData.CardWeight);
     }
 
     private void Update()
     {
-        for (int i = 0; i < cards.Count; i++)
+        int i = 0;
+        foreach (BlackjackCard card in cards)
         {
             Vector2 newPosition = new Vector2(
                 stackAxis == CardStackAxis.Horizontal ? i * cardsOffset : 0, 
                 stackAxis == CardStackAxis.Vertical ? i * cardsOffset : 0 
             );
 
-            cards[i].transform.localPosition = Vector2.Lerp(
-                cards[i].transform.localPosition, 
+            card.transform.localPosition = Vector2.Lerp(
+                card.transform.localPosition, 
                 newPosition, 
                 Time.deltaTime * transitionSpeed);
 
-            cards[i].SetRenderIndex(i * (backNumeration ? -1 : 1));
+            card.SetRenderIndex(i * (backNumeration ? -1 : 1));
+            i++;
         }
     }
 }

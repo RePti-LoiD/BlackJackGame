@@ -52,7 +52,7 @@ public class BlackjackPlayer : MonoBehaviour, IOnTurn, IOnTurnEnd
 
         cardStackHandler.SetCard(card);
 
-        cards.Add(card.cardData);
+        cards.Add(card.CardData);
 
         ShowScore(CalculateScore());
     }

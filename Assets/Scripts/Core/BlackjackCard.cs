@@ -5,13 +5,13 @@ public class BlackjackCard : MonoBehaviour
     [SerializeField] private SpriteRenderer cardImage;
     [SerializeField] private Sprite hiddenCard;
 
-    [HideInInspector] public Card cardData;
+    [HideInInspector] public Card CardData;
 
     private bool isShown = false;
 
     public void SetCardStruct(Card cardData, int renderIndex = 0, bool isShown = false)
     {
-        this.cardData = cardData;
+        this.CardData = cardData;
         cardImage.sprite = cardData.CardSprite;
         cardImage.sortingOrder = renderIndex;
 
@@ -25,7 +25,7 @@ public class BlackjackCard : MonoBehaviour
     {
         isShown = true;
 
-        cardImage.sprite = cardData.CardSprite;
+        cardImage.sprite = CardData.CardSprite;
     }
 
     public void HideCard()
