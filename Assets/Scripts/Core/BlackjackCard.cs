@@ -13,13 +13,13 @@ public class BlackjackCard : MonoBehaviour
     {
         this.CardData = cardData;
         cardImage.sprite = cardData.CardSprite;
-        cardImage.sortingOrder = renderIndex;
+        cardImage.sortingOrder = renderIndex - 100;
 
         if (isShown) ShowCard();
         else HideCard();
     }
 
-    public void SetRenderIndex(int renderIndex) => cardImage.sortingOrder = renderIndex;
+    public void SetRenderIndex(int renderIndex) => cardImage.sortingOrder = renderIndex - 100;
 
     public void ShowCard()
     {

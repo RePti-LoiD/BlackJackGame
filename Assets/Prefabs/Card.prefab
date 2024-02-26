@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardImage: {fileID: -6288510396778941536}
   hiddenCard: {fileID: -1368394087, guid: 2da71e03588a3744dacae7f2b022fc89, type: 3}
-  cardData: {fileID: 0}
+  CardData: {fileID: 0}
 --- !u!212 &-6288510396778941536
 SpriteRenderer:
   m_ObjectHideFlags: 0

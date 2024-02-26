@@ -29,7 +29,6 @@ public class UserDataWrapper
     private static void LoadData()
     {
         data = JsonConvert.DeserializeObject<User>(File.ReadAllText(GamePrefs.SavePath));
-        Debug.Log(File.ReadAllText(GamePrefs.SavePath));
 
         data.UserWallet.OnWalletMoneyChanged += (balance) => SaveData();
     }

@@ -11,6 +11,7 @@ public class CardStackHandler : MonoBehaviour
     [SerializeField] private int cardsOffset;
     [SerializeField] private float transitionSpeed = 5;
     [SerializeField] private bool backNumeration = false;
+    [SerializeField] private bool enableNumeration = false;
 
     public bool TryGetCard(out BlackjackCard blackjackCard, int index)
     {
@@ -59,8 +60,10 @@ public class CardStackHandler : MonoBehaviour
                 card.transform.localPosition, 
                 newPosition, 
                 Time.deltaTime * transitionSpeed);
+            
+            if (enableNumeration)
+                card.SetRenderIndex(i * (backNumeration ? -1 : 1));
 
-            card.SetRenderIndex(i * (backNumeration ? -1 : 1));
             i++;
         }
     }

@@ -50,28 +50,28 @@ public class BJServerGameManager : BJNetworkGameManager, IDisposable
     {
         while (true)
         {
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[128];
             await dataStream.ReadAsync(buffer);
 
-            HandleNetworkMessage(Encoding.UTF8.GetString(buffer));
+            HandleNetworkMessage(buffer);
         }
     }
 
-    protected override void HandleNetworkMessage(string message)
+    protected override void HandleNetworkMessage(byte[] message)
     {
-        JProperty messageObject = JObject.Parse(message).Properties().ToList()[0];
+        string mes = Encoding.UTF8.GetString(message);
+        print(mes);
+        var dataProperty = JObject.Parse(mes).Properties().ToArray()[0];
+        string[] responce = dataProperty.Value.ToString().Split("/");
 
-        switch (messageObject.Name)
+        switch (responce[0])
         {
             case "StepState":
-                string[] value = messageObject.Value<string>().Split("/");
-                Guid id = Guid.Parse(value[0]);
-                BJStepState state = (BJStepState) Enum.Parse(typeof(BJStepState), value[1]);
+                print("StepState");
                 
-                if (localPlayer.UserData.Id == id)
-                    PlayerStep(localPlayer, state);
-                else
-                    PlayerStep(enemyPlayer, state);
+                PlayerStep(GetPlayerByGuid(Guid.Parse(responce[1])), (BJStepState)Enum.Parse(typeof(BJStepState), responce[2]));
+                
+                print("StepState post");
 
                 break;
 
@@ -83,7 +83,6 @@ public class BJServerGameManager : BJNetworkGameManager, IDisposable
     public override void GameEnd()
     {
         IsGameEnd = true;
-        BJPlayer winner;
         int localPlayerWeight = localPlayer.CardHandler.GetTotalCardWeight(), enemyPlayerWeight = enemyPlayer.CardHandler.GetTotalCardWeight();
 
         if (localPlayerWeight == enemyPlayerWeight)
@@ -124,7 +123,6 @@ public class BJServerGameManager : BJNetworkGameManager, IDisposable
         }
 
         lastStepData = stepState;
-        print($"{sender} -> {stepState}");
 
         sender.EndMove();
 
@@ -146,10 +144,19 @@ public class BJServerGameManager : BJNetworkGameManager, IDisposable
 
     protected override void SetCardToHandler(BJPlayer player, BlackjackCard card)
     {
-        print(player);
         BlackjackCard blackjackCard = card;
         player.CardHandler.SetCard(blackjackCard);
 
         dataStream.WriteAsync(FromObjectToByteArray(new {SetCard = $"SetCard/{player.UserData.Id}/{blackjackCard.CardData.CardWeight}" }));
+    }
+
+    protected BJPlayer GetPlayerByGuid(Guid guid)
+    {
+        if (localPlayer.UserData.Id == guid)
+            return localPlayer;
+        else if (enemyPlayer.UserData.Id == guid) 
+            return enemyPlayer;
+        
+        return null;
     }
 }

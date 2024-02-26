@@ -5,9 +5,11 @@ public class BJCardManager : MonoBehaviour
 {
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private List<Card> cards = new List<Card>();
+    [SerializeField] private bool cardsLayering = true;
 
     [SerializeField] private List<BlackjackCard> spawnedCards = new List<BlackjackCard>();
     public bool IsStackEmpty => spawnedCards.Count == 0;
+
 
     private void Awake()
     {
@@ -19,7 +21,7 @@ public class BJCardManager : MonoBehaviour
         {
             renderIndex++;
             GameObject spawnedCard = Instantiate(cardPrefab, transform);
-            spawnedCard.GetComponent<BlackjackCard>().SetCardStruct(card, renderIndex);
+            spawnedCard.GetComponent<BlackjackCard>().SetCardStruct(card, cardsLayering ? renderIndex : -renderIndex);
 
             spawnedCards.Add(spawnedCard.GetComponent<BlackjackCard>());
         }

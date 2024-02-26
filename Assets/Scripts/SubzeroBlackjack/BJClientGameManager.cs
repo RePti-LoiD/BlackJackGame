@@ -14,8 +14,10 @@ public class BJClientGameManager : BJNetworkGameManager
 
         await tcpClient.ConnectAsync(IPAddress.Loopback, 8888);
         print($"Connected to: {tcpClient.Client.RemoteEndPoint}");
-        //dataStream = ;
-        _ = ListenServer(tcpClient.GetStream());
+
+        dataStream = tcpClient.GetStream();
+
+        _ = ListenServer(dataStream);
     }
 
     private async Task ListenServer(NetworkStream stream)
@@ -36,24 +38,28 @@ public class BJClientGameManager : BJNetworkGameManager
 
     public override async void PlayerStep(BJPlayer sender, BJStepState stepState)
     {
-        if (sender != currentPlayer) 
+        if (currentPlayer != null && sender != currentPlayer) 
             return;
 
+        //“”“ Õ¿ƒŒ ¡”ƒ≈“ »Õ¬≈–“»–Œ¬¿“‹ Õ¿ localPlayer
         if (sender == localPlayer)
-            await dataStream.WriteAsync(FromObjectToByteArray(new { StepState = $"{localPlayer.UserData.Id}/{stepState}" }));
+        {
+            print("local player");
+        }
+        await dataStream.WriteAsync(FromObjectToByteArray(new { StepState = $"{localPlayer.UserData.Id}/{stepState}" }));
 
         currentPlayer = localPlayer == currentPlayer ? enemyPlayer : localPlayer;
+        print(currentPlayer);
     }
 
-    public void HandleNetworkMessage(byte[] message)
+    protected override void HandleNetworkMessage(byte[] message)
     {
         string mes = Encoding.UTF8.GetString(message);
-        print(mes);
+        //print(mes);
         var dataProperty = JObject.Parse(mes).Properties().ToArray()[0];
         string[] responce = dataProperty.Value.ToString().Split("/");
 
-        Guid guid = Guid.Parse(responce[1]);        
-        print("post");
+        Guid guid = Guid.Parse(responce[1]);
 
         switch (responce[0])
         {
@@ -62,26 +68,21 @@ public class BJClientGameManager : BJNetworkGameManager
                 break;
 
             case "StepState":
-                PlayerStep(GetPlayerByGuid(guid), (BJStepState)0);
-                print($"{responce[0]}/{responce[1]}");
+                PlayerStep(GetPlayerByGuid(guid), (BJStepState) 0);
                 break;
 
             case "SetCard":
-                print($"enemy {enemyPlayer.UserData.Id}, local {localPlayer.UserData.FirstName}");
-
+                print(mes);
                 SetCardToHandler(GetPlayerByGuid(guid), cardManager.GetCard(int.Parse(responce[2])));
-                print($"{responce[0]}/{responce[1]}");
                 break;
 
             case "StartStep":
                 GetPlayerByGuid(Guid.Parse(responce[1])).StartMove(this);
-                print($"{responce[0]}/{responce[1]}");
 
                 break;
 
             case "EndStep":
                 GetPlayerByGuid(Guid.Parse(responce[1])).EndMove();
-                print($"{responce[0]}/{responce[1]}");
 
                 break;
 
@@ -104,10 +105,16 @@ public class BJClientGameManager : BJNetworkGameManager
     private BJPlayer GetPlayerByGuid(Guid id)
     {
         if (localPlayer.UserData.Id == id)
+        {
+            print(localPlayer);
             return localPlayer;
+        }
 
         else if (enemyPlayer.UserData.Id == id)
+        {
+            print(enemyPlayer);
             return enemyPlayer;
+        }
 
         return null;
     }

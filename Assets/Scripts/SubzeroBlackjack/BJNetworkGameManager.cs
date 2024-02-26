@@ -10,7 +10,7 @@ public abstract class BJNetworkGameManager : BJGameManager, IDisposable
     protected TcpClient tcpClient;
     protected NetworkStream dataStream;
 
-    protected virtual void HandleNetworkMessage(string message) { }
+    protected virtual void HandleNetworkMessage(byte[] message) { }
 
     public virtual void Dispose()
     {
