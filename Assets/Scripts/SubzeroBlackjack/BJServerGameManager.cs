@@ -1,7 +1,5 @@
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -11,16 +9,10 @@ public class BJServerGameManager : BJNetworkGameManager, IDisposable
 {
     private TcpListener tcpListener;
 
-    private async void Start()
+    protected override async void Start()
     {
-        tcpListener = new TcpListener(IPAddress.Loopback, 8888);
-        tcpListener.Start();
+        base.Start();
 
-        tcpClient = await tcpListener.AcceptTcpClientAsync();
-        print($"Connected : {tcpClient.Client.RemoteEndPoint}");
-
-        dataStream = tcpClient.GetStream();
-        _ = ListenClient();
         await dataStream.WriteAsync(FromObjectToByteArray(new { SetUp = $"PlayerID/{enemyPlayer.UserData.Id}" }));
 
         SetCardToHandler(localPlayer);
@@ -40,39 +32,31 @@ public class BJServerGameManager : BJNetworkGameManager, IDisposable
         currentPlayer = localPlayer;
     }
 
+    protected async override Task NetworkInitialization()
+    {
+        tcpListener = new TcpListener(IPAddress.Loopback, 8888);
+        tcpListener.Start();
+
+        tcpClient = await tcpListener.AcceptTcpClientAsync();
+        print($"Connected : {tcpClient.Client.RemoteEndPoint}");
+    }
+
     protected async Task SendStartStep(BJPlayer player) => 
         await dataStream.WriteAsync(FromObjectToByteArray(new { StartStep = $"StartStep/{player.UserData.Id}" }));
 
     protected async Task SendEndStep(BJPlayer player) => 
         await dataStream.WriteAsync(FromObjectToByteArray(new { EndStep = $"EndStep/{player.UserData.Id}" }));
 
-    protected async Task ListenClient()
+    protected override void HandleNetworkMessage(BJRequestData data)
     {
-        while (true)
-        {
-            byte[] buffer = new byte[128];
-            await dataStream.ReadAsync(buffer);
-
-            HandleNetworkMessage(buffer);
-        }
-    }
-
-    protected override void HandleNetworkMessage(byte[] message)
-    {
-        string mes = Encoding.UTF8.GetString(message);
-        print(mes);
-        var dataProperty = JObject.Parse(mes).Properties().ToArray()[0];
-        string[] responce = dataProperty.Value.ToString().Split("/");
-
-        switch (responce[0])
+        switch (data.Header)
         {
             case "StepState":
                 print("StepState");
                 
-                PlayerStep(GetPlayerByGuid(Guid.Parse(responce[1])), (BJStepState)Enum.Parse(typeof(BJStepState), responce[2]));
+                PlayerStep(GetPlayerByGuid(Guid.Parse(data.UserSenderId)), (BJStepState)Enum.Parse(typeof(BJStepState), data.Args[0]));
                 
                 print("StepState post");
-
                 break;
 
             default:

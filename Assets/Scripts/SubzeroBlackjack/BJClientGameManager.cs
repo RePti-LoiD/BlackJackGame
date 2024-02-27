@@ -1,39 +1,17 @@
-using Newtonsoft.Json.Linq;
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using BJTcpRequestProtocol;
-using System.Collections.Generic;
 
 public class BJClientGameManager : BJNetworkGameManager
 {
-    private async void Start()
+    protected override async void Start()
     {
         tcpClient = new TcpClient();
-        
-        BJRequestData data = new BJRequestData("Header", "123", "State", new List<string>());
-        print(BJRequestStringDataBuilder.BuildJsonRequestString(data));
 
         await tcpClient.ConnectAsync(IPAddress.Loopback, 8888);
         print($"Connected to: {tcpClient.Client.RemoteEndPoint}");
 
-        dataStream = tcpClient.GetStream();
-
-        _ = ListenServer(dataStream);
-    }
-
-    private async Task ListenServer(NetworkStream stream)
-    {
-        while (true)
-        {
-            byte[] message = new byte[128];
-            await stream.ReadAsync(message, 0, 128);
-
-            HandleNetworkMessage(message);
-        }
+        base.Start();
     }
 
     public override void GameEnd()
@@ -57,43 +35,34 @@ public class BJClientGameManager : BJNetworkGameManager
         print(currentPlayer);
     }
 
-    protected override void HandleNetworkMessage(byte[] message)
+    protected override void HandleNetworkMessage(BJRequestData data)
     {
-        string mes = Encoding.UTF8.GetString(message);
-        //print(mes);
-        var dataProperty = JObject.Parse(mes).Properties().ToArray()[0];
-        string[] responce = dataProperty.Value.ToString().Split("/");
-
-        Guid guid = Guid.Parse(responce[1]);
-
-        switch (responce[0])
+        switch (data.Header)
         {
             case "PlayerID":
-                enemyPlayer.UserData.Id = Guid.Parse(responce[1]);
+                enemyPlayer.UserData.Id = Guid.Parse(data.UserSenderId);
                 break;
 
             case "StepState":
-                PlayerStep(GetPlayerByGuid(guid), (BJStepState) 0);
+                PlayerStep(GetPlayerByGuid(Guid.Parse(data.UserSenderId)), (BJStepState) 0);
                 break;
 
             case "SetCard":
-                print(mes);
-                SetCardToHandler(GetPlayerByGuid(guid), cardManager.GetCard(int.Parse(responce[2])));
+                SetCardToHandler(GetPlayerByGuid(Guid.Parse(data.UserSenderId)), cardManager.GetCard(int.Parse(data.Args[0])));
                 break;
 
             case "StartStep":
-                GetPlayerByGuid(Guid.Parse(responce[1])).StartMove(this);
+                GetPlayerByGuid(Guid.Parse(data.UserSenderId)).StartMove(this);
 
                 break;
 
             case "EndStep":
-                GetPlayerByGuid(Guid.Parse(responce[1])).EndMove();
-
+                GetPlayerByGuid(Guid.Parse(data.UserSenderId)).EndMove();
                 break;
 
             case "GameEnd":
-                print($"Winner: {responce[1]}");
-                print($"{responce[0]}/{responce[1]}");
+                print($"Winner: {data.UserSenderId}");
+                //print($"{responce[0]}/{responce[1]}");
 
                 break;
 
