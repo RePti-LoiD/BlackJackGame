@@ -5,12 +5,17 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using BJTcpRequestProtocol;
+using System.Collections.Generic;
 
 public class BJClientGameManager : BJNetworkGameManager
 {
     private async void Start()
     {
         tcpClient = new TcpClient();
+        
+        BJRequestData data = new BJRequestData("Header", "123", "State", new List<string>());
+        print(BJRequestStringDataBuilder.BuildJsonRequestString(data));
 
         await tcpClient.ConnectAsync(IPAddress.Loopback, 8888);
         print($"Connected to: {tcpClient.Client.RemoteEndPoint}");
