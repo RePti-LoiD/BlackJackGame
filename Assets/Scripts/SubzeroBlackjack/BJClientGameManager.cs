@@ -1,38 +1,16 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 public class BJClientGameManager : BJNetworkGameManager
 {
-    protected override async void Start()
+    protected async override Task NetworkInitialization()
     {
         tcpClient = new TcpClient();
 
         await tcpClient.ConnectAsync(IPAddress.Loopback, 8888);
         print($"Connected to: {tcpClient.Client.RemoteEndPoint}");
-
-        base.Start();
-    }
-
-    public override void GameEnd()
-    {
-
-    }
-
-    public override async void PlayerStep(BJPlayer sender, BJStepState stepState)
-    {
-        if (currentPlayer != null && sender != currentPlayer) 
-            return;
-
-        //рср мюдн асдер хмбепрхпнбюрэ мю localPlayer
-        if (sender == localPlayer)
-        {
-            print("local player");
-        }
-        await dataStream.WriteAsync(FromObjectToByteArray(new { StepState = $"{localPlayer.UserData.Id}/{stepState}" }));
-
-        currentPlayer = localPlayer == currentPlayer ? enemyPlayer : localPlayer;
-        print(currentPlayer);
     }
 
     protected override void HandleNetworkMessage(BJRequestData data)
@@ -44,7 +22,7 @@ public class BJClientGameManager : BJNetworkGameManager
                 break;
 
             case "StepState":
-                PlayerStep(GetPlayerByGuid(Guid.Parse(data.UserSenderId)), (BJStepState) 0);
+                PlayerStep(GetPlayerByGuid(Guid.Parse(data.UserSenderId)), (BJStepState)0);
                 break;
 
             case "SetCard":
@@ -74,6 +52,27 @@ public class BJClientGameManager : BJNetworkGameManager
                 print("Sent unsupported instruction");
                 break;
         }
+    }
+
+    public override async void PlayerStep(BJPlayer sender, BJStepState stepState)
+    {
+        if (currentPlayer != null && sender != currentPlayer) 
+            return;
+
+        //рср мюдн асдер хмбепрхпнбюрэ мю localPlayer
+        if (sender == localPlayer)
+        {
+            print("local player");
+        }
+        await dataStream.WriteAsync(FromObjectToByteArray(new { StepState = $"{localPlayer.UserData.Id}/{stepState}" }));
+
+        currentPlayer = localPlayer == currentPlayer ? enemyPlayer : localPlayer;
+        print(currentPlayer);
+    }
+
+    public override void GameEnd()
+    {
+
     }
 
     private BJPlayer GetPlayerByGuid(Guid id)

@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
+//TODO: Добавить триггеры на вызов соответсвующих хедерам делегатов при получении пакета, чтобы не городить switch в наследниках
 public abstract class BJNetworkGameManager : BJGameManager, IDisposable
 {
     protected TcpClient tcpClient;
@@ -15,12 +16,14 @@ public abstract class BJNetworkGameManager : BJGameManager, IDisposable
     protected async virtual void Start()
     {
         await NetworkInitialization();
-
         dataStream = tcpClient.GetStream();
         ListenNetworkStream();
+
+        PostNetworkInitialization();
     }
 
     protected abstract Task NetworkInitialization();
+    protected virtual void PostNetworkInitialization() { }
 
     protected async void ListenNetworkStream()
     {
@@ -48,8 +51,13 @@ public abstract class BJNetworkGameManager : BJGameManager, IDisposable
     protected JProperty FromByteArrayToJProperty(byte[] data) => 
         JObject.Parse(Encoding.UTF8.GetString(data)).Properties().ToList()[0];
 
-    protected async void SendNetworkMessage(BJRequestData data) =>
-        await dataStream.WriteAsync(Encoding.UTF8.GetBytes(BJRequestStringDataBuilder.BuildJsonRequestString(data)));
+    protected async void SendNetworkMessage(BJRequestData data)
+    {
+        byte[] networkMessage = Encoding.UTF8.GetBytes(BJRequestStringDataBuilder.BuildJsonRequestString(data));
+        Array.Resize(ref networkMessage, 128);
+
+        await dataStream.WriteAsync(networkMessage);
+    }
 
     protected async Task<BJRequestData> ReceiveNetworkMessage()
     {
