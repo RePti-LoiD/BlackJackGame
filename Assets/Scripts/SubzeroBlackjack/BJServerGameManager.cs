@@ -2,9 +2,12 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using UnityEngine;
 
-public class BJServerGameManager : BJNetworkGameManager, IDisposable
+public class BJServerGameManager : BJGameManager, IDisposable
 {
+    [SerializeField] private TestServerInvoker invoker;
+ 
     private TcpListener tcpListener;
 
     protected async override Task NetworkInitialization()
@@ -23,7 +26,7 @@ public class BJServerGameManager : BJNetworkGameManager, IDisposable
             Header = "SetUp",
             State = "PlayerID",
             UserSenderId = localPlayer.UserData.Id.ToString(),
-            Args = new() { enemyPlayer.UserData.Id.ToString() }
+            Args = new() { localPlayer.UserData.Id.ToString() }
         });
 
         SetCardToHandler(localPlayer);
@@ -53,6 +56,11 @@ public class BJServerGameManager : BJNetworkGameManager, IDisposable
     {
         switch (data.Header)
         {
+            case "SetUp":
+                enemyPlayer.UserData.Id = Guid.Parse(data.Args[0]);
+                invoker.ShowGuid();
+                break;
+
             case "StepState":
                 PlayerStep(GetPlayerByGuid(Guid.Parse(data.UserSenderId)), (BJStepState)Enum.Parse(typeof(BJStepState), data.Args[0]));
                 break;

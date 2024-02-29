@@ -1,17 +1,27 @@
-using BJTcpRequestProtocol;
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using UnityEngine;
 
-public class BJClientGameManager : BJNetworkGameManager
+public class BJClientGameManager : BJGameManager
 {
+    [SerializeField] private TestServerInvoker invoker;
+
     protected async override Task NetworkInitialization()
     {
         tcpClient = new TcpClient();
 
         await tcpClient.ConnectAsync(IPAddress.Loopback, 8888);
         print($"Connected to: {tcpClient.Client.RemoteEndPoint}");
+
+        SendNetworkMessage(new BJRequestData()
+        {
+            Header = "SetUp",
+            State = "PlayerID",
+            UserSenderId = localPlayer.UserData.Id.ToString(),
+            Args = new() { localPlayer.UserData.Id.ToString() }
+        });
     }
 
     protected override void HandleNetworkMessage(BJRequestData data)
@@ -20,6 +30,7 @@ public class BJClientGameManager : BJNetworkGameManager
         {
             case "SetUp":
                 enemyPlayer.UserData.Id = Guid.Parse(data.Args[0]);
+                invoker.ShowGuid();
                 break;
 
             case "StepState":

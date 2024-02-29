@@ -1,5 +1,7 @@
 using Newtonsoft.Json;
 using System.IO;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class UserDataWrapper
@@ -11,7 +13,7 @@ public class UserDataWrapper
     {
         get
         {
-            if (!File.Exists(GamePrefs.SavePath)) return null;
+            if (!File.Exists(GamePrefs.GetSavePath())) return null;
 
             if (data == null || isChanged)
                 LoadData();
@@ -28,11 +30,13 @@ public class UserDataWrapper
 
     private static void LoadData()
     {
-        data = JsonConvert.DeserializeObject<User>(File.ReadAllText(GamePrefs.SavePath));
+        data = JsonConvert.DeserializeObject<User>(File.ReadAllText(GamePrefs.GetSavePath()));
+       
+        GUIUtility.systemCopyBuffer = GamePrefs.GetSavePath();
 
         data.UserWallet.OnWalletMoneyChanged += (balance) => SaveData();
     }
 
     private static void SaveData() =>
-        File.WriteAllText(GamePrefs.SavePath, JsonConvert.SerializeObject(data));
+        File.WriteAllText(GamePrefs.GetSavePath(), JsonConvert.SerializeObject(data));
 }

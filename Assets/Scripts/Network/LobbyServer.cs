@@ -1,13 +1,10 @@
 using System.Net.Sockets;
 using System.Net;
 using UnityEngine;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using Newtonsoft.Json;
-using System;
 
-public class LobbyServer : MonoBehaviour
+public class LobbyServer : NetworkManager
 {
     [SerializeField] private GameObject modalFrame;
     [SerializeField] private TMP_Text serverLocation;
@@ -17,12 +14,14 @@ public class LobbyServer : MonoBehaviour
     private IPEndPoint serverEndpoint;
     private TcpListener tcpListener;
 
+    protected override void Start() { }
+
     public IPEndPoint GetLocalEndpoint()
     {
         foreach (IPAddress ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
             if (ip.AddressFamily == AddressFamily.InterNetwork)
                 return new IPEndPoint(ip, serverPort);
-        
+
         return new IPEndPoint(IPAddress.Any, serverPort);
     }
 
@@ -38,46 +37,26 @@ public class LobbyServer : MonoBehaviour
         StartServer(tcpListener);
     }
 
+    protected override void HandleNetworkMessage(BJRequestData data)
+    {
+        switch (data.Header)
+        {
+            case "UserData":
+                visualization.VisualizeUserData(JsonConvert.DeserializeObject<User>(data.Args[0]));
+                break;
+        }
+    }
+
     private async void StartServer(TcpListener listener)
     {
         serverLocation.text = $"server started at: {listener.Server.LocalEndPoint}";
 
-        TcpClient tcpClient = await listener?.AcceptTcpClientAsync();
+        tcpClient = await listener.AcceptTcpClientAsync();
         print($"Client connected: {tcpClient.Client.LocalEndPoint}");
 
-        await ListenClient(tcpClient);
-    }
+        dataStream = tcpClient.GetStream();
 
-    private async Task ListenClient(TcpClient client)
-    {
-        using (var stream = client.GetStream())
-        {
-            modalFrame.SetActive(true);
-
-            while (true)
-            {
-                byte[] buffer = new byte[256];
-                int byteCount = await stream.ReadAsync(buffer);
-
-                string message = Encoding.UTF8.GetString(buffer);
-                HandleClientMessage(message);
-
-                if (byteCount == 0)
-                {
-                    modalFrame.SetActive(false);
-                    break;
-                }
-            }
-        }
-    }
-
-    private void HandleClientMessage(string message)
-    {
-        print(Enum.GetName(typeof(TCPDataMarkers), message.Split("\n")[0]));
-
-        if ((TCPDataMarkers)Enum.Parse(typeof(TCPDataMarkers), message.Split("\n")[0]) == TCPDataMarkers.UserDataMarker)
-            visualization.VisualizeUserData(JsonConvert.DeserializeObject<User>(message));
-
+        ListenNetworkStream();
     }
 
     public void OnDestroy()

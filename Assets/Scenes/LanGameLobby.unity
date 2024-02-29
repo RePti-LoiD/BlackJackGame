@@ -1134,6 +1134,7 @@ RectTransform:
   - {fileID: 514587384}
   - {fileID: 680579313}
   - {fileID: 769592461}
+  - {fileID: 263803973}
   - {fileID: 622511457}
   - {fileID: 1908322580}
   - {fileID: 1245365706}
@@ -1353,12 +1354,12 @@ GameObject:
   - component: {fileID: 263803975}
   - component: {fileID: 263803974}
   m_Layer: 5
-  m_Name: ServerModalFrame
+  m_Name: ModalFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &263803973
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1376,11 +1377,11 @@ RectTransform:
   - {fileID: 861774685}
   - {fileID: 562640538}
   - {fileID: 1049345610}
-  m_Father: {fileID: 622511457}
+  m_Father: {fileID: 228659627}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 440}
+  m_AnchoredPosition: {x: 0, y: -1965}
   m_SizeDelta: {x: 1000, y: 750}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &263803974
@@ -3904,7 +3905,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2402574997366290193, guid: 3ae3a86a051fbea4287aeaf7b135835f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4313287900959259114, guid: 3ae3a86a051fbea4287aeaf7b135835f, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.size
@@ -3950,9 +3951,6 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 3244497229550878607, guid: 3ae3a86a051fbea4287aeaf7b135835f, type: 3}
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 456045043460303372, guid: 3ae3a86a051fbea4287aeaf7b135835f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 263803973}
     - targetCorrespondingSourceObject: {fileID: 825828237557536988, guid: 3ae3a86a051fbea4287aeaf7b135835f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 413058166}
@@ -5518,7 +5516,7 @@ MonoBehaviour:
   modalFrame: {fileID: 1234768384}
   serverLocation: {fileID: 209816304}
   serverPort: 8888
-  visualization: {fileID: 1234768388}
+  visualization: {fileID: 263803974}
 --- !u!1 &1280400692
 GameObject:
   m_ObjectHideFlags: 0
@@ -7847,7 +7845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 1038956039}
-  modalFrame: {fileID: 1234768388}
+  visualization: {fileID: 0}
 --- !u!1 &2089629804
 GameObject:
   m_ObjectHideFlags: 0

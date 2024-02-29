@@ -1,6 +1,6 @@
 public class BJLocalGameManager : BJGameManager
 {
-    private void Start()
+    protected override void Start()
     {
         currentPlayer = localPlayer;
 

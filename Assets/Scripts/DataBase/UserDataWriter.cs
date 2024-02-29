@@ -8,9 +8,9 @@ public class UserDataWriter : MonoBehaviour
 
     public static void UpdateUserData(User user)
     {
-        if (!File.Exists(GamePrefs.SavePath))
-            File.CreateText(GamePrefs.SavePath);
+        if (!File.Exists(GamePrefs.GetSavePath()))
+            File.CreateText(GamePrefs.GetSavePath());
 
-        File.WriteAllText(GamePrefs.SavePath, JsonConvert.SerializeObject(user));
+        File.WriteAllText(GamePrefs.GetSavePath(), JsonConvert.SerializeObject(user));
     }
 }

@@ -1,87 +1,39 @@
 using System.Net.Sockets;
 using System.Net;
 using UnityEngine;
-using System.Text;
 using TMPro;
 using Newtonsoft.Json;
-using System;
-using System.Threading.Tasks;
 
-public class LobbyClient : MonoBehaviour
+public class LobbyClient : NetworkManager
 {
     [SerializeField] private TMP_Text text;
-    [SerializeField] private UserDataVisualization modalFrame;
+    [SerializeField] private UserDataVisualization visualization;
 
-    private TcpClient tcpClient;
-    private NetworkStream networkStream;
-
-    public async void StartClient(IPEndPoint endpoint)
+    public void StartClient(IPEndPoint endpoint)
     {
-        tcpClient = new TcpClient()
-        {
-            ReceiveTimeout = 1000,
-            SendTimeout = 1000
-        };
-
+        tcpClient = new TcpClient();
         tcpClient.Connect(endpoint);
-
         text.text += "client connected";
+        dataStream = tcpClient.GetStream();
 
-        networkStream = tcpClient.GetStream();
+        ListenNetworkStream();
 
-        if (networkStream.CanWrite)
-            await networkStream.WriteAsync(
-                Encoding.UTF8.GetBytes(
-                    JsonConvert.SerializeObject(
-                        $"{(byte)TCPDataMarkers.UserDataMarker}\n" + UserDataWrapper.UserData, Formatting.None)));
-
-        await ListenServer(tcpClient.GetStream());
+        SendNetworkMessage(new("UserData", UserDataWrapper.UserData.Id.ToString(), "UserData", new() { JsonConvert.SerializeObject(UserDataWrapper.UserData) }));
     }
 
-    private async Task ListenServer(NetworkStream stream)
+    protected override void HandleNetworkMessage(BJRequestData data)
     {
-        modalFrame.gameObject.SetActive(true);
-
-        while (true)
+        switch (data.Header)
         {
-            byte[] buffer = new byte[256];
-            int byteCount = await stream.ReadAsync(buffer);
-
-            string message = Encoding.UTF8.GetString(buffer);
-            HandleClientMessage(message);
-
-            if (byteCount == 0)
-            {
-                modalFrame.gameObject.SetActive(false);
+            case "UserData":
+                visualization.VisualizeUserData(JsonConvert.DeserializeObject<User>(data.Args[0]));
                 break;
-            }
         }
-    }
-
-    private void HandleClientMessage(string message)
-    {
-        print(Enum.GetName(typeof(TCPDataMarkers), message.Split("\n")[0]));
-
-        if ((TCPDataMarkers)Enum.Parse(typeof(TCPDataMarkers), message.Split("\n")[0]) == TCPDataMarkers.UserDataMarker)
-            modalFrame.VisualizeUserData(JsonConvert.DeserializeObject<User>(message));
-
-    }
-
-    public async void AcceptHandshakeWithServer()
-    {
-        if (tcpClient.Connected) 
-            await networkStream.WriteAsync(Encoding.UTF8.GetBytes("1"));
-    }
-    
-    public async void RejectHandshakeWithServer()
-    {
-        if (tcpClient.Connected) 
-            await networkStream.WriteAsync(Encoding.UTF8.GetBytes("0"));
     }
 
     public void CloseClient()
     {
+        dataStream?.Dispose();
         tcpClient?.Dispose();
-        networkStream?.Dispose();
     }
 }

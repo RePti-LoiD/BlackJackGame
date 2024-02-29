@@ -245,6 +245,7 @@ MonoBehaviour:
   localPlayer: {fileID: 987996545}
   enemyPlayer: {fileID: 389980208}
   cardManager: {fileID: 1042875750}
+  invoker: {fileID: 85724236}
 --- !u!114 &85724236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,8 +258,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33cfd0ff2d4a645429fef7207251f0cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  local: {fileID: 389980208}
-  external: {fileID: 987996545}
+  local: {fileID: 987996545}
+  external: {fileID: 389980208}
+  localPlayerIDText: {fileID: 134420614}
+  enemyPlayerIDText: {fileID: 751790730}
 --- !u!114 &85724237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,9 +274,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 983b3cd070ef92f428bcb4bc12070257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localPlayer: {fileID: 389980208}
-  enemyPlayer: {fileID: 987996545}
+  localPlayer: {fileID: 987996545}
+  enemyPlayer: {fileID: 389980208}
   cardManager: {fileID: 1042875750}
+  invoker: {fileID: 85724236}
 --- !u!114 &85724238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -427,8 +431,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 183667870
-  m_fontColor: {r: 0.61960787, g: 0.54901963, b: 0.9490197, a: 0.039215688}
+    rgba: 4294085790
+  m_fontColor: {r: 0.61960787, g: 0.54901963, b: 0.9490197, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1292,8 +1296,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 183667870
-  m_fontColor: {r: 0.61960787, g: 0.54901963, b: 0.9490197, a: 0.039215688}
+    rgba: 4294085790
+  m_fontColor: {r: 0.61960787, g: 0.54901963, b: 0.9490197, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2093,7 +2097,6 @@ GameObject:
   - component: {fileID: 1529226848}
   - component: {fileID: 1529226847}
   - component: {fileID: 1529226846}
-  - component: {fileID: 1529226849}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2176,20 +2179,6 @@ Transform:
   - {fileID: 85724231}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1529226849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1529226845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d76fb8d7c52e98d478bccfe06db15580, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvas: {fileID: 85724234}
-  cam: {fileID: 1529226847}
 --- !u!1 &1621901852
 GameObject:
   m_ObjectHideFlags: 0

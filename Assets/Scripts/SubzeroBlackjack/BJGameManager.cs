@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class BJGameManager : MonoBehaviour
+public abstract class BJGameManager : NetworkManager
 {
     [Header("Player links")]
     [SerializeField] protected BJPlayer localPlayer;

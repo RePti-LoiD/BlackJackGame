@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/RegistrationScene.unity
     guid: 8e571be6a94ef184283030b080a0e894
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/LanGameLobby.unity
     guid: 28ea6ced791778b43a4f4646e9715d15
   - enabled: 1
