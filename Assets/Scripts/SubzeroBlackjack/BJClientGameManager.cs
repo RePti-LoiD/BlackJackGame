@@ -1,4 +1,3 @@
-using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -8,20 +7,14 @@ public class BJClientGameManager : BJGameManager
 {
     [SerializeField] private TestServerInvoker invoker;
 
+    public IPEndPoint ExternalEndPoint;
+
     protected async override Task NetworkInitialization()
     {
         tcpClient = new TcpClient();
 
-        await tcpClient.ConnectAsync(IPAddress.Loopback, 8888);
+        await tcpClient.ConnectAsync(ExternalEndPoint.Address, ExternalEndPoint.Port);
         print($"Connected to: {tcpClient.Client.RemoteEndPoint}");
-
-        SendNetworkMessage(new BJRequestData()
-        {
-            Header = "SetUp",
-            State = "PlayerID",
-            UserSenderId = localPlayer.UserData.Id.ToString(),
-            Args = new() { localPlayer.UserData.Id.ToString() }
-        });
     }
 
     protected override void HandleNetworkMessage(BJRequestData data)
@@ -29,33 +22,33 @@ public class BJClientGameManager : BJGameManager
         switch (data.Header)
         {
             case "SetUp":
-                enemyPlayer.UserData.Id = Guid.Parse(data.Args[0]);
                 invoker.ShowGuid();
                 break;
 
             case "StepState":
-                PlayerStep(GetPlayerByGuid(Guid.Parse(data.UserSenderId)), (BJStepState)0);
+                PlayerStep(GetPlayerByGuid(data.UserSenderId), (BJStepState)0);
                 break;
 
             case "SetCard":
-                SetCardToHandler(GetPlayerByGuid(Guid.Parse(data.UserSenderId)), cardManager.GetCard(int.Parse(data.Args[0])));
+                SetCardToHandler(GetPlayerByGuid(data.UserSenderId), cardManager.GetCard(int.Parse(data.Args[0])));
                 break;
 
             case "StartStep":
-                if (data.UserSenderId == enemyPlayer.UserData.Id.ToString())
+                if (data.UserSenderId == localPlayer.UserData.Id.ToString())
                 {
-                    currentPlayer = enemyPlayer;
-                    enemyPlayer.StartMove(this);
+                    currentPlayer = localPlayer;
+                    localPlayer.StartMove(this);
                 }
                 else
                 {
-                    currentPlayer = localPlayer;
+                    currentPlayer = enemyPlayer;
                 }
 
                 break;
 
             case "EndStep":
-                GetPlayerByGuid(Guid.Parse(data.UserSenderId)).EndMove();
+
+                GetPlayerByGuid(data.UserSenderId).EndMove();
                 break;
 
             case "GameEnd":
@@ -77,7 +70,7 @@ public class BJClientGameManager : BJGameManager
             return;
 
         //TODO: “”“ Õ¿ƒŒ ¡”ƒ≈“ »Õ¬≈–“»–Œ¬¿“‹ Õ¿ localPlayer
-        if (sender == enemyPlayer)
+        if (sender == localPlayer)
             SendNetworkMessage(new("StepState", sender.UserData.Id.ToString(), "StepState", new() { stepState.ToString() }));
 
         currentPlayer = localPlayer == currentPlayer ? enemyPlayer : localPlayer;
@@ -89,12 +82,14 @@ public class BJClientGameManager : BJGameManager
 
     }
 
-    private BJPlayer GetPlayerByGuid(Guid id)
+    private BJPlayer GetPlayerByGuid(string id)
     {
-        if (localPlayer.UserData.Id == id)
+        id = id.Trim();
+
+        if (localPlayer.UserData.Id.ToString() == id)
             return localPlayer;
 
-        else if (enemyPlayer.UserData.Id == id)
+        else if (enemyPlayer.UserData.Id.ToString() == id)
             return enemyPlayer;
 
         return null;

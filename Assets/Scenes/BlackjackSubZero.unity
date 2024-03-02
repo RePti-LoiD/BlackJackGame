@@ -131,10 +131,7 @@ GameObject:
   - component: {fileID: 85724234}
   - component: {fileID: 85724233}
   - component: {fileID: 85724232}
-  - component: {fileID: 85724235}
-  - component: {fileID: 85724236}
-  - component: {fileID: 85724237}
-  - component: {fileID: 85724238}
+  - component: {fileID: 85724239}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -157,8 +154,8 @@ RectTransform:
   - {fileID: 1042875747}
   - {fileID: 389980205}
   - {fileID: 987996542}
-  - {fileID: 1309263425}
   - {fileID: 1420014117}
+  - {fileID: 1309263425}
   - {fileID: 1629832390}
   m_Father: {fileID: 1529226848}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -230,23 +227,7 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &85724235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 85724230}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bec7a788f8f5a14684382281e9deeea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localPlayer: {fileID: 987996545}
-  enemyPlayer: {fileID: 389980208}
-  cardManager: {fileID: 1042875750}
-  invoker: {fileID: 85724236}
---- !u!114 &85724236
+--- !u!114 &85724239
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -255,41 +236,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 85724230}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33cfd0ff2d4a645429fef7207251f0cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  local: {fileID: 987996545}
-  external: {fileID: 389980208}
-  localPlayerIDText: {fileID: 134420614}
-  enemyPlayerIDText: {fileID: 751790730}
---- !u!114 &85724237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 85724230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 983b3cd070ef92f428bcb4bc12070257, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d2347106ae282244aee228a0a890511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   localPlayer: {fileID: 987996545}
-  enemyPlayer: {fileID: 389980208}
+  externalPlayer: {fileID: 389980208}
   cardManager: {fileID: 1042875750}
-  invoker: {fileID: 85724236}
---- !u!114 &85724238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 85724230}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 916f270339fc0164ea3c1bad5d7b2db7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  localPlayerVisualization: {fileID: 267286350}
+  externalPlayerVisualization: {fileID: 2091507473}
 --- !u!1 &112441250
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,8 +385,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294085790
-  m_fontColor: {r: 0.61960787, g: 0.54901963, b: 0.9490197, a: 1}
+    rgba: 1022528670
+  m_fontColor: {r: 0.61960787, g: 0.54901963, b: 0.9490197, a: 0.23529412}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -510,6 +464,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 267286349}
+  - component: {fileID: 267286350}
   m_Layer: 5
   m_Name: UserCard
   m_TagString: Untagged
@@ -540,6 +495,22 @@ RectTransform:
   m_AnchoredPosition: {x: -50, y: -25}
   m_SizeDelta: {x: -280, y: 400}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &267286350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267286348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3f471f838d91fe47ac8cd75082a1e91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nickNameText: {fileID: 1986084937}
+  firstNameText: {fileID: 134420614}
+  balanceText: {fileID: 688525194}
+  currencyChar: $
 --- !u!1 &287369923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1296,8 +1267,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294085790
-  m_fontColor: {r: 0.61960787, g: 0.54901963, b: 0.9490197, a: 1}
+    rgba: 1022528670
+  m_fontColor: {r: 0.61960787, g: 0.54901963, b: 0.9490197, a: 0.23529412}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1870,7 +1841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7401447821925681092, guid: 55d86390020f1034d97716fa320fc7af, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -999
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7401447821925681092, guid: 55d86390020f1034d97716fa320fc7af, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2002,7 +1973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5205674915842998452, guid: b2b01ad7361eb244fac2dd246ab71331, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5205674915842998452, guid: b2b01ad7361eb244fac2dd246ab71331, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2010,7 +1981,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5205674915842998452, guid: b2b01ad7361eb244fac2dd246ab71331, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5205674915842998452, guid: b2b01ad7361eb244fac2dd246ab71331, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2054,7 +2025,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5205674915842998452, guid: b2b01ad7361eb244fac2dd246ab71331, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 700
+      value: -470
       objectReference: {fileID: 0}
     - target: {fileID: 5205674915842998452, guid: b2b01ad7361eb244fac2dd246ab71331, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3125,6 +3096,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2091507472}
+  - component: {fileID: 2091507473}
   m_Layer: 5
   m_Name: UserCard
   m_TagString: Untagged
@@ -3155,6 +3127,22 @@ RectTransform:
   m_AnchoredPosition: {x: -50, y: -50}
   m_SizeDelta: {x: 800, y: 400}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &2091507473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091507471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3f471f838d91fe47ac8cd75082a1e91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nickNameText: {fileID: 1990979910}
+  firstNameText: {fileID: 751790730}
+  balanceText: {fileID: 1649215656}
+  currencyChar: $
 --- !u!1 &2102465875
 GameObject:
   m_ObjectHideFlags: 0

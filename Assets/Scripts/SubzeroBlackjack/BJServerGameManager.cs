@@ -7,12 +7,14 @@ using UnityEngine;
 public class BJServerGameManager : BJGameManager, IDisposable
 {
     [SerializeField] private TestServerInvoker invoker;
- 
+
+    public IPEndPoint LocalEndPoint;
+
     private TcpListener tcpListener;
 
     protected async override Task NetworkInitialization()
     {
-        tcpListener = new TcpListener(IPAddress.Loopback, 8888);
+        tcpListener = new TcpListener(LocalEndPoint.Address, LocalEndPoint.Port);
         tcpListener.Start();
 
         tcpClient = await tcpListener.AcceptTcpClientAsync();
@@ -21,14 +23,6 @@ public class BJServerGameManager : BJGameManager, IDisposable
 
     protected override void PostNetworkInitialization()
     {
-        SendNetworkMessage(new BJRequestData()
-        {
-            Header = "SetUp",
-            State = "PlayerID",
-            UserSenderId = localPlayer.UserData.Id.ToString(),
-            Args = new() { localPlayer.UserData.Id.ToString() }
-        });
-
         SetCardToHandler(localPlayer);
         SetCardToHandler(localPlayer);
         SetCardToHandler(enemyPlayer);
@@ -47,22 +41,21 @@ public class BJServerGameManager : BJGameManager, IDisposable
     }
 
     protected void SendStartStep(BJPlayer player) =>
-        SendNetworkMessage(new("StartStep", player.UserData.Id.ToString(), "StartStep", new()));
+        SendNetworkMessage(new("StartStep", player.UserData.Id.ToString(), "StartStep", new() { "" }));
 
     protected void SendEndStep(BJPlayer player) =>
-        SendNetworkMessage(new("EndStep", player.UserData.Id.ToString(), "EndStep", new()));
+        SendNetworkMessage(new("EndStep", player.UserData.Id.ToString(), "EndStep", new() { "" }));
 
     protected override void HandleNetworkMessage(BJRequestData data)
     {
         switch (data.Header)
         {
             case "SetUp":
-                enemyPlayer.UserData.Id = Guid.Parse(data.Args[0]);
                 invoker.ShowGuid();
                 break;
 
             case "StepState":
-                PlayerStep(GetPlayerByGuid(Guid.Parse(data.UserSenderId)), (BJStepState)Enum.Parse(typeof(BJStepState), data.Args[0]));
+                PlayerStep(GetPlayerByGuid(data.UserSenderId), (BJStepState)Enum.Parse(typeof(BJStepState), data.Args[0]));
                 break;
 
             default:
@@ -132,11 +125,11 @@ public class BJServerGameManager : BJGameManager, IDisposable
         SendNetworkMessage(new("SetCard", player.UserData.Id.ToString(), "SetCard", new() { blackjackCard.CardData.CardWeight.ToString() }));
     }
 
-    protected BJPlayer GetPlayerByGuid(Guid guid)
+    protected BJPlayer GetPlayerByGuid(string guid)
     {
-        if (localPlayer.UserData.Id == guid)
+        if (localPlayer.UserData.Id.ToString() == guid)
             return localPlayer;
-        else if (enemyPlayer.UserData.Id == guid) 
+        else if (enemyPlayer.UserData.Id.ToString() == guid) 
             return enemyPlayer;
         
         return null;

@@ -4466,8 +4466,8 @@ Canvas:
   m_GameObject: {fileID: 952975021}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 241849301}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -4782,6 +4782,7 @@ MonoBehaviour:
   cardsOffset: 120
   transitionSpeed: 10
   backNumeration: 0
+  enableNumeration: 0
 --- !u!1 &1045896178
 GameObject:
   m_ObjectHideFlags: 0
@@ -5908,6 +5909,7 @@ MonoBehaviour:
   cardsOffset: 120
   transitionSpeed: 10
   backNumeration: 0
+  enableNumeration: 0
 --- !u!1 &1353426399
 GameObject:
   m_ObjectHideFlags: 0
@@ -6733,7 +6735,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 40, y: 19.34}
+  m_AnchoredPosition: {x: 40, y: 19.339996}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1546066960
@@ -6798,7 +6800,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: -867.6862}
+  m_AnchoredPosition: {x: 0, y: -867.6863}
   m_SizeDelta: {x: 0, y: 504.6277}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1551339037

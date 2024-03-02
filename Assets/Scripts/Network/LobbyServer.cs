@@ -3,27 +3,28 @@ using System.Net;
 using UnityEngine;
 using TMPro;
 using Newtonsoft.Json;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class LobbyServer : NetworkManager
 {
-    [SerializeField] private GameObject modalFrame;
     [SerializeField] private TMP_Text serverLocation;
     [SerializeField] private short serverPort;
     [SerializeField] private UserDataVisualization visualization;
+    [SerializeField] private ModalFrame modalFrame;
+    [SerializeField] private TextMeshProUGUI modalFrameWaitText;
+    [SerializeField] private Button startGameButton;
 
     private IPEndPoint serverEndpoint;
     private TcpListener tcpListener;
 
+    private User remoteUserData;
+
     protected override void Start() { }
 
-    public IPEndPoint GetLocalEndpoint()
-    {
-        foreach (IPAddress ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
-            if (ip.AddressFamily == AddressFamily.InterNetwork)
-                return new IPEndPoint(ip, serverPort);
-
-        return new IPEndPoint(IPAddress.Any, serverPort);
-    }
+    public IPEndPoint GetLocalEndpoint() =>
+        new IPEndPoint(Dns.GetHostAddresses(Dns.GetHostName()).Where((x) => x.AddressFamily == AddressFamily.InterNetwork).ToList()[0], 8888);
 
     public void PrepareServer()
     {
@@ -37,15 +38,6 @@ public class LobbyServer : NetworkManager
         StartServer(tcpListener);
     }
 
-    protected override void HandleNetworkMessage(BJRequestData data)
-    {
-        switch (data.Header)
-        {
-            case "UserData":
-                visualization.VisualizeUserData(JsonConvert.DeserializeObject<User>(data.Args[0]));
-                break;
-        }
-    }
 
     private async void StartServer(TcpListener listener)
     {
@@ -55,9 +47,66 @@ public class LobbyServer : NetworkManager
         print($"Client connected: {tcpClient.Client.LocalEndPoint}");
 
         dataStream = tcpClient.GetStream();
-
         ListenNetworkStream();
+
+        SendNetworkMessage(new BJRequestData()
+        {
+            Header = "UserData",
+            State = "UserData",
+            UserSenderId = UserDataWrapper.UserData.Id.ToString(),
+            Args = new () { JsonConvert.SerializeObject(UserDataWrapper.UserData) }
+        });
     }
+
+    protected override void HandleNetworkMessage(BJRequestData data)
+    {
+        switch (data.Header)
+        {
+            case "UserData":
+                visualization.gameObject.SetActive(true);
+                remoteUserData = JsonConvert.DeserializeObject<User>(data.Args[0]);
+                visualization.VisualizeUserData(remoteUserData);
+
+                modalFrameWaitText.gameObject.SetActive(true);
+                break;
+
+            case "ConnectionRequest":
+                var answer = (ModalFrameButton)int.Parse(data.Args[0]);
+                string uiAnswer;
+
+                if (answer == ModalFrameButton.Primary)
+                {
+                    uiAnswer = @"<color=green>accept</color>";
+                    startGameButton.gameObject.SetActive(true);
+                    startGameButton.onClick.AddListener(StartGame);
+                }
+                else
+                {
+                    uiAnswer = @"<color=red>reject</color>";
+                }
+
+                modalFrameWaitText.text = $"Player {uiAnswer} game";
+                break;
+        }
+    }
+
+    public void StartGame()
+    {
+        BJGameLoader.Data = new BJGameLoadData(GetLocalEndpoint(), UserDataWrapper.UserData, remoteUserData, new BJServerGameManagerFactory());
+        
+        SendNetworkMessage(new BJRequestData()
+        {
+            Header = "StartGame",
+            State = "StartGame",
+            UserSenderId = UserDataWrapper.UserData.Id.ToString(),
+            Args = new()
+        });
+
+        SceneManager.LoadScene("BlackjackSubZero");
+    }
+
+    public void CopyIPEndPointToClipboard() =>
+        GUIUtility.systemCopyBuffer = serverEndpoint.ToString();
 
     public void OnDestroy()
     {

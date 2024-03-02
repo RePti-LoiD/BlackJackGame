@@ -20,18 +20,16 @@ public class UiFrame : ActivatableObject
 
     public void PointerDrag()
     {
-        Vector3 dragPosition;
-        bool isEditor = true;
+        Vector3 dragPosition = Vector3.zero;
         isDragging = true;
 
-#if !UNITY_EDITOR
-        isEditor = false;
+#if UNITY_EDITOR && UNITY_STANDALONE
+        dragPosition = Input.mousePositionDelta;
 #endif
-        if (isEditor)
-            dragPosition = Input.mousePositionDelta;
-        else
-            dragPosition = Input.GetTouch(0).deltaPosition;
 
+#if UNITY_ANDROID
+        dragPosition = Input.GetTouch(0).deltaPosition;
+#endif
 
         if (!parentDrag)
             uiFrame.position = new Vector3(uiFrame.position.x, Mathf.Clamp(uiFrame.position.y + dragPosition.y, 0, uiFrame.rect.height));

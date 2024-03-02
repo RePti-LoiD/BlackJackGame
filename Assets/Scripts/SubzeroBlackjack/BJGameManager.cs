@@ -1,13 +1,9 @@
-using UnityEngine;
-
 public abstract class BJGameManager : NetworkManager
 {
-    [Header("Player links")]
-    [SerializeField] protected BJPlayer localPlayer;
-    [SerializeField] protected BJPlayer enemyPlayer;
-
-    [Header("Other links")]
-    [SerializeField] protected BJCardManager cardManager;
+    public BJPlayer localPlayer;
+    public BJPlayer enemyPlayer;
+    
+    public BJCardManager cardManager;
 
     protected BJPlayer currentPlayer;
     protected BJStepState lastStepData;

@@ -16,6 +16,11 @@ public abstract class NetworkManager : MonoBehaviour, IDisposable
 
     protected async virtual void Start()
     {
+        await InnerNetworkInitialization();
+    }
+
+    protected async Task InnerNetworkInitialization()
+    {
         await NetworkInitialization();
         dataStream = tcpClient.GetStream();
         ListenNetworkStream();
@@ -23,7 +28,7 @@ public abstract class NetworkManager : MonoBehaviour, IDisposable
         PostNetworkInitialization();
     }
 
-    protected virtual Task NetworkInitialization() {  return Task.CompletedTask; }
+    protected virtual async Task NetworkInitialization() { }
     protected virtual void PostNetworkInitialization() { }
 
     protected async void ListenNetworkStream()
@@ -63,8 +68,9 @@ public abstract class NetworkManager : MonoBehaviour, IDisposable
     protected async Task<BJRequestData> ReceiveNetworkMessage()
     {
         byte[] buffer = new byte[512];
-        await dataStream.ReadAsync(buffer);
+        await dataStream.ReadAsync(buffer, 0, 512);
+        Debug.Log(Encoding.UTF8.GetString(buffer));
 
-        return new BJRequestJsonParser(Encoding.UTF8.GetString(buffer)).Parse();
+        return new BJRequestDataParser(Encoding.UTF8.GetString(buffer)).Parse();
     }
 }
