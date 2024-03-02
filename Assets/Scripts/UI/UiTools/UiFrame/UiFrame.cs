@@ -53,7 +53,7 @@ public class UiFrame : ActivatableObject
 
     public void RequireOpen()
     {
-        currentTargetYOffser = defaultYOffset;
+        currentTargetYOffser = (int)(Screen.height * 0.8);
 
         gameObject.SetActive(true);
         OnActivate?.Invoke();
