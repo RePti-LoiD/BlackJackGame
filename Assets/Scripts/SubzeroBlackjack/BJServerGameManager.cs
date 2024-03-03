@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class BJServerGameManager : BJGameManager, IDisposable
 {
-    [SerializeField] private TestServerInvoker invoker;
-
     public IPEndPoint LocalEndPoint;
 
     private TcpListener tcpListener;
@@ -48,10 +46,12 @@ public class BJServerGameManager : BJGameManager, IDisposable
 
     protected override void HandleNetworkMessage(BJRequestData data)
     {
+        base.HandleNetworkMessage(data);
+
         switch (data.Header)
         {
             case "SetUp":
-                invoker.ShowGuid();
+
                 break;
 
             case "StepState":
@@ -106,9 +106,11 @@ public class BJServerGameManager : BJGameManager, IDisposable
         lastStepData = stepState;
 
         sender.EndMove();
+        messageHandlers.ForEach((handler) => handler?.ReceiveNetworkMessage(new BJRequestData("StepState", sender.UserData.Id.ToString(), "StepState", new() { stepState.ToString() })));
 
         currentPlayer = localPlayer == currentPlayer ? enemyPlayer : localPlayer;
         currentPlayer.StartMove(this);
+
     }
 
     public override void SetCardToHandler(BJPlayer player)

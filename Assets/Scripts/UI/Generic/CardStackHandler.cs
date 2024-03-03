@@ -38,6 +38,9 @@ public class CardStackHandler : MonoBehaviour
         blackjackCard.transform.parent = transform;
         if (cards.Count > 0) 
             blackjackCard.ShowCard();
+
+        blackjackCard.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, Random.Range(-15, -5)); 
+
         cards.Add(blackjackCard);
     }
 

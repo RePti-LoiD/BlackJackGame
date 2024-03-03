@@ -40,12 +40,6 @@ public abstract class NetworkManager : MonoBehaviour, IDisposable
     protected virtual void HandleNetworkMessage(BJRequestData data)
     { }
 
-    public virtual void Dispose()
-    {
-        tcpClient?.Dispose();
-        dataStream?.Dispose();
-    }
-
     protected byte[] FromObjectToByteArray(object data)
     {
         byte[] array = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data));
@@ -72,5 +66,16 @@ public abstract class NetworkManager : MonoBehaviour, IDisposable
         Debug.Log(Encoding.UTF8.GetString(buffer));
 
         return new BJRequestDataParser(Encoding.UTF8.GetString(buffer)).Parse();
+    }
+
+    private void OnDisable()
+    {
+        Dispose();
+    }
+
+    public virtual void Dispose()
+    {
+        tcpClient?.Dispose();
+        dataStream?.Dispose();
     }
 }

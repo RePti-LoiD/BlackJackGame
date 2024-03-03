@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6516701172587490934}
   - component: {fileID: -1409960366450414737}
   - component: {fileID: -6288510396778941536}
+  - component: {fileID: 197208957691578026}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -26,13 +27,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1296902310869483731}
-  m_LocalRotation: {x: -0, y: -0, z: 0.9961947, w: -0.08715578}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 10}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -60,6 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardImage: {fileID: -6288510396778941536}
   hiddenCard: {fileID: -1368394087, guid: 2da71e03588a3744dacae7f2b022fc89, type: 3}
+  animator: {fileID: 197208957691578026}
   CardData: {fileID: 0}
 --- !u!212 &-6288510396778941536
 SpriteRenderer:
@@ -115,3 +117,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &197208957691578026
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296902310869483731}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8163e7cd29e29624c873d0382e8c9f79, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

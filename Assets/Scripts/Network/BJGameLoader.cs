@@ -10,6 +10,8 @@ public class BJGameLoader : MonoBehaviour
     [SerializeField] private UserDataVisualization localPlayerVisualization;
     [SerializeField] private UserDataVisualization externalPlayerVisualization;
 
+    [SerializeField] private BJPlayerStepVizualization stepVizualization;
+
     public static BJGameLoadData Data;
 
     public void Awake()
@@ -24,6 +26,8 @@ public class BJGameLoader : MonoBehaviour
         Data.BJLocalUser = localPlayer;
         Data.BJExternalUser = externalPlayer;
 
-        Data.Factory.CreateManager(gameObject, Data);
+        var gameManager = Data.Factory.CreateManager(gameObject, Data);
+
+        gameManager.AddNetworkMessageListener(stepVizualization);
     }
 }

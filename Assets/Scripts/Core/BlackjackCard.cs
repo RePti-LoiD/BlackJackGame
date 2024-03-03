@@ -4,6 +4,7 @@ public class BlackjackCard : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer cardImage;
     [SerializeField] private Sprite hiddenCard;
+    [SerializeField] private Animator animator;
 
     [HideInInspector] public Card CardData;
 
@@ -11,7 +12,7 @@ public class BlackjackCard : MonoBehaviour
 
     public void SetCardStruct(Card cardData, int renderIndex = 0, bool isShown = false)
     {
-        this.CardData = cardData;
+        CardData = cardData;
         cardImage.sprite = cardData.CardSprite;
         cardImage.sortingOrder = renderIndex - 100;
 
@@ -24,8 +25,7 @@ public class BlackjackCard : MonoBehaviour
     public void ShowCard()
     {
         isShown = true;
-
-        cardImage.sprite = CardData.CardSprite;
+        animator.SetTrigger(nameof(ShowCard));
     }
 
     public void HideCard()
@@ -33,5 +33,10 @@ public class BlackjackCard : MonoBehaviour
         isShown = false;
 
         cardImage.sprite = hiddenCard;
+    }
+
+    public void ShowCardSprite()
+    {
+        cardImage.sprite = CardData.CardSprite;
     }
 }

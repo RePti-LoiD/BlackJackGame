@@ -142,7 +142,7 @@ ScriptedImporter:
   spriteSheetImportData:
   - name: trumps_0
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -162,7 +162,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_1
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -182,7 +182,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_2
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -202,7 +202,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_3
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -222,7 +222,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_4
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -242,7 +242,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_5
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -262,7 +262,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_6
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -282,7 +282,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_7
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -302,7 +302,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_8
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -322,7 +322,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_9
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -342,7 +342,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_10
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -362,7 +362,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_11
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -382,7 +382,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_12
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -402,7 +402,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_13
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -422,7 +422,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_14
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -442,7 +442,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_15
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -462,7 +462,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_16
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -482,7 +482,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_17
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -502,7 +502,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_18
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -522,7 +522,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_19
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -542,7 +542,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_20
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -562,7 +562,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_21
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -582,7 +582,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_22
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -602,7 +602,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_23
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -622,7 +622,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_24
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -642,7 +642,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_25
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -662,7 +662,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_26
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -682,7 +682,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_27
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -702,7 +702,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: trumps_28
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -712,6 +712,26 @@ ScriptedImporter:
       width: 32
       height: 48
     spriteID: a72ac1d9c8412ba41a4f52f0e4d90554
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: trumps_29
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 169
+      y: 4
+      width: 32
+      height: 48
+    spriteID: 5cb61842161c3ab459e4150e2f346d15
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -732,9 +752,9 @@ ScriptedImporter:
       frameIndex: 0
       cellRect:
         x: 0
-        y: 0
-        width: 256
-        height: 256
+        y: 12
+        width: 197
+        height: 244
       spriteId: 3ead03d71244eec4290a8b14628d79fd
     linkedCells: []
     parentIndex: -1

@@ -7,7 +7,7 @@ public class BJMinimalPlayer : BJPlayer
     public override void StartMove(BJGameManager manager)
     {
         OnStartMove?.Invoke(this);
-        manager.PlayerStep(this, 0);
+        //manager.PlayerStep(this, 0);
     } 
 
 

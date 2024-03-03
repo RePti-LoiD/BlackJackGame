@@ -1,12 +1,9 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using UnityEngine;
 
 public class BJClientGameManager : BJGameManager
 {
-    [SerializeField] private TestServerInvoker invoker;
-
     public IPEndPoint ExternalEndPoint;
 
     protected async override Task NetworkInitialization()
@@ -19,10 +16,12 @@ public class BJClientGameManager : BJGameManager
 
     protected override void HandleNetworkMessage(BJRequestData data)
     {
+        base.HandleNetworkMessage(data);
+
         switch (data.Header)
         {
             case "SetUp":
-                invoker.ShowGuid();
+
                 break;
 
             case "StepState":
@@ -69,9 +68,10 @@ public class BJClientGameManager : BJGameManager
         if (currentPlayer != null && sender != currentPlayer) 
             return;
 
-        //TODO: ÒÓÒ ÍÀÄÎ ÁÓÄÅÒ ÈÍÂÅÐÒÈÐÎÂÀÒÜ ÍÀ localPlayer
         if (sender == localPlayer)
             SendNetworkMessage(new("StepState", sender.UserData.Id.ToString(), "StepState", new() { stepState.ToString() }));
+        
+        messageHandlers.ForEach((handler) => handler?.ReceiveNetworkMessage(new BJRequestData("StepState", sender.UserData.Id.ToString(), "StepState", new() { stepState.ToString() })));
 
         currentPlayer = localPlayer == currentPlayer ? enemyPlayer : localPlayer;
         print(currentPlayer);

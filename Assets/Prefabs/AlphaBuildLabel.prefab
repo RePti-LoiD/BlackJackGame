@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8195602437640576005}
   - component: {fileID: 8088653999137342495}
   m_Layer: 0
-  m_Name: AlpahaBuildLabel
+  m_Name: AlphaBuildLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
