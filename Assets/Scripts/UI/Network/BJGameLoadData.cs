@@ -1,8 +1,8 @@
-﻿using System.Net;
+﻿using System.Net.Sockets;
 
 public class BJGameLoadData
 {
-    public IPEndPoint Address;
+    public NetworkStream DataStream;
     public User LocalUser;
     public User ExternalUser;
 
@@ -13,9 +13,9 @@ public class BJGameLoadData
 
     public BJGameManagerFactory Factory;
 
-    public BJGameLoadData(IPEndPoint addres, User localUser, User externalUser, BJGameManagerFactory factory)
+    public BJGameLoadData(NetworkStream dataStream, User localUser, User externalUser, BJGameManagerFactory factory)
     {
-        Address = addres;
+        DataStream = dataStream;
         LocalUser = localUser;
         ExternalUser = externalUser;
         Factory = factory;

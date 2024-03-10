@@ -1,22 +1,24 @@
 using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using UnityEngine;
 
 public class BJServerGameManager : BJGameManager, IDisposable
 {
-    public IPEndPoint LocalEndPoint;
-
-    private TcpListener tcpListener;
-
-    protected async override Task NetworkInitialization()
+    protected void Awake()
     {
-        tcpListener = new TcpListener(LocalEndPoint.Address, LocalEndPoint.Port);
-        tcpListener.Start();
+        BindMethods();
+    }
 
-        tcpClient = await tcpListener.AcceptTcpClientAsync();
-        print($"Connected: {tcpClient.Client.RemoteEndPoint}");
+    protected override void Start()
+    {
+
+        ListenNetworkStream();
+
+        PostNetworkInitialization();
+    }
+
+    protected void BindMethods()
+    {
+        AddNetworkMessageListener("StepState", (data) =>
+            PlayerStep(GetPlayerByGuid(data.UserSenderId), (BJStepState)Enum.Parse(typeof(BJStepState), data.Args[0])));
     }
 
     protected override void PostNetworkInitialization()
@@ -46,14 +48,10 @@ public class BJServerGameManager : BJGameManager, IDisposable
 
     protected override void HandleNetworkMessage(BJRequestData data)
     {
-        base.HandleNetworkMessage(data);
+        return;
 
         switch (data.Header)
         {
-            case "SetUp":
-
-                break;
-
             case "StepState":
                 PlayerStep(GetPlayerByGuid(data.UserSenderId), (BJStepState)Enum.Parse(typeof(BJStepState), data.Args[0]));
                 break;
@@ -106,7 +104,6 @@ public class BJServerGameManager : BJGameManager, IDisposable
         lastStepData = stepState;
 
         sender.EndMove();
-        messageHandlers.ForEach((handler) => handler?.ReceiveNetworkMessage(new BJRequestData("StepState", sender.UserData.Id.ToString(), "StepState", new() { stepState.ToString() })));
 
         currentPlayer = localPlayer == currentPlayer ? enemyPlayer : localPlayer;
         currentPlayer.StartMove(this);
@@ -117,7 +114,6 @@ public class BJServerGameManager : BJGameManager, IDisposable
     {
         SetCardToHandler(player, cardManager.GetCard());
     }
-
 
     protected override void SetCardToHandler(BJPlayer player, BlackjackCard card)
     {
@@ -141,6 +137,6 @@ public class BJServerGameManager : BJGameManager, IDisposable
     {
         base.Dispose();
 
-        tcpListener?.Stop();
+        dataStream?.Close();
     }
 }

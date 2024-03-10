@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class MainMenuSceneTransition : MonoBehaviour
 {
@@ -11,11 +12,12 @@ public class MainMenuSceneTransition : MonoBehaviour
     {
         offlineBlackJackButton.onClick.AddListener(() =>
         {
-            NextSceneData data = NextSceneData.Init();
-            data.SceneIndex = 3;
-            data.SceneName = "Blacjack 21";
+            BJGameLoader.Data = new BJGameLoadData(null, 
+                UserDataWrapper.UserData, 
+                new User("Pussy sultan", "[Bot] Valera", "", DateTime.Now.Ticks, null),
+                new BJLocalGameManagerFactory());
 
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(6);
         });
 
         lanBlackJackButton.onClick.AddListener(() =>

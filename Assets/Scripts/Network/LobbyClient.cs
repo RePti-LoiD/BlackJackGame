@@ -4,8 +4,6 @@ using UnityEngine;
 using TMPro;
 using Newtonsoft.Json;
 using UnityEngine.SceneManagement;
-using System;
-using System.Threading.Tasks;
 
 public class LobbyClient : NetworkManager
 {
@@ -16,16 +14,22 @@ public class LobbyClient : NetworkManager
 
     private User remoteUserData;
 
-    protected override void Start() { }
+    protected void Awake()
+    {
+        print("asss");
+        AddNetworkMessageListener("UserData", UserDataReceiveNetworkMethod);
+        AddNetworkMessageListener("StartGame", StartGameNetworkMethod);
+    }
 
-    public void StartClient(IPEndPoint endpoint)
+    protected override void Start()
+    { }
+
+    public async void StartClient(IPEndPoint endpoint)
     {
         tcpClient = new TcpClient();
-        tcpClient.Connect(endpoint);
+        await tcpClient.ConnectAsync(endpoint.Address, endpoint.Port);
         text.text += "client connected";
         dataStream = tcpClient.GetStream();
-        
-        Console.WriteLine(tcpClient.Client.RemoteEndPoint);
         
         ListenNetworkStream();
 
@@ -40,33 +44,43 @@ public class LobbyClient : NetworkManager
 
     protected override void HandleNetworkMessage(BJRequestData data)
     {
+        return;
+
         switch (data.Header)
         {
             case "UserData":
 
-                visualization.gameObject.SetActive(true);
-                remoteUserData = JsonConvert.DeserializeObject<User>(data.Args[0]);
-                visualization.VisualizeUserData(remoteUserData);
-                modalFrameButtonsParent.SetActive(true);
-
-                modalFrame.OnAnswer += (answer) => SendNetworkMessage(new BJRequestData()
-                {
-                    Header = "ConnectionRequest",
-                    State = "ConnectionRequest",
-                    UserSenderId = UserDataWrapper.UserData.Id.ToString(),
-                    Args = new() { ((int)answer).ToString() }
-                });
+                UserDataReceiveNetworkMethod(data);
                 break;
 
             case "StartGame":
-                string[] endPointParts = tcpClient.Client.RemoteEndPoint.ToString().Split(":");
-                IPEndPoint endpoint = new IPEndPoint(IPAddress.Parse(endPointParts[0]), int.Parse(endPointParts[1]));
-
-                BJGameLoader.Data = new BJGameLoadData(endpoint, UserDataWrapper.UserData, remoteUserData, new BJClientGameManagerFactory());
-
-                SceneManager.LoadScene("BlackjackSubZero");
+                StartGameNetworkMethod(data);
                 break;
         }
+    }
+
+    private void StartGameNetworkMethod(BJRequestData data)
+    {
+        BJGameLoader.Data = new BJGameLoadData(dataStream, UserDataWrapper.UserData, remoteUserData, new BJClientGameManagerFactory());
+
+        SceneManager.LoadScene("BlackjackSubZero");
+    }
+
+    private void UserDataReceiveNetworkMethod(BJRequestData data)
+    {
+        visualization.gameObject.SetActive(true);
+        remoteUserData = JsonConvert.DeserializeObject<User>(data.Args[0]);
+        visualization.VisualizeUserData(remoteUserData);
+        modalFrameButtonsParent.SetActive(true);
+
+
+        modalFrame.OnAnswer += (answer) => SendNetworkMessage(new BJRequestData()
+        {
+            Header = "ConnectionRequest",
+            State = "ConnectionRequest",
+            UserSenderId = UserDataWrapper.UserData.Id.ToString(),
+            Args = new() { ((int)answer).ToString() }
+        });
     }
 
     public void CloseClient()

@@ -21,7 +21,14 @@ public class LobbyServer : NetworkManager
 
     private User remoteUserData;
 
-    protected override void Start() { }
+    protected void Awake()
+    {
+        AddNetworkMessageListener("UserData", UserDataReceiveNetworkMethod);
+        AddNetworkMessageListener("ConnectionRequest", ConnectionRequestNetworkMethod);
+    }
+
+    protected override void Start() 
+    { }
 
     public IPEndPoint GetLocalEndpoint() =>
         new IPEndPoint(Dns.GetHostAddresses(Dns.GetHostName()).Where((x) => x.AddressFamily == AddressFamily.InterNetwork).ToList()[0], 8888);
@@ -43,8 +50,7 @@ public class LobbyServer : NetworkManager
     {
         serverLocation.text = $"server started at: {listener.Server.LocalEndPoint}";
 
-        tcpClient = await listener.AcceptTcpClientAsync();
-        print($"Client connected: {tcpClient.Client.LocalEndPoint}");
+        tcpClient = await listener?.AcceptTcpClientAsync();
 
         dataStream = tcpClient.GetStream();
         ListenNetworkStream();
@@ -54,45 +60,63 @@ public class LobbyServer : NetworkManager
             Header = "UserData",
             State = "UserData",
             UserSenderId = UserDataWrapper.UserData.Id.ToString(),
-            Args = new () { JsonConvert.SerializeObject(UserDataWrapper.UserData) }
+            Args = new ()
+            { 
+                JsonConvert.SerializeObject(UserDataWrapper.UserData) 
+            }
         });
     }
 
     protected override void HandleNetworkMessage(BJRequestData data)
     {
+        return;
+
         switch (data.Header)
         {
             case "UserData":
-                visualization.gameObject.SetActive(true);
-                remoteUserData = JsonConvert.DeserializeObject<User>(data.Args[0]);
-                visualization.VisualizeUserData(remoteUserData);
-
-                modalFrameWaitText.gameObject.SetActive(true);
+                UserDataReceiveNetworkMethod(data);
                 break;
 
             case "ConnectionRequest":
-                var answer = (ModalFrameButton)int.Parse(data.Args[0]);
-                string uiAnswer;
-
-                if (answer == ModalFrameButton.Primary)
-                {
-                    uiAnswer = @"<color=green>accept</color>";
-                    startGameButton.gameObject.SetActive(true);
-                    startGameButton.onClick.AddListener(StartGame);
-                }
-                else
-                {
-                    uiAnswer = @"<color=red>reject</color>";
-                }
-
-                modalFrameWaitText.text = $"Player {uiAnswer} game";
+                ConnectionRequestNetworkMethod(data);
                 break;
         }
     }
 
+    private void ConnectionRequestNetworkMethod(BJRequestData data)
+    {
+        var answer = (ModalFrameButton)int.Parse(data.Args[0]);
+        string uiAnswer;
+
+        if (answer == ModalFrameButton.Primary)
+        {
+            uiAnswer = @"<color=#FFD701>accept</color>";
+            startGameButton.gameObject.SetActive(true);
+            startGameButton.onClick.AddListener(StartGame);
+        }
+        else
+        {
+            uiAnswer = @"<color=#FF3B47>reject</color>";
+        }
+
+        modalFrameWaitText.text = $"Player {uiAnswer} game";
+    }
+
+    private void UserDataReceiveNetworkMethod(BJRequestData data)
+    {
+        print(data);
+
+        visualization.gameObject.SetActive(true);
+        remoteUserData = JsonConvert.DeserializeObject<User>(data.Args[0]);
+        visualization.VisualizeUserData(remoteUserData);
+
+
+        modalFrameWaitText.gameObject.SetActive(true);
+    }
+
     public void StartGame()
     {
-        BJGameLoader.Data = new BJGameLoadData(GetLocalEndpoint(), UserDataWrapper.UserData, remoteUserData, new BJServerGameManagerFactory());
+        BJGameLoader.Data = new BJGameLoadData(dataStream, UserDataWrapper.UserData, remoteUserData, new BJServerGameManagerFactory());
         
         SendNetworkMessage(new BJRequestData()
         {

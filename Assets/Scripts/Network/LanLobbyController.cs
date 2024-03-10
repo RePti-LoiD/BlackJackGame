@@ -21,7 +21,6 @@ public class LanLobbyController : MonoBehaviour
     {
         string[] endpointSplitted = ipEndpoint.GetComponent<TMP_InputField>().text.Split(':');
         IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(endpointSplitted[0]), int.Parse(endpointSplitted[1]));
-        print($"Client connecting to: {endPoint}");
 
         client.StartClient(endPoint);
     }

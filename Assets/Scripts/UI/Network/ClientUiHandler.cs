@@ -5,13 +5,19 @@ using UnityEngine;
 
 public class ClientUiHandler : NetworkUiInterface
 {
-    [SerializeField] private GameObject clientUiFrame;
-    [SerializeField] private TMP_Text text;
+    [SerializeField] private TMP_Text exceptionMessage;
     [SerializeField] private QrCodeScanner qrCodeScanner;
     [SerializeField] private LobbyClient client;
+    [SerializeField] private ActivatableObject activatableObject;
+
 
     public void Start()
     {
+        activatableObject.OnDeactivate += () =>
+        {
+            client.Dispose();
+        };
+
         qrCodeScanner.OnQrScan += (x) =>
         {
             try
@@ -26,19 +32,14 @@ public class ClientUiHandler : NetworkUiInterface
             }
             catch (Exception ex)
             {
-                text.text = ex.Message;
+                exceptionMessage.text = ex.Message;
             }
         };
     }
 
     public override void DisableUi()
-    {
-        client.CloseClient();
-        clientUiFrame.SetActive(false);
-    }
+    { }
 
     public override void EnableUi()
-    {
-        clientUiFrame.SetActive(true);
-    }
+    { }
 }

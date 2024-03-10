@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Remote Camera 0",
+    "isFrontFacing": false,
+    "kind": 1,
+    "depthCameraName": null,
+    "isAutoFocusPointSupported": false,
+    "availableResolutions": null
+  },
+  {
+    "name": "Remote Camera 1",
+    "isFrontFacing": true,
+    "kind": 1,
+    "depthCameraName": null,
+    "isAutoFocusPointSupported": false,
+    "availableResolutions": null
+  }
+]

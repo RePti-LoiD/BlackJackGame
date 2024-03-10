@@ -9,13 +9,11 @@ public class BJPlayerStepVizualization : MonoBehaviour, INetworkMessageHandler
     [SerializeField] private Animator localPlayerVizualizeAnimator;
     [SerializeField] private Animator externalPlayerVizualizeAnimator;
 
-    public void ReceiveNetworkMessage(BJRequestData message)
+    public void ReceiveNetworkMessage(BJRequestData data)
     {
-        if (message.Header != "StepState") return;
+        string strMessage = data.Args[0] == "GetCard" ? "<color=#FFD701>PICK!</color>" : "PASS";
 
-        string strMessage = message.Args[0] == "GetCard" ? "<color=#FFD701>PICK!</color>" : "PASS";
-
-        if (message.UserSenderId == UserDataWrapper.UserData.Id.ToString())
+        if (data.UserSenderId == UserDataWrapper.UserData.Id.ToString())
         {
             localPlayerVizualize.text = strMessage;
             localPlayerVizualizeAnimator.SetTrigger("ShowText");

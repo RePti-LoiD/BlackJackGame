@@ -10,19 +10,26 @@ public class UserDataVisualization : MonoBehaviour
     [Header("other")]
     [SerializeField] private string currencyChar;
 
+    private User currentUser;
+
     public void VisualizeUserData(User data)
     {
-        if (balanceText != null)
-        { 
+        currentUser = data;
+
+        if (balanceText != null && data.UserWallet != null)
             data.UserWallet.OnWalletMoneyChanged += (balance) =>
             {
                 balanceText.text = data.UserWallet.Balance.ToString() + currencyChar;
             };
-        }
 
         if (nickNameText.text != null) nickNameText.text = data.NickName;
         if (firstNameText.text != null) firstNameText.text = data.FirstName;
 
-        if (balanceText.text != null) balanceText.text = data.UserWallet.Balance.ToString() + currencyChar;
+        if (balanceText.text != null && data.UserWallet != null) balanceText.text = data.UserWallet.Balance.ToString() + currencyChar;
+    }
+
+    public void UpdateData()
+    {
+        VisualizeUserData(currentUser);
     }
 }

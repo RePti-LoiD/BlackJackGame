@@ -2,5 +2,5 @@ using UnityEngine;
 
 public abstract class BJGameManagerFactory
 {
-    public abstract BJGameManager CreateManager(GameObject targetGameObject, BJGameLoadData data);
+    public abstract (BJGameManager, BJPlayer) CreateManager(GameObject targetGameObject, GameObject targetPlayerObject, BJGameLoadData data);
 }

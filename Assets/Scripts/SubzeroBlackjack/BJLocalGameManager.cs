@@ -62,4 +62,9 @@ public class BJLocalGameManager : BJGameManager
     {
         player.CardHandler.SetCard(card);
     }
+
+    protected override void HandleNetworkMessage(BJRequestData data)
+    {
+        throw new System.NotImplementedException();
+    }
 }

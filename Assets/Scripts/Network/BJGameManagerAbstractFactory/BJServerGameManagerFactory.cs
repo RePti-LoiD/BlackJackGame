@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class BJServerGameManagerFactory : BJGameManagerFactory
 {
-    public override BJGameManager CreateManager(GameObject targetGameObject, BJGameLoadData data)
+    public override (BJGameManager, BJPlayer) CreateManager(GameObject targetGameObject, GameObject targetPlayerObject, BJGameLoadData data)
     {
         var bJServerGameManager = targetGameObject.AddComponent<BJServerGameManager>();
-        bJServerGameManager.LocalEndPoint = data.Address;
+        bJServerGameManager.dataStream = data.DataStream;
         bJServerGameManager.localPlayer = data.BJLocalUser;
         bJServerGameManager.enemyPlayer = data.BJExternalUser;
         bJServerGameManager.cardManager = data.BJCardManager;
-        
-        Debug.Log("Server Factory");
 
-        return bJServerGameManager;
+        var bJMinimalPlayer = targetPlayerObject.AddComponent<BJMinimalPlayer>();
+
+        return (bJServerGameManager, bJMinimalPlayer);
     }
 }

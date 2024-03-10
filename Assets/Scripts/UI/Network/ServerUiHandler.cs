@@ -24,12 +24,8 @@ public class ServerUiHandler : NetworkUiInterface
     }
 
     public override void DisableUi()
-    {
-        //serverUiFrame.SetActive(false);
-    }
+    { }
 
     public override void EnableUi()
-    {
-        //serverUiFrame.SetActive(true);
-    }
+    { }
 }

@@ -12,12 +12,14 @@ public class User
     private Guid id;
     private Wallet userWallet;
 
-    public string FirstName { get => firstName; private set => firstName = value; }
-    public string NickName { get => nickName; private set => nickName = value; }
-    public string LinkToAvatar { get => linkToAvatar; private set => linkToAvatar = value; }
+    public string FirstName { get => firstName; set => firstName = value; }
+    public string NickName { get => nickName; set => nickName = value; }
+    public string LinkToAvatar { get => linkToAvatar; set => linkToAvatar = value; }
     public long CreationDate { get => creationDate; private set => creationDate = value; }
     public Guid Id { get => id; set => id = value; }
     public Wallet UserWallet { get => userWallet; private set => userWallet = value; }
+
+    //public User() : this("Bot", "Bot player", string.Empty, DateTime.Now.Ticks, null) { }
 
     public User(string firstName, string nickName, string linkToAvatar, long creationDate, Wallet userWallet)
     {

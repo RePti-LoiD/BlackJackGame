@@ -3,6 +3,8 @@ using ZXing;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using System.IO;
+using Newtonsoft.Json;
 
 public class QrCodeScanner : MonoBehaviour
 {
@@ -29,6 +31,10 @@ public class QrCodeScanner : MonoBehaviour
     private void SetUpCamera()
     {
         WebCamDevice[] devices = WebCamTexture.devices;
+
+        print(GamePrefs.SavePath + "CamData.json");
+        File.WriteAllText(GamePrefs.SavePath + "CamData.json", JsonConvert.SerializeObject(devices, Formatting.Indented));
+
         if (devices.Length == 0)
         {
             isCamAvaible = false;
@@ -38,7 +44,9 @@ public class QrCodeScanner : MonoBehaviour
         {
             if (devices[i].isFrontFacing == false)
             {
-                cameraTexture = new WebCamTexture(devices[i].name, (int)scanZone.rect.width, (int)scanZone.rect.height);
+                //, (int)scanZone.rect.width, (int)scanZone.rect.height
+                cameraTexture = new WebCamTexture(devices[i].name, 800, 800);
+                print(devices[i]);
                 break;
             }
         }
@@ -52,7 +60,7 @@ public class QrCodeScanner : MonoBehaviour
     {
         if (isCamAvaible == false) return;
 
-        float ratio = cameraTexture.width / cameraTexture.height;
+        float ratio = 1;
         aspectRation.aspectRatio = ratio;
 
         int orientation = cameraTexture.videoRotationAngle;

@@ -1,8 +1,5 @@
 using Newtonsoft.Json;
 using System.IO;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEngine;
 
 public class UserDataWrapper
 {
@@ -35,6 +32,6 @@ public class UserDataWrapper
         data.UserWallet.OnWalletMoneyChanged += (balance) => SaveData();
     }
 
-    private static void SaveData() =>
+    public static void SaveData() =>
         File.WriteAllText(GamePrefs.GetSavePath(), JsonConvert.SerializeObject(data));
 }

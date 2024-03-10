@@ -3,7 +3,9 @@ using UnityEngine;
 public class BJGameLoader : MonoBehaviour
 {
     [SerializeField] private BJPlayer localPlayer;
-    [SerializeField] private BJPlayer externalPlayer;
+    [SerializeField] private GameObject externalPlayer;
+
+    [SerializeField] private CardStackHandler cardHandlerExternalPlayer;
 
     [SerializeField] private BJCardManager cardManager;
 
@@ -18,16 +20,21 @@ public class BJGameLoader : MonoBehaviour
     {
         localPlayerVisualization.VisualizeUserData(Data.LocalUser);
         externalPlayerVisualization.VisualizeUserData(Data.ExternalUser);
+        
+        var data = Data.Factory.CreateManager(gameObject, externalPlayer, Data);
 
         localPlayer.UserData = Data.LocalUser;
-        externalPlayer.UserData = Data.ExternalUser;
+        data.Item2.UserData = Data.ExternalUser;
+        data.Item2.CardHandler = cardHandlerExternalPlayer;
 
         Data.BJCardManager = cardManager;
         Data.BJLocalUser = localPlayer;
-        Data.BJExternalUser = externalPlayer;
+        Data.BJExternalUser = data.Item2;
 
-        var gameManager = Data.Factory.CreateManager(gameObject, Data);
+        data.Item1.AddNetworkMessageListener("StepState", stepVizualization.ReceiveNetworkMessage);
 
-        gameManager.AddNetworkMessageListener(stepVizualization);
+        data.Item1.localPlayer = Data.BJLocalUser;
+        data.Item1.enemyPlayer = Data.BJExternalUser;
+        data.Item1.cardManager = cardManager;
     }
 }

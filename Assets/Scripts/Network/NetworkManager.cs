@@ -2,6 +2,8 @@ using BJTcpRequestProtocol;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -12,11 +14,19 @@ using UnityEngine;
 public abstract class NetworkManager : MonoBehaviour, IDisposable
 {
     protected TcpClient tcpClient;
-    protected NetworkStream dataStream;
+    public NetworkStream dataStream;
+
+    protected Dictionary<string, List<Action<BJRequestData>>> bindedMethods = new();
+
+    protected virtual async Task NetworkInitialization() { }
+    protected virtual void PostNetworkInitialization() { }
+    protected virtual void HandleNetworkMessage(BJRequestData data) { }
+
 
     protected async virtual void Start()
     {
         await InnerNetworkInitialization();
+
     }
 
     protected async Task InnerNetworkInitialization()
@@ -28,28 +38,29 @@ public abstract class NetworkManager : MonoBehaviour, IDisposable
         PostNetworkInitialization();
     }
 
-    protected virtual async Task NetworkInitialization() { }
-    protected virtual void PostNetworkInitialization() { }
-
     protected async void ListenNetworkStream()
     {
         while (true)
-            HandleNetworkMessage(await ReceiveNetworkMessage());
+        {
+            var data = await ReceiveNetworkMessage();
+            InvokeHandlers(data);
+            print($"{this} {data}");
+            if (this == null) //TODO: ÍÀ ÝÒÎÌ ÁËßÄÑÊÎÌ ÌÎÌÅÍÒÅ ×ÅÐÅÇ ÐÀÇ ÏÐÎÈÑÕÎÄÈÒ this = null!! ß ÅÁÓ È ÏËÀ×Ó
+                throw new NullReferenceException(); 
+        }
     }
 
-    protected virtual void HandleNetworkMessage(BJRequestData data)
-    { }
-
-    protected byte[] FromObjectToByteArray(object data)
+    protected void InvokeHandlers(BJRequestData data)
     {
-        byte[] array = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data));
-        Array.Resize(ref array, 512);
-
-        return array;
+        foreach (var item in bindedMethods)
+        {
+            if (item.Key == data.Header)
+            {
+                print(data.Header == item.Key);
+                bindedMethods[item.Key].ForEach((handler) => handler?.Invoke(data));
+            }
+        } 
     }
-
-    protected JProperty FromByteArrayToJProperty(byte[] data) => 
-        JObject.Parse(Encoding.UTF8.GetString(data)).Properties().ToList()[0];
 
     protected async void SendNetworkMessage(BJRequestData data)
     {
@@ -63,14 +74,18 @@ public abstract class NetworkManager : MonoBehaviour, IDisposable
     {
         byte[] buffer = new byte[512];
         await dataStream.ReadAsync(buffer, 0, 512);
-        Debug.Log(Encoding.UTF8.GetString(buffer));
 
-        return new BJRequestDataParser(Encoding.UTF8.GetString(buffer)).Parse();
+        var data = new BJRequestDataParser(Encoding.UTF8.GetString(buffer)).Parse();
+
+        return data;
     }
 
-    private void OnDisable()
+    public void AddNetworkMessageListener(string triggerHeader, Action<BJRequestData> handler)
     {
-        Dispose();
+        if (bindedMethods.ContainsKey(triggerHeader))
+            bindedMethods[triggerHeader].Add(handler);
+        else
+            bindedMethods.Add(triggerHeader, new() { handler });
     }
 
     public virtual void Dispose()
@@ -78,4 +93,15 @@ public abstract class NetworkManager : MonoBehaviour, IDisposable
         tcpClient?.Dispose();
         dataStream?.Dispose();
     }
+
+    protected byte[] FromObjectToByteArray(object data)
+    {
+        byte[] array = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data));
+        Array.Resize(ref array, 512);
+
+        return array;
+    }
+
+    protected JProperty FromByteArrayToJProperty(byte[] data) =>
+        JObject.Parse(Encoding.UTF8.GetString(data)).Properties().ToList()[0];
 }
