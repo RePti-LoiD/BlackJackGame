@@ -13,10 +13,10 @@ public class LobbyClient : NetworkManager
     [SerializeField] private GameObject modalFrameButtonsParent;
 
     private User remoteUserData;
+    private IPEndPoint remoteEndPoint;
 
     protected void Awake()
     {
-        print("asss");
         AddNetworkMessageListener("UserData", UserDataReceiveNetworkMethod);
         AddNetworkMessageListener("StartGame", StartGameNetworkMethod);
     }
@@ -30,6 +30,8 @@ public class LobbyClient : NetworkManager
         await tcpClient.ConnectAsync(endpoint.Address, endpoint.Port);
         text.text += "client connected";
         dataStream = tcpClient.GetStream();
+
+        remoteEndPoint = endpoint; 
         
         ListenNetworkStream();
 
@@ -61,7 +63,7 @@ public class LobbyClient : NetworkManager
 
     private void StartGameNetworkMethod(BJRequestData data)
     {
-        BJGameLoader.Data = new BJGameLoadData(dataStream, UserDataWrapper.UserData, remoteUserData, new BJClientGameManagerFactory());
+        BJGameLoader.Data = new BJGameLoadData(remoteEndPoint, UserDataWrapper.UserData, remoteUserData, new BJClientGameManagerFactory());
 
         SceneManager.LoadScene("BlackjackSubZero");
     }
@@ -85,6 +87,8 @@ public class LobbyClient : NetworkManager
 
     public void CloseClient()
     {
+        Dispose();
+
         dataStream?.Dispose();
         tcpClient?.Dispose();
     }

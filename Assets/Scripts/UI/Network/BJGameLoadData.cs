@@ -1,8 +1,7 @@
-﻿using System.Net.Sockets;
+﻿using System.Net;
 
 public class BJGameLoadData
 {
-    public NetworkStream DataStream;
     public User LocalUser;
     public User ExternalUser;
 
@@ -12,10 +11,11 @@ public class BJGameLoadData
     public BJCardManager BJCardManager;
 
     public BJGameManagerFactory Factory;
+    public IPEndPoint EndPoint;
 
-    public BJGameLoadData(NetworkStream dataStream, User localUser, User externalUser, BJGameManagerFactory factory)
+    public BJGameLoadData(IPEndPoint endPoint, User localUser, User externalUser, BJGameManagerFactory factory)
     {
-        DataStream = dataStream;
+        EndPoint = endPoint;
         LocalUser = localUser;
         ExternalUser = externalUser;
         Factory = factory;

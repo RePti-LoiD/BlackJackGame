@@ -116,7 +116,7 @@ public class LobbyServer : NetworkManager
 
     public void StartGame()
     {
-        BJGameLoader.Data = new BJGameLoadData(dataStream, UserDataWrapper.UserData, remoteUserData, new BJServerGameManagerFactory());
+        BJGameLoader.Data = new BJGameLoadData(serverEndpoint, UserDataWrapper.UserData, remoteUserData, new BJServerGameManagerFactory());
         
         SendNetworkMessage(new BJRequestData()
         {
@@ -132,18 +132,20 @@ public class LobbyServer : NetworkManager
     public void CopyIPEndPointToClipboard() =>
         GUIUtility.systemCopyBuffer = serverEndpoint.ToString();
 
-    public void OnDestroy()
+    public void OnDisable()
     {
         CloseServer();
     }
 
-    public void OnDisable()
+    public void OnDestroy()
     {
         CloseServer();
     }
 
     public void CloseServer()
     {
+        Dispose();
+
         tcpListener?.Stop();
         tcpListener = null;
     }

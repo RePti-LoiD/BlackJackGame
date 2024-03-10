@@ -5669,7 +5669,6 @@ GameObject:
   - component: {fileID: 1509284923}
   - component: {fileID: 1509284922}
   - component: {fileID: 1509284925}
-  - component: {fileID: 1509284926}
   m_Layer: 0
   m_Name: LanLobbyController
   m_TagString: MainCamera
@@ -5769,18 +5768,6 @@ MonoBehaviour:
   client: {fileID: 228659634}
   exceptionText: {fileID: 0}
   serverPort: 8888
---- !u!114 &1509284926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1509284921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33cfd0ff2d4a645429fef7207251f0cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1566448888
 GameObject:
   m_ObjectHideFlags: 0

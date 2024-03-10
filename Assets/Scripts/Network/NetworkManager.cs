@@ -3,14 +3,13 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-//TODO: Добавить триггеры на вызов соответсвующих хедерам делегатов при получении пакета, чтобы не городить switch в наследниках
 public abstract class NetworkManager : MonoBehaviour, IDisposable
 {
     protected TcpClient tcpClient;
@@ -18,16 +17,14 @@ public abstract class NetworkManager : MonoBehaviour, IDisposable
 
     protected Dictionary<string, List<Action<BJRequestData>>> bindedMethods = new();
 
-    protected virtual async Task NetworkInitialization() { }
-    protected virtual void PostNetworkInitialization() { }
-    protected virtual void HandleNetworkMessage(BJRequestData data) { }
-
-
     protected async virtual void Start()
     {
         await InnerNetworkInitialization();
-
     }
+
+    protected virtual async Task NetworkInitialization() { }
+    protected virtual void PostNetworkInitialization() { }
+    protected virtual void HandleNetworkMessage(BJRequestData data) { }
 
     protected async Task InnerNetworkInitialization()
     {
@@ -42,11 +39,7 @@ public abstract class NetworkManager : MonoBehaviour, IDisposable
     {
         while (true)
         {
-            var data = await ReceiveNetworkMessage();
-            InvokeHandlers(data);
-            print($"{this} {data}");
-            if (this == null) //TODO: НА ЭТОМ БЛЯДСКОМ МОМЕНТЕ ЧЕРЕЗ РАЗ ПРОИСХОДИТ this = null!! Я ЕБУ И ПЛАЧУ
-                throw new NullReferenceException(); 
+            InvokeHandlers(await ReceiveNetworkMessage());
         }
     }
 
@@ -56,10 +49,11 @@ public abstract class NetworkManager : MonoBehaviour, IDisposable
         {
             if (item.Key == data.Header)
             {
-                print(data.Header == item.Key);
                 bindedMethods[item.Key].ForEach((handler) => handler?.Invoke(data));
+
+                return;
             }
-        } 
+        }
     }
 
     protected async void SendNetworkMessage(BJRequestData data)

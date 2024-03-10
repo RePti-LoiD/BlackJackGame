@@ -17,49 +17,9 @@ public class BJClientGameManager : BJGameManager
         AddNetworkMessageListener("StepState", StepStateNetworkMethod);
         AddNetworkMessageListener("StartStep", StartStepNetworkMethod);
         AddNetworkMessageListener("SetCard", SetCardNetworkMethod);
+        AddNetworkMessageListener("EndMove", EndMoveNetworkMethod);
     }
 
-    protected override void HandleNetworkMessage(BJRequestData data)
-    {
-        return;
-        /*print(data.Header);*/
-
-        switch (data.Header)
-        {
-            case "SetUp":
-
-                break;
-
-            case "StepState":
-                StepStateNetworkMethod(data);
-                break;
-
-            case "SetCard":
-                SetCardNetworkMethod(data);
-                break;
-
-            case "StartStep":
-                StartStepNetworkMethod(data);
-
-                break;
-
-            case "EndStep":
-
-                GetPlayerByGuid(data.UserSenderId).EndMove();
-                break;
-
-            case "GameEnd":
-                print($"Winner: {data.UserSenderId}");
-                break;
-
-            case "UseTrump":
-                break;
-
-            default:
-                print("Sent unsupported instruction");
-                break;
-        }
-    }
 
     private void StartStepNetworkMethod(BJRequestData data)
     {
@@ -74,17 +34,23 @@ public class BJClientGameManager : BJGameManager
         }
     }
 
-    private void SetCardNetworkMethod(BJRequestData data)
-    {
-        SetCardToHandler(GetPlayerByGuid(data.UserSenderId), cardManager.GetCard(int.Parse(data.Args[0])));
-    }
-
     private void StepStateNetworkMethod(BJRequestData data)
     {
         BJStepState stepState = (BJStepState)Enum.Parse(typeof(BJStepState), data.Args[0]);
 
         PlayerStep(GetPlayerByGuid(data.UserSenderId), stepState);
     }
+    
+    private void SetCardNetworkMethod(BJRequestData data)
+    {
+        SetCardToHandler(GetPlayerByGuid(data.UserSenderId), cardManager.GetCard(int.Parse(data.Args[0])));
+    }
+    
+    private void EndMoveNetworkMethod(BJRequestData data)
+    {
+        GetPlayerByGuid(data.UserSenderId).EndMove();
+    }
+    
 
     public override void PlayerStep(BJPlayer sender, BJStepState stepState)
     {
@@ -93,7 +59,9 @@ public class BJClientGameManager : BJGameManager
 
         if (sender == localPlayer)
             SendNetworkMessage(new("StepState", sender.UserData.Id.ToString(), "StepState", new() { stepState.ToString() }));
-        
+
+        sender.EndMove();
+
         currentPlayer = localPlayer == currentPlayer ? enemyPlayer : localPlayer;
     }
 
