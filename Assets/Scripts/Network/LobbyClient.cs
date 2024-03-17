@@ -44,25 +44,9 @@ public class LobbyClient : NetworkManager
         });
     }
 
-    protected override void HandleNetworkMessage(BJRequestData data)
-    {
-        return;
-
-        switch (data.Header)
-        {
-            case "UserData":
-
-                UserDataReceiveNetworkMethod(data);
-                break;
-
-            case "StartGame":
-                StartGameNetworkMethod(data);
-                break;
-        }
-    }
-
     private void StartGameNetworkMethod(BJRequestData data)
     {
+        print(remoteEndPoint);
         BJGameLoader.Data = new BJGameLoadData(remoteEndPoint, UserDataWrapper.UserData, remoteUserData, new BJClientGameManagerFactory());
 
         SceneManager.LoadScene("BlackjackSubZero");

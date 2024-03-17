@@ -6,6 +6,21 @@ public class BJLocalPlayer : BJPlayer, IBJPlayerCallbacks
     [SerializeField] private Button trueButton;
     [SerializeField] private Button falseButton;
 
+    protected BJGameManager currentManager;
+
+    protected void Start()
+    {
+        trueButton.onClick.AddListener(() =>
+        {
+            currentManager.PlayerStep(this, BJStepState.GetCard);
+        });
+
+        falseButton.onClick.AddListener(() =>
+        {
+            currentManager.PlayerStep(this, BJStepState.Pass);
+        });
+    }
+
     public override void StartMove(BJGameManager manager)
     {
         OnStartMove?.Invoke(this);
@@ -13,23 +28,12 @@ public class BJLocalPlayer : BJPlayer, IBJPlayerCallbacks
         trueButton.gameObject.SetActive(true);
         falseButton.gameObject.SetActive(true);
 
-        trueButton.onClick.AddListener(() =>
-        {
-            manager.PlayerStep(this, BJStepState.GetCard);
-        });
-
-        falseButton.onClick.AddListener(() =>
-        {
-            manager.PlayerStep(this, BJStepState.Pass);
-        });
+        currentManager = manager;
     }
 
     public override void EndMove()
     {
         OnEndMove?.Invoke(this);
-
-        trueButton.onClick.RemoveAllListeners();
-        falseButton.onClick.RemoveAllListeners();
 
         trueButton.gameObject.SetActive(false);
         falseButton.gameObject.SetActive(false);

@@ -16,25 +16,24 @@ public class BJGameLoader : MonoBehaviour
 
     public static BJGameLoadData Data;
 
-    public void Awake()
+    public async void Start()
     {
         localPlayerVisualization.VisualizeUserData(Data.LocalUser);
         externalPlayerVisualization.VisualizeUserData(Data.ExternalUser);
-        
-        var data = Data.Factory.CreateManager(gameObject, externalPlayer, Data);
-
-        localPlayer.UserData = Data.LocalUser;
-        data.Item2.UserData = Data.ExternalUser;
-        data.Item2.CardHandler = cardHandlerExternalPlayer;
 
         Data.BJCardManager = cardManager;
+        Data.CardHandlerExternalPlayer = cardHandlerExternalPlayer;
         Data.BJLocalUser = localPlayer;
-        Data.BJExternalUser = data.Item2;
+        Data.GameManagerObject = gameObject;
+        Data.BJExternalPlayerGameObject = externalPlayer;
 
-        data.Item1.AddNetworkMessageListener("StepState", stepVizualization.ReceiveNetworkMessage);
+        print(Data);
 
-        data.Item1.localPlayer = Data.BJLocalUser;
-        data.Item1.enemyPlayer = Data.BJExternalUser;
-        data.Item1.cardManager = cardManager;
+        var data = await Data.Factory.CreateManagerAsync(Data);
+
+        data.Item1.AddNetworkMessageListener("StepState", stepVizualization.StepStateVizualize);
+        data.Item1.AddNetworkMessageListener("OnBet", stepVizualization.StepStateVizualize);
+
+        data.Item1.StartGame();
     }
 }

@@ -1257,8 +1257,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1790928585}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.20528889}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0.011536325}
+  m_AnchorMax: {x: 1, y: 0.6044051}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1847,8 +1847,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 1975.56}
+  m_AnchoredPosition: {x: 0, y: 1047.5906}
+  m_SizeDelta: {x: 0, y: 2648.14}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &830020427
 MonoBehaviour:
@@ -1891,15 +1891,23 @@ MonoBehaviour:
     <indent=15%>\u041F\u043E\u043B\u043E\u043C\u0430\u043B \u043D\u0435\u043C\u043D\u043E\u0433\u043E
     \u043C\u0443\u043B\u044C\u0442\u0438\u043F\u043B\u0435\u0435\u0440.</indent>\n3.
     <indent=15%>\u041E\u0431\u043D\u043E\u0432\u043B\u0451\u043D \u043B\u043E\u043A\u0430\u043B\u044C\u043D\u044B\u0439
-    \u0440\u0435\u0436\u0438\u043C <b>BJSubzero</b>.</indent>\n\n\u041F\u043B\u0430\u043D\u044B
-    \u043D\u0430 \u0431\u0443\u0434\u0443\u0449\u0435\u0435:\n1.<indent=15%>\u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C
-    \u043E\u0444\u0444\u043B\u0430\u0439\u043D \u0440\u0435\u0436\u0438\u043C.</indent>\n2.<indent=15%>\u0421\u0434\u0435\u043B\u0430\u0442\u044C
+    \u0440\u0435\u0436\u0438\u043C <b>BJSubzero</b>.</indent>\n\n========================================\n15.03.24
+    \u041E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u0435:\n1. <indent=15%>\u041E\u0442\u0440\u0435\u043C\u043E\u043D\u0442\u0438\u0440\u043E\u0432\u0430\u043B
+    \u0441\u0435\u0442\u0435\u0432\u043E\u0435 \u0432\u0437\u0430\u0438\u043C\u043E\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435.</indent>\r\n2.
+    <indent=15%>\u041E\u0442\u0440\u0435\u043C\u043E\u043D\u0442\u0438\u0440\u043E\u0432\u0430\u043B
+    \u043B\u043E\u043A\u0430\u043B\u044C\u043D\u0443\u044E \u0438\u0433\u0440\u0443.</indent>\n3.
+    <indent=15%>\u041D\u0435\u043C\u043D\u043E\u0433\u043E \u0443\u0441\u043A\u043E\u0440\u0438\u043B
+    \u0430\u043D\u0438\u043C\u0430\u0446\u0438\u0438 \u0440\u0430\u0437\u0432\u043E\u0440\u043E\u0442\u0430/\u0437\u0430\u043A\u0440\u044B\u0442\u0438\u044F
+    \u043F\u0430\u043D\u0435\u043B\u0438 \u0434\u0430\u043D\u043D\u044B\u0445 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F.</indent>\n\n\u041F\u043B\u0430\u043D\u044B
+    \u043D\u0430 \u0431\u0443\u0434\u0443\u0449\u0435\u0435:\n1.<indent=15%><size=70>\u2713</size>
+    \u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C \u043E\u0444\u0444\u043B\u0430\u0439\u043D
+    \u0440\u0435\u0436\u0438\u043C.</indent>\n2.<indent=15%>\u0421\u0434\u0435\u043B\u0430\u0442\u044C
     \u043D\u0435\u043F\u0440\u0435\u0440\u044B\u0432\u043D\u044B\u0439 \u0441\u0435\u0430\u043D\u0441
     \u0438\u0437 \u043D\u0435\u0441\u043A\u043E\u043B\u044C\u043A\u0438\u0445 \u0438\u0433\u0440.</indent>\n3.<indent=15%>\u0412\u043D\u0435\u0434\u0440\u0438\u0442\u044C
     \u043A\u043E\u0437\u044B\u0440\u0438 (\u043F\u0435\u0440\u043A\u0438 \u0434\u043B\u044F
-    \u0438\u0433\u0440\u044B).</indent>\n4.<indent=15%>\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C
+    \u0438\u0433\u0440\u044B).</indent>\n4.<indent=15%><size=70>\u2713</size> \u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C
     \u0432\u043E\u0437\u043C\u043E\u0436\u043D\u043E\u0441\u0442\u044C \u0441\u043C\u0435\u043D\u044B
-    \u0438\u043C\u0435\u043D\u0438.</indent>"
+    \u0438\u043C\u0435\u043D\u0438.</indent>\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d9a5072ca040cc547a388c9bd9cb221d, type: 2}
   m_sharedMaterial: {fileID: 1215138136391807556, guid: d9a5072ca040cc547a388c9bd9cb221d, type: 2}
@@ -6267,8 +6275,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 751354689}
   m_HandleRect: {fileID: 751354688}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.7947111
+  m_Value: 0.028335646
+  m_Size: 0.5928688
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

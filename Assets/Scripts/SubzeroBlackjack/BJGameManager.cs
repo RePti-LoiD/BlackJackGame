@@ -10,6 +10,8 @@ public abstract class BJGameManager : NetworkManager
 
     public bool IsGameEnd { get; protected set; } = false;
 
+    public abstract void StartGame();
+
     public abstract void PlayerStep(BJPlayer sender, BJStepState stepState);
 
     public abstract void GameEnd();

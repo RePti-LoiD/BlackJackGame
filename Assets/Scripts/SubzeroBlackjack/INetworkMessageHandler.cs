@@ -1,4 +1,4 @@
 ﻿public interface INetworkMessageHandler
 {
-    public void ReceiveNetworkMessage(BJRequestData message);
+    public void StepStateVizualize(BJRequestData message);
 }

@@ -1,21 +1,28 @@
 using System.Net.Sockets;
-using UnityEngine;
+using System.Threading.Tasks;
 
 public class BJClientGameManagerFactory : BJGameManagerFactory
 {
-    public override (BJGameManager, BJPlayer) CreateManager(GameObject targetGameObject, GameObject targetPlayerObject, BJGameLoadData data)
+    public override async Task<(BJGameManager, BJPlayer)> CreateManagerAsync(BJGameLoadData data)
     {
-        TcpClient client = new TcpClient();
-        client.Connect(data.EndPoint);
+        TcpClient client = new();
+        await client.ConnectAsync(data.EndPoint.Address, data.EndPoint.Port);
+        UnityEngine.Debug.Log("connected");
 
-        var bJClientGameManager = targetGameObject.AddComponent<BJClientGameManager>();
+        BJClientGameManager bJClientGameManager = data.GameManagerObject.AddComponent<BJClientGameManager>();
+        
+        BJMinimalPlayer bJMinimalPlayer = data.BJExternalPlayerGameObject.AddComponent<BJMinimalPlayer>();
+        bJMinimalPlayer.CardHandler = data.CardHandlerExternalPlayer;
+
         bJClientGameManager.dataStream = client.GetStream();
+
         bJClientGameManager.localPlayer = data.BJLocalUser;
-        bJClientGameManager.enemyPlayer = data.BJExternalUser;
+        bJClientGameManager.localPlayer.UserData = data.LocalUser;
+
+        bJClientGameManager.enemyPlayer = bJMinimalPlayer;
+        bJMinimalPlayer.UserData = data.ExternalUser;
+
         bJClientGameManager.cardManager = data.BJCardManager;
-
-        var bJMinimalPlayer = targetPlayerObject.AddComponent<BJMinimalPlayer>();
-
 
         return (bJClientGameManager, bJMinimalPlayer);
     }

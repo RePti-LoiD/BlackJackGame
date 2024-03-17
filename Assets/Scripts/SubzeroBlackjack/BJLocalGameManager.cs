@@ -1,6 +1,8 @@
 public class BJLocalGameManager : BJGameManager
 {
-    protected override void Start()
+    protected override void Start() { }
+
+    public override void StartGame()
     {
         currentPlayer = localPlayer;
 
@@ -15,6 +17,10 @@ public class BJLocalGameManager : BJGameManager
     public override void PlayerStep(BJPlayer sender, BJStepState stepState)
     {
         if (sender != currentPlayer) return;
+        
+        print(sender.UserData);
+        
+        InvokeHandlers(new BJRequestData("StepState", sender.UserData.Id.ToString(), "StepState", new() { stepState.ToString() }));
         
         if (cardManager.IsStackEmpty)
         {
@@ -41,8 +47,9 @@ public class BJLocalGameManager : BJGameManager
         lastStepData = stepState;
         print($"{sender} -> {stepState}");
 
-        sender.EndMove();
 
+        sender.EndMove();
+        
         currentPlayer = localPlayer == currentPlayer ? enemyPlayer : localPlayer;
         currentPlayer.StartMove(this);
     }

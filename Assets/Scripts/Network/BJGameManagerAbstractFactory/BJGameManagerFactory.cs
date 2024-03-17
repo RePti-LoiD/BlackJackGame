@@ -1,6 +1,6 @@
-using UnityEngine;
+using System.Threading.Tasks;
 
 public abstract class BJGameManagerFactory
 {
-    public abstract (BJGameManager, BJPlayer) CreateManager(GameObject targetGameObject, GameObject targetPlayerObject, BJGameLoadData data);
+    public abstract Task<(BJGameManager, BJPlayer)> CreateManagerAsync(BJGameLoadData data);
 }

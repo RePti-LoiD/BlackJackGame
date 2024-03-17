@@ -60,27 +60,8 @@ public class LobbyServer : NetworkManager
             Header = "UserData",
             State = "UserData",
             UserSenderId = UserDataWrapper.UserData.Id.ToString(),
-            Args = new ()
-            { 
-                JsonConvert.SerializeObject(UserDataWrapper.UserData) 
-            }
+            Args = new () { JsonConvert.SerializeObject(UserDataWrapper.UserData) }
         });
-    }
-
-    protected override void HandleNetworkMessage(BJRequestData data)
-    {
-        return;
-
-        switch (data.Header)
-        {
-            case "UserData":
-                UserDataReceiveNetworkMethod(data);
-                break;
-
-            case "ConnectionRequest":
-                ConnectionRequestNetworkMethod(data);
-                break;
-        }
     }
 
     private void ConnectionRequestNetworkMethod(BJRequestData data)
@@ -116,6 +97,7 @@ public class LobbyServer : NetworkManager
 
     public void StartGame()
     {
+        print(serverEndpoint);
         BJGameLoader.Data = new BJGameLoadData(serverEndpoint, UserDataWrapper.UserData, remoteUserData, new BJServerGameManagerFactory());
         
         SendNetworkMessage(new BJRequestData()
@@ -132,15 +114,11 @@ public class LobbyServer : NetworkManager
     public void CopyIPEndPointToClipboard() =>
         GUIUtility.systemCopyBuffer = serverEndpoint.ToString();
 
-    public void OnDisable()
-    {
+    public void OnDisable() =>
         CloseServer();
-    }
 
-    public void OnDestroy()
-    {
+    public void OnDestroy() =>
         CloseServer();
-    }
 
     public void CloseServer()
     {

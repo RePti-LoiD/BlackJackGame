@@ -7,9 +7,10 @@ public class BJServerGameManager : BJGameManager, IDisposable
         BindMethods();
     }
 
-    protected override void Start()
-    {
+    protected override void Start() { }
 
+    public override void StartGame()
+    {
         ListenNetworkStream();
 
         PostNetworkInitialization();
