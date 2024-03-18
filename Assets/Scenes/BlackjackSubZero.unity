@@ -4080,6 +4080,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 85724231}
     m_Modifications:
+    - target: {fileID: 516009899485021846, guid: 553799a95ad119440a9971500100ae64, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 516009899485021846, guid: 553799a95ad119440a9971500100ae64, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 516009899485021846, guid: 553799a95ad119440a9971500100ae64, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 590
+      objectReference: {fileID: 0}
+    - target: {fileID: 516009899485021846, guid: 553799a95ad119440a9971500100ae64, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155203408944150072, guid: 553799a95ad119440a9971500100ae64, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155203408944150072, guid: 553799a95ad119440a9971500100ae64, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155203408944150072, guid: 553799a95ad119440a9971500100ae64, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50
+      objectReference: {fileID: 0}
     - target: {fileID: 6231636016279535984, guid: 553799a95ad119440a9971500100ae64, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4163,6 +4191,10 @@ PrefabInstance:
     - target: {fileID: 8136342728246384939, guid: 553799a95ad119440a9971500100ae64, type: 3}
       propertyPath: m_Name
       value: ServerBetFrame
+      objectReference: {fileID: 0}
+    - target: {fileID: 8136342728246384939, guid: 553799a95ad119440a9971500100ae64, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

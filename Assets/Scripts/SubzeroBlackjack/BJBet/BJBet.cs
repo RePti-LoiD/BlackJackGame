@@ -4,19 +4,38 @@ using UnityEngine;
 
 public class BJBet : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI localPlayerBalanceText;
+    [SerializeField] private TextMeshProUGUI betAmountText;
+
     [SerializeField] private TextMeshProUGUI enemyBetText;
     [SerializeField] private char currency;
 
     public Action<int> OnBetFinished;
     public Action<int> OnBetSet;
 
-    public int CurrentBet;
+    [SerializeField] protected int currentBet = 0;
 
-    public void SetEnemyBet(int currentBet)
+    public int CurrentBet 
+    { 
+        get => currentBet; 
+        set
+        {
+            currentBet = value;
+
+            betAmountText.text = currentBet.ToString() + currency;
+        }
+    }
+
+    protected virtual void Start()
     {
-        CurrentBet = currentBet;
-        enemyBetText.text = currentBet.ToString() + currency;
+        localPlayerBalanceText.text = UserDataWrapper.UserData.UserWallet.Balance.ToString() + currency;
+    }
 
-        OnBetSet?.Invoke(currentBet);
+    public void SetEnemyBet(int bet)
+    {
+        CurrentBet = bet;
+        enemyBetText.text = bet.ToString() + currency;
+
+        OnBetSet?.Invoke(CurrentBet);
     }
 }

@@ -1,8 +1,9 @@
 public class BJClientBet : BJBet
 {
-    public void ChangeBet(int multiplier)
+    public void ChangeBet(float multiplier)
     {
-        CurrentBet *= multiplier;
+        CurrentBet = (int)(CurrentBet * multiplier);
+        print(CurrentBet);
 
         OnBetSet?.Invoke(CurrentBet);
     }

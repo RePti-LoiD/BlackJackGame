@@ -498,8 +498,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 1694498815
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.39215687}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2040,9 +2040,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 132af8517751cde4584aed809d479e66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  localPlayerBalanceText: {fileID: 6074966618834952692}
   enemyBetText: {fileID: 8679221933176335064}
   currency: 36
   CurrentBet: 0
+  betField: {fileID: 2708110728161417441}
 --- !u!1 &8399042225943912441
 GameObject:
   m_ObjectHideFlags: 0
