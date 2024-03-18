@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class BJGameLoader : MonoBehaviour
 {
+    [SerializeField] private BJBet betHandler;
+
     [SerializeField] private BJPlayer localPlayer;
     [SerializeField] private GameObject externalPlayer;
 
@@ -9,8 +11,8 @@ public class BJGameLoader : MonoBehaviour
 
     [SerializeField] private BJCardManager cardManager;
 
-    [SerializeField] private UserDataVisualization localPlayerVisualization;
-    [SerializeField] private UserDataVisualization externalPlayerVisualization;
+    [SerializeField] private BJPlayerDataVizualization localPlayerVisualization;
+    [SerializeField] private BJPlayerDataVizualization externalPlayerVisualization;
 
     [SerializeField] private BJPlayerStepVizualization stepVizualization;
 
@@ -18,9 +20,6 @@ public class BJGameLoader : MonoBehaviour
 
     public async void Start()
     {
-        localPlayerVisualization.VisualizeUserData(Data.LocalUser);
-        externalPlayerVisualization.VisualizeUserData(Data.ExternalUser);
-
         Data.BJCardManager = cardManager;
         Data.CardHandlerExternalPlayer = cardHandlerExternalPlayer;
         Data.BJLocalUser = localPlayer;
@@ -34,6 +33,15 @@ public class BJGameLoader : MonoBehaviour
         data.Item1.AddNetworkMessageListener("StepState", stepVizualization.StepStateVizualize);
         data.Item1.AddNetworkMessageListener("OnBet", stepVizualization.StepStateVizualize);
 
-        data.Item1.StartGame();
+        betHandler.OnBetFinished += (betAmount) =>
+        {
+            localPlayer.PlayerBet = betAmount;
+            data.Item2.PlayerBet = betAmount;
+
+            data.Item1.StartGame();
+        };
+
+        localPlayerVisualization.VisualizeBJPlayerData(Data.BJLocalUser);
+        externalPlayerVisualization.VisualizeBJPlayerData(data.Item2);
     }
 }

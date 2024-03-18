@@ -2,9 +2,12 @@ public class BJClientBet : BJBet
 {
     public void ChangeBet(float multiplier)
     {
-        CurrentBet = (int)(CurrentBet * multiplier);
-        print(CurrentBet);
+        int newBet = (int)(CurrentBet * multiplier);
 
+        if (newBet > UserDataWrapper.UserData.UserWallet.Balance) return;
+
+        CurrentBet = (int)(CurrentBet * multiplier);
+        
         OnBetSet?.Invoke(CurrentBet);
     }
 }
