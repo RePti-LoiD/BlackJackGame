@@ -26,12 +26,15 @@ public class BJGameLoader : MonoBehaviour
         Data.GameManagerObject = gameObject;
         Data.BJExternalPlayerGameObject = externalPlayer;
 
-        print(Data);
-
         var data = await Data.Factory.CreateManagerAsync(Data);
 
         data.Item1.AddNetworkMessageListener("StepState", stepVizualization.StepStateVizualize);
-        data.Item1.AddNetworkMessageListener("OnBet", stepVizualization.StepStateVizualize);
+        data.Item1.AddNetworkMessageListener("OnBet", stepVizualization.OnBetVizualize);
+        data.Item1.AddNetworkMessageListener("OnGameEnd", stepVizualization.OnGameEndVizualize);
+        
+        betHandler.gameObject.SetActive(true);
+        betHandler.OnBetSet += data.Item1.OnBet;
+
 
         betHandler.OnBetFinished += (betAmount) =>
         {
@@ -39,6 +42,9 @@ public class BJGameLoader : MonoBehaviour
             data.Item2.PlayerBet = betAmount;
 
             data.Item1.StartGame();
+
+            localPlayerVisualization.UpdateData();
+            externalPlayerVisualization.UpdateData();
         };
 
         localPlayerVisualization.VisualizeBJPlayerData(Data.BJLocalUser);

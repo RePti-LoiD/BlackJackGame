@@ -7,6 +7,7 @@ public class ReturnToMenu : MonoBehaviour
     [SerializeField] private int sceneIndex;
 
     [Header("Modal Frame preferences")]
+    [SerializeField] private bool useModalFrame;
     [SerializeField] private string label;
     [SerializeField] private string primaryButtonText;
     [SerializeField] private string secondaryButtonText;
@@ -22,7 +23,15 @@ public class ReturnToMenu : MonoBehaviour
         };
     }
 
-    public void StartDialog()
+    public void ReturnToScene()
+    {
+        if (useModalFrame)
+            StartDialog();
+        else
+            SceneManager.LoadScene(sceneIndex);
+    }
+
+    private void StartDialog()
     {
         modalFrame.SetLabel(label).
             SetPrimaryButton(primaryButtonText).

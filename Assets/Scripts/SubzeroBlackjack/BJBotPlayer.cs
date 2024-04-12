@@ -10,7 +10,7 @@ public class BJBotPlayer : BJPlayer
     {
         StartCoroutine(
             DoAfterDelay(2, () => 
-                manager.PlayerStep(this, (BJStepState)UnityEngine.Random.Range(0, 2))));
+                manager.PlayerStep(this, (BJStepState)UnityEngine.Random.Range(1, 3))));
     }
 
     private IEnumerator DoAfterDelay(int sec, Action action)

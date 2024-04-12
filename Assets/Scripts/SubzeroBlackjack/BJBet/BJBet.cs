@@ -11,7 +11,7 @@ public class BJBet : MonoBehaviour
     [SerializeField] private char currency;
 
     public Action<int> OnBetFinished;
-    public Action<int> OnBetSet;
+    public Action<int, int> OnBetSet;
 
     [SerializeField] protected int currentBet = 0;
 
@@ -31,11 +31,16 @@ public class BJBet : MonoBehaviour
         localPlayerBalanceText.text = UserDataWrapper.UserData.UserWallet.Balance.ToString() + currency;
     }
 
-    public void SetEnemyBet(int bet)
+    public void UpdateBet(int bet)
     {
+        OnBetSet?.Invoke(bet, CurrentBet);
+
         CurrentBet = bet;
         enemyBetText.text = bet.ToString() + currency;
+    }
 
-        OnBetSet?.Invoke(CurrentBet);
+    public void ConfirmBet()
+    {
+        OnBetFinished?.Invoke(CurrentBet);
     }
 }

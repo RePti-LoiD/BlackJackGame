@@ -90,7 +90,7 @@ public class BJClientGameManager : BJGameManager
         SetCardToHandler(player, cardManager.GetCard());
     }
 
-    protected override void SetCardToHandler(BJPlayer player, BlackjackCard card)
+    protected override void SetCardToHandler(BJPlayer player, BJCard card)
     {
         player.CardHandler.SetCard(card);
     }

@@ -14,7 +14,7 @@ public class BJServerBet : BJBet
             print(data);
             CurrentBet = int.Parse(data);
 
-            OnBetSet?.Invoke(CurrentBet);
+            OnBetSet?.Invoke(CurrentBet, CurrentBet);
         });
         
         betField.onValueChanged.AddListener((data) =>
@@ -34,6 +34,6 @@ public class BJServerBet : BJBet
 
         CurrentBet = int.Parse(currentBetText.text.Trim());
 
-        OnBetSet?.Invoke(CurrentBet);
+        OnBetSet?.Invoke(CurrentBet, CurrentBet);
     }
 }

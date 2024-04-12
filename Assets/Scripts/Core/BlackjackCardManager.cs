@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[Obsolete]
 public class BlackjackCardManager : MonoBehaviour
 {
     [SerializeField] private BlackjackPlayer player, bot;
@@ -13,7 +14,7 @@ public class BlackjackCardManager : MonoBehaviour
     [Header("---------------")]
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] public List<Card> cards = new List<Card>();
-    [SerializeField] private List<BlackjackCard> spawnedCards = new List<BlackjackCard>();
+    [SerializeField] private List<BJCard> spawnedCards = new List<BJCard>();
     [SerializeField] private PlayerBet playerBet; 
     [SerializeField] private User user;
 
@@ -95,9 +96,9 @@ public class BlackjackCardManager : MonoBehaviour
         {
             renderIndex++;
             GameObject spawnedCard = Instantiate(cardPrefab, transform);
-            spawnedCard.GetComponent<BlackjackCard>().SetCardStruct(card, renderIndex);
+            spawnedCard.GetComponent<BJCard>().SetCardStruct(card, renderIndex);
 
-            spawnedCards.Add(spawnedCard.GetComponent<BlackjackCard>());
+            spawnedCards.Add(spawnedCard.GetComponent<BJCard>());
         }
 
         // это какой-то пиздец. надо будет убрать
@@ -235,11 +236,11 @@ public class BlackjackCardManager : MonoBehaviour
         currentPlayer.OnTurn(this);
     }
 
-    public BlackjackCard PutCard() 
+    public BJCard PutCard() 
     {
         if (currentCard + 1 > spawnedCards.Count - 1) return null;
 
-        BlackjackCard blackjackCard = spawnedCards[currentCard];
+        BJCard blackjackCard = spawnedCards[currentCard];
 
         currentCard++;
 

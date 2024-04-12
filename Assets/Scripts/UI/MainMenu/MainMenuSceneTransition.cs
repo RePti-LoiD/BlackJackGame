@@ -7,6 +7,7 @@ public class MainMenuSceneTransition : MonoBehaviour
 {
     [SerializeField] private Button offlineBlackJackButton;
     [SerializeField] private Button lanBlackJackButton;
+    [SerializeField] private Button legacyBlackJackButton;
 
     private void Start()
     {
@@ -25,6 +26,16 @@ public class MainMenuSceneTransition : MonoBehaviour
             NextSceneData data = NextSceneData.Init();
             data.SceneIndex = 5;
             data.SceneName = "LAN Blacjack 21";
+
+            SceneManager.LoadScene(1);
+
+        });
+
+        legacyBlackJackButton.onClick.AddListener(() =>
+        {
+            NextSceneData data = NextSceneData.Init();
+            data.SceneIndex = 3;
+            data.SceneName = "Legacy blackjack";
 
             SceneManager.LoadScene(1);
 

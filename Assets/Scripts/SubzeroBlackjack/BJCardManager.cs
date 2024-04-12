@@ -7,9 +7,10 @@ public class BJCardManager : MonoBehaviour
     [SerializeField] private List<Card> cards = new List<Card>();
     [SerializeField] private bool cardsLayering = true;
 
-    [SerializeField] private List<BlackjackCard> spawnedCards = new List<BlackjackCard>();
-    public bool IsStackEmpty => spawnedCards.Count == 0;
+    [SerializeField] private List<BJCard> spawnedCards = new List<BJCard>();
 
+    [SerializeField] private int cardsRotation = 25; 
+    public bool IsStackEmpty => spawnedCards.Count == 0;
 
     private void Awake()
     {
@@ -21,13 +22,14 @@ public class BJCardManager : MonoBehaviour
         {
             renderIndex++;
             GameObject spawnedCard = Instantiate(cardPrefab, transform);
-            spawnedCard.GetComponent<BlackjackCard>().SetCardStruct(card, cardsLayering ? renderIndex : -renderIndex);
+            spawnedCard.GetComponent<BJCard>().SetCardStruct(card, cardsLayering ? renderIndex : -renderIndex);
+            spawnedCard.gameObject.transform.eulerAngles = new Vector3(0, 0,cardsRotation);
 
-            spawnedCards.Add(spawnedCard.GetComponent<BlackjackCard>());
+            spawnedCards.Add(spawnedCard.GetComponent<BJCard>());
         }
     }
 
-    public BlackjackCard GetCard(int weight)
+    public BJCard GetCard(int weight)
     {
         foreach (var card in spawnedCards)
         {
@@ -38,11 +40,16 @@ public class BJCardManager : MonoBehaviour
         return null;
     }
 
-    public BlackjackCard GetCard()
+    public BJCard GetCard()
     {
         var card = spawnedCards[^1];
         spawnedCards.RemoveAt(spawnedCards.Count - 1);
 
         return card;
+    }
+
+    public BJCard PeekLastCard()
+    {
+        return spawnedCards[^1];
     }
 }

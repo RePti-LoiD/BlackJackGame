@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 public class BJLocalGameManager : BJGameManager
 {
     protected override void Start() { }
@@ -6,12 +9,23 @@ public class BJLocalGameManager : BJGameManager
     {
         currentPlayer = localPlayer;
 
-        SetCardToHandler(localPlayer);
-        SetCardToHandler(localPlayer);
-        SetCardToHandler(enemyPlayer);
-        SetCardToHandler(enemyPlayer);
+        SetUpCards(new()
+        {
+            { localPlayer, new BJCard[] { cardManager.GetCard(), cardManager.GetCard() } },
+            { enemyPlayer, new BJCard[] { cardManager.GetCard(), cardManager.GetCard() } }
+        });
 
         localPlayer.StartMove(this);
+    }
+
+    private async void SetUpCards(Dictionary<BJPlayer, BJCard[]> playerCards, int delay = 500)
+    {
+        foreach (var player in playerCards)
+            foreach (var card in player.Value)
+            {
+                SetCardToHandler(player.Key, card);
+                await Task.Delay(delay);
+            }
     }
 
     public override void PlayerStep(BJPlayer sender, BJStepState stepState)
@@ -24,29 +38,27 @@ public class BJLocalGameManager : BJGameManager
         
         if (cardManager.IsStackEmpty)
         {
-            GameEnd();
             sender.EndMove();
+
+            GameEnd();
             return;
         }
         
-        if (lastStepData != BJStepState.Default && 
-            stepState == BJStepState.Pass && 
-            lastStepData == BJStepState.Pass)
+        if (stepState == BJStepState.Pass && lastStepData == BJStepState.Pass)
         {
-            GameEnd();
             sender.EndMove();
+
+            GameEnd();
             return;
         }
 
         if (stepState == BJStepState.GetCard)
-        {
             SetCardToHandler(sender);
-            //Transpor layer 
-        }
 
-        lastStepData = stepState;
         print($"{sender} -> {stepState}");
 
+        print(stepState == lastStepData);
+        lastStepData = stepState;
 
         sender.EndMove();
         
@@ -56,8 +68,9 @@ public class BJLocalGameManager : BJGameManager
 
     public override void GameEnd()
     {
-        IsGameEnd = true;
-        print("Game end");
+        base.GameEnd();
+
+        InvokeHandlers(new BJRequestData("OnGameEnd", currentWinner.UserData.Id.ToString(), "Win", new ()));
     }
 
     public override void SetCardToHandler(BJPlayer player)
@@ -65,7 +78,7 @@ public class BJLocalGameManager : BJGameManager
         SetCardToHandler(player, cardManager.GetCard());
     }
 
-    protected override void SetCardToHandler(BJPlayer player, BlackjackCard card)
+    protected override void SetCardToHandler(BJPlayer player, BJCard card)
     {
         player.CardHandler.SetCard(card);
     }

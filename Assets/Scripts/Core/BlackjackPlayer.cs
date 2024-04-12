@@ -41,7 +41,7 @@ public class BlackjackPlayer : MonoBehaviour, IOnTurn, IOnTurnEnd
         });
     }
 
-    public virtual void SetCard(BlackjackCard card)
+    public virtual void SetCard(BJCard card)
     {
         if (cards.Count == 0)
             card.HideCard();

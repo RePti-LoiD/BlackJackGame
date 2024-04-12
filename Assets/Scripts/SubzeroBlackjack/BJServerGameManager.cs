@@ -116,9 +116,9 @@ public class BJServerGameManager : BJGameManager, IDisposable
         SetCardToHandler(player, cardManager.GetCard());
     }
 
-    protected override void SetCardToHandler(BJPlayer player, BlackjackCard card)
+    protected override void SetCardToHandler(BJPlayer player, BJCard card)
     {
-        BlackjackCard blackjackCard = card;
+        BJCard blackjackCard = card;
         player.CardHandler.SetCard(blackjackCard);
 
         SendNetworkMessage(new("SetCard", player.UserData.Id.ToString(), "SetCard", new() { blackjackCard.CardData.CardWeight.ToString() }));

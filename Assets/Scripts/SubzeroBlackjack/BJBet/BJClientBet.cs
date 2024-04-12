@@ -6,8 +6,7 @@ public class BJClientBet : BJBet
 
         if (newBet > UserDataWrapper.UserData.UserWallet.Balance) return;
 
+        OnBetSet?.Invoke(newBet, CurrentBet);
         CurrentBet = (int)(CurrentBet * multiplier);
-        
-        OnBetSet?.Invoke(CurrentBet);
     }
 }

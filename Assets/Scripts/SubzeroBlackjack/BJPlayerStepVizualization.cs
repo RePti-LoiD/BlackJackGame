@@ -27,8 +27,25 @@ public class BJPlayerStepVizualization : MonoBehaviour
 
     public void OnBetVizualize(BJRequestData data)
     {
+        char betSymbol = int.Parse(data.Args[0]) > 0 ? '↑' : '↓';
+        string strMessage = $"<color=#FFD701>Bet {betSymbol}</color>";
+
+        if (data.UserSenderId == UserDataWrapper.UserData.Id.ToString())
+        {
+            localPlayerVizualize.text = strMessage;
+            localPlayerVizualizeAnimator.SetTrigger("ShowText");
+        }
+        else
+        {
+            externalPlayerVizualize.text = strMessage;
+            externalPlayerVizualizeAnimator.SetTrigger("ShowText");
+        }
+    }
+
+    public void OnGameEndVizualize(BJRequestData data)
+    {
         //↓↑
-        string strMessage = data.Args[0] == "GetCard" ? "<color=#FFD701>PICK!</color>" : "PASS";
+        string strMessage = "<color=#93CC2F>WIN!!</color>";
 
         if (data.UserSenderId == UserDataWrapper.UserData.Id.ToString())
         {

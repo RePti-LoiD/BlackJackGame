@@ -9,4 +9,9 @@ public class OnActivate : MonoBehaviour
     {
         onActivate.Invoke();
     }
+
+    public void DisableComponent()
+    {
+        gameObject.SetActive(false);
+    }
 }

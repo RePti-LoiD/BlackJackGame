@@ -10,15 +10,9 @@ public class BJLocalPlayer : BJPlayer, IBJPlayerCallbacks
 
     protected void Start()
     {
-        trueButton.onClick.AddListener(() =>
-        {
-            currentManager.PlayerStep(this, BJStepState.GetCard);
-        });
+        trueButton.onClick.AddListener(PickCard);
 
-        falseButton.onClick.AddListener(() =>
-        {
-            currentManager.PlayerStep(this, BJStepState.Pass);
-        });
+        falseButton.onClick.AddListener(PassCard);
     }
 
     public override void StartMove(BJGameManager manager)
@@ -43,4 +37,10 @@ public class BJLocalPlayer : BJPlayer, IBJPlayerCallbacks
     {
         OnTrumpChoose?.Invoke(this);
     }
+
+    public void PickCard() => 
+        currentManager.PlayerStep(this, BJStepState.GetCard);
+
+    public void PassCard() =>
+        currentManager.PlayerStep(this, BJStepState.Pass);
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BlackjackCard : MonoBehaviour
+public class BJCard : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer cardImage;
     [SerializeField] private Sprite hiddenCard;

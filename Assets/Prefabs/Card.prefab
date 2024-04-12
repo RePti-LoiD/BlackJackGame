@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8456168263843546016}
   - component: {fileID: 6516701172587490934}
-  - component: {fileID: -1409960366450414737}
   - component: {fileID: -6288510396778941536}
   - component: {fileID: 197208957691578026}
+  - component: {fileID: 5472862481676060921}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -47,22 +47,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1296902310869483731}
   m_CullTransparentMesh: 1
---- !u!114 &-1409960366450414737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1296902310869483731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82d5f3e030d96fa4aa59706b9218c8c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardImage: {fileID: -6288510396778941536}
-  hiddenCard: {fileID: -1368394087, guid: 2da71e03588a3744dacae7f2b022fc89, type: 3}
-  animator: {fileID: 197208957691578026}
-  CardData: {fileID: 0}
 --- !u!212 &-6288510396778941536
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -106,7 +90,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1692781602, guid: 2da71e03588a3744dacae7f2b022fc89, type: 3}
+  m_Sprite: {fileID: -1368394087, guid: 2da71e03588a3744dacae7f2b022fc89, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -139,3 +123,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5472862481676060921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296902310869483731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53006572c1dccec41bb2f843fbebcdff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardImage: {fileID: -6288510396778941536}
+  hiddenCard: {fileID: -1368394087, guid: 2da71e03588a3744dacae7f2b022fc89, type: 3}
+  animator: {fileID: 197208957691578026}
+  CardData: {fileID: 0}

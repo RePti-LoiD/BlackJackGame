@@ -4,7 +4,7 @@ using System.Linq;
 
 public class CardStackHandler : MonoBehaviour
 {
-    [SerializeField] private List<BlackjackCard> cards = new List<BlackjackCard>();
+    [SerializeField] public List<BJCard> cards = new List<BJCard>();
     
     [Header("Preferences")]
     [SerializeField] private CardStackAxis stackAxis;
@@ -13,7 +13,7 @@ public class CardStackHandler : MonoBehaviour
     [SerializeField] private bool backNumeration = false;
     [SerializeField] private bool enableNumeration = false;
 
-    public bool TryGetCard(out BlackjackCard blackjackCard, int index)
+    public bool TryGetCard(out BJCard blackjackCard, int index)
     {
         if (index >= 0 && index < cards.Count)
         {
@@ -28,12 +28,12 @@ public class CardStackHandler : MonoBehaviour
         return true;
     }
 
-    public BlackjackCard PeekCard(int index)
+    public BJCard PeekCard(int index)
     {
         return cards.ToList()[index];
     }
 
-    public void SetCard(BlackjackCard blackjackCard)
+    public void SetCard(BJCard blackjackCard)
     {
         blackjackCard.transform.parent = transform;
         if (cards.Count > 0) 
@@ -52,7 +52,7 @@ public class CardStackHandler : MonoBehaviour
     private void Update()
     {
         int i = 0;
-        foreach (BlackjackCard card in cards)
+        foreach (BJCard card in cards)
         {
             Vector2 newPosition = new Vector2(
                 stackAxis == CardStackAxis.Horizontal ? i * cardsOffset : 0, 
