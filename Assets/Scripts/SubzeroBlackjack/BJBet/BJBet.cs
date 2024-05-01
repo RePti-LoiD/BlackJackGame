@@ -1,9 +1,12 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BJBet : MonoBehaviour
 {
+    [SerializeField] private Button confirmButton;
+
     [SerializeField] private TextMeshProUGUI localPlayerBalanceText;
     [SerializeField] private TextMeshProUGUI betAmountText;
 
@@ -29,6 +32,9 @@ public class BJBet : MonoBehaviour
     protected virtual void Start()
     {
         localPlayerBalanceText.text = UserDataWrapper.UserData.UserWallet.Balance.ToString() + currency;
+
+        if (FindObjectOfType<BJGameManager>() is BJClientGameManager)
+            confirmButton.interactable = false;
     }
 
     public void UpdateBet(int bet)

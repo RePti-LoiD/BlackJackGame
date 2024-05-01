@@ -12,7 +12,7 @@ public class BJCardManager : MonoBehaviour
     [SerializeField] private int cardsRotation = 25; 
     public bool IsStackEmpty => spawnedCards.Count == 0;
 
-    private void Awake()
+    public void Awake()
     {
         cards = cards.ShuffleList();
 
@@ -31,13 +31,17 @@ public class BJCardManager : MonoBehaviour
 
     public BJCard GetCard(int weight)
     {
+        BJCard bjCard = null;
+
         foreach (var card in spawnedCards)
         {
             if (card.CardData.CardWeight == weight)
-                return card;
+                bjCard = card;
         }
+        
+        spawnedCards.Remove(bjCard);
 
-        return null;
+        return bjCard;
     }
 
     public BJCard GetCard()
@@ -51,5 +55,16 @@ public class BJCardManager : MonoBehaviour
     public BJCard PeekLastCard()
     {
         return spawnedCards[^1];
+    }
+
+    public void ReturnCard(BJCard card)
+    {
+        spawnedCards.Add(card);
+
+        card.gameObject.transform.parent = transform;
+        card.transform.rotation = Quaternion.identity;
+        card.HideCard();
+
+        spawnedCards = spawnedCards.ShuffleList();
     }
 }

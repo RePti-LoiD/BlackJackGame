@@ -6,6 +6,8 @@ public abstract class BJGameManager : NetworkManager
 
     public BJPlayer localPlayer;
     public BJPlayer enemyPlayer;
+
+    public BJBet Bet;
     
     public BJCardManager cardManager;
 
@@ -68,7 +70,7 @@ public abstract class BJGameManager : NetworkManager
         }
     }
 
-    public virtual void OnBet(int bet, int previousBet) 
+    public virtual void OnBet(int bet, int previousBet)
     {
         InvokeHandlers(new BJRequestData("OnBet", localPlayer.UserData.Id.ToString(), "OnBet", new() { (bet - previousBet).ToString() }));
     }

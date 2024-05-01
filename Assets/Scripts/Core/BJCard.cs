@@ -32,10 +32,16 @@ public class BJCard : MonoBehaviour
     {
         isShown = false;
 
+        animator.SetTrigger(nameof(HideCard));
         cardImage.sprite = hiddenCard;
     }
 
     public void ShowCardSprite()
+    {
+        cardImage.sprite = CardData.CardSprite;
+    }
+
+    public void ShowHiddenCardSprite()
     {
         cardImage.sprite = CardData.CardSprite;
     }

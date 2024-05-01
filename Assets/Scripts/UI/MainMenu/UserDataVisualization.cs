@@ -10,7 +10,7 @@ public class UserDataVisualization : MonoBehaviour
     [Header("other")]
     [SerializeField] private string currencyChar;
 
-    private User currentUser;
+    public User currentUser { get; private set;  }
 
     public void VisualizeUserData(User data)
     {

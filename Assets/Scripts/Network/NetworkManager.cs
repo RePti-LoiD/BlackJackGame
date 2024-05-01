@@ -44,6 +44,7 @@ public abstract class NetworkManager : MonoBehaviour, IDisposable
 
     protected void InvokeHandlers(BJRequestData data)
     {
+        print(data);
         foreach (var item in bindedMethods)
         {
             if (item.Key == data.Header)

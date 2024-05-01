@@ -8,6 +8,8 @@ public class BJBotPlayer : BJPlayer
 
     public override void StartMove(BJGameManager manager)
     {
+        OnStartMove?.Invoke(this);
+
         StartCoroutine(
             DoAfterDelay(2, () => 
                 manager.PlayerStep(this, (BJStepState)UnityEngine.Random.Range(1, 3))));

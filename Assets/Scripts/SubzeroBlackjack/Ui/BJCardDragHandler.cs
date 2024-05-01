@@ -1,3 +1,4 @@
+using System.Xml;
 using UnityEngine;
 
 public class BJCardDragHandler : MonoBehaviour
@@ -13,13 +14,11 @@ public class BJCardDragHandler : MonoBehaviour
     private RectTransform currentCardTransform;
     private Vector2 lastPosition;
 
-    private void Start()
-    {
-        gameManager = FindAnyObjectByType<BJGameManager>();
-    }
-
     public void OnMouseStartDrag()
     {
+        if (gameManager == null) 
+            gameManager = FindAnyObjectByType<BJGameManager>();
+
         if (gameManager.CurrentPlayer != localPlayer) return;
 
         currentCardTransform = cardManager.PeekLastCard().GetComponent<RectTransform>();
@@ -33,13 +32,15 @@ public class BJCardDragHandler : MonoBehaviour
         if (gameManager.CurrentPlayer != localPlayer) return;
 
         Vector2 localPos;
+        switch (Application.platform)
+        {
+            case RuntimePlatform.WindowsPlayer: localPos = Input.mousePosition; break;
+            case RuntimePlatform.WebGLPlayer: localPos = Input.mousePosition; break;
+            case RuntimePlatform.WindowsEditor: localPos = Input.mousePosition; break;
+            case RuntimePlatform.Android: localPos = Input.GetTouch(0).position; break;
+            default: localPos = Vector2.zero; break;
+        }
 
-#if UNITY_EDITOR
-        localPos = Input.mousePosition;
-#endif
-#if UNITY_ANDROID
-        localPos = Input.GetTouch(0).position;
-#endif
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasTransform, localPos, Camera.main, out Vector2 pos);
         
         currentCardTransform.localPosition = new Vector3(pos.x, pos.y, 0f);

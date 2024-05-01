@@ -23,17 +23,14 @@ public class PreviewPage : MonoBehaviour
 
         bool isTouch = false;
 
-#if UNITY_EDITOR
-        isTouch = Input.anyKeyDown;
-#endif
-
-#if UNITY_ANDROID && !UNITY_EDITOR
-        isTouch = Input.GetTouch(0).phase == TouchPhase.Ended;
-#endif
-
-#if UNITY_STANDALONE
-        isTouch = Input.anyKey;
-#endif
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            isTouch = Input.GetTouch(0).phase == TouchPhase.Ended;
+        }
+        else
+        {
+            isTouch = Input.anyKeyDown;
+        }
 
         if (isTouch)
         {

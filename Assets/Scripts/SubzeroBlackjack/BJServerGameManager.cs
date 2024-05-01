@@ -1,33 +1,41 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class BJServerGameManager : BJGameManager, IDisposable
 {
-    protected void Awake()
+    //TODO: разобраться с проблемой того, что сервер не видит сообщения клиента. Вернуть в старт ListenNetworkStream()
+
+    protected override void Start()
+    {
+        ListenNetworkStream();
+    }
+
+    protected void Awake() 
     {
         BindMethods();
     }
-
-    protected override void Start() { }
-
-    public override void StartGame()
-    {
-        ListenNetworkStream();
-
-        PostNetworkInitialization();
-    }
-
+    
     protected void BindMethods()
     {
         AddNetworkMessageListener("StepState", (data) =>
             PlayerStep(GetPlayerByGuid(data.UserSenderId), (BJStepState)Enum.Parse(typeof(BJStepState), data.Args[0])));
+
+        AddNetworkMessageListener("OnBet", ReceiveBet);
+    }
+
+    public override void StartGame()
+    {
+        PostNetworkInitialization();
     }
 
     protected override void PostNetworkInitialization()
     {
-        SetCardToHandler(localPlayer);
-        SetCardToHandler(localPlayer);
-        SetCardToHandler(enemyPlayer);
-        SetCardToHandler(enemyPlayer);
+        SetUpCards(new()
+        {
+            { localPlayer, new BJCard[] { cardManager.GetCard(), cardManager.GetCard() } },
+            { enemyPlayer, new BJCard[] { cardManager.GetCard(), cardManager.GetCard() } }
+        });
 
         localPlayer.OnStartMove += (p) => SendStartStep(p);
         localPlayer.OnEndMove += (p) => SendEndStep(p);
@@ -41,6 +49,16 @@ public class BJServerGameManager : BJGameManager, IDisposable
         currentPlayer = localPlayer;
     }
 
+    private async void SetUpCards(Dictionary<BJPlayer, BJCard[]> playerCards, int delay = 500)
+    {
+        foreach (var player in playerCards)
+            foreach (var card in player.Value)
+            {
+                SetCardToHandler(player.Key, card);
+                await Task.Delay(delay);
+            }
+    }
+
     protected void SendStartStep(BJPlayer player) =>
         SendNetworkMessage(new("StartStep", player.UserData.Id.ToString(), "StartStep", new() { "" }));
 
@@ -49,8 +67,6 @@ public class BJServerGameManager : BJGameManager, IDisposable
 
     protected override void HandleNetworkMessage(BJRequestData data)
     {
-        return;
-
         switch (data.Header)
         {
             case "StepState":
@@ -61,7 +77,6 @@ public class BJServerGameManager : BJGameManager, IDisposable
                 break;
         }
     }
-
     public override void GameEnd()
     {
         IsGameEnd = true;
@@ -78,6 +93,8 @@ public class BJServerGameManager : BJGameManager, IDisposable
 
     public override void PlayerStep(BJPlayer sender, BJStepState stepState)
     {
+        print((sender, currentPlayer));
+
         if (sender != currentPlayer) return;
 
         if (sender == localPlayer)
@@ -101,14 +118,29 @@ public class BJServerGameManager : BJGameManager, IDisposable
 
         if (stepState == BJStepState.GetCard)
             SetCardToHandler(sender);
-
+        
+            
         lastStepData = stepState;
 
         sender.EndMove();
 
         currentPlayer = localPlayer == currentPlayer ? enemyPlayer : localPlayer;
         currentPlayer.StartMove(this);
+    }
 
+    public override void OnBet(int bet, int previousBet)
+    {
+        SendNetworkMessage(new BJRequestData(nameof(OnBet), UserDataWrapper.UserData.Id.ToString(), nameof(OnBet), new() { bet.ToString() }));
+    }
+
+    private void ReceiveBet(BJRequestData data)
+    {
+        Bet.CurrentBet = int.Parse(data.Args[0]);
+    }
+
+    public void OnBetFinish()
+    {
+        SendNetworkMessage(new("OnBetFinish", UserDataWrapper.UserData.Id.ToString(), "OnBetFinish", new() { }));
     }
 
     public override void SetCardToHandler(BJPlayer player)

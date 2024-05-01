@@ -4,7 +4,7 @@ public class BJClientBet : BJBet
     {
         int newBet = (int)(CurrentBet * multiplier);
 
-        if (newBet > UserDataWrapper.UserData.UserWallet.Balance) return;
+        if (newBet > (UserDataWrapper.UserData.UserWallet.Balance / 2)) return;
 
         OnBetSet?.Invoke(newBet, CurrentBet);
         CurrentBet = (int)(CurrentBet * multiplier);

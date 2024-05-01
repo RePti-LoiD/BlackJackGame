@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using Newtonsoft.Json;
 using UnityEngine.SceneManagement;
+using ZXing.Datamatrix.Encoder;
+using System.Text;
 
 public class LobbyClient : NetworkManager
 {
@@ -34,6 +36,8 @@ public class LobbyClient : NetworkManager
         remoteEndPoint = endpoint; 
         
         ListenNetworkStream();
+
+        await dataStream.WriteAsync(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(UserDataWrapper.UserData)));
 
         SendNetworkMessage(new BJRequestData()
         {

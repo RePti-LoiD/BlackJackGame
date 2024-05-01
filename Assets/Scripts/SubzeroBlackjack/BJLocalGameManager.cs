@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BJLocalGameManager : BJGameManager
 {
@@ -15,16 +17,26 @@ public class BJLocalGameManager : BJGameManager
             { enemyPlayer, new BJCard[] { cardManager.GetCard(), cardManager.GetCard() } }
         });
 
+        localPlayer.OnStartMove += (x) =>
+            InvokeHandlers(new BJRequestData("StartStep", x.UserData.Id.ToString(), "StartStep", new() { }));
+        
+        enemyPlayer.OnStartMove += (x) =>
+            InvokeHandlers(new BJRequestData("StartStep", x.UserData.Id.ToString(), "StartStep", new() { }));
+
         localPlayer.StartMove(this);
     }
 
     private async void SetUpCards(Dictionary<BJPlayer, BJCard[]> playerCards, int delay = 500)
     {
+        RuntimePlatform platform = Application.platform;
+
         foreach (var player in playerCards)
             foreach (var card in player.Value)
             {
                 SetCardToHandler(player.Key, card);
-                await Task.Delay(delay);
+                
+                if (platform != RuntimePlatform.WebGLPlayer)
+                    await Task.Delay(delay);
             }
     }
 
@@ -70,7 +82,22 @@ public class BJLocalGameManager : BJGameManager
     {
         base.GameEnd();
 
-        InvokeHandlers(new BJRequestData("OnGameEnd", currentWinner.UserData.Id.ToString(), "Win", new ()));
+        Invoke(nameof(GameEnded), 4f);
+    }
+
+    private void GameEnded()
+    {
+        SceneManager.LoadScene(6);
+       /* GetComponent<BJGameLoader>().betHandler.gameObject.SetActive(true);
+        GetComponent<BJGameLoader>().betHandler.gameObject.GetComponent<Animator>().SetTrigger("Open");
+
+        localPlayer.CardHandler.cards.ForEach(cardManager.ReturnCard);
+        localPlayer.CardHandler.cards.Clear();
+
+        enemyPlayer.CardHandler.cards.ForEach(cardManager.ReturnCard);
+        enemyPlayer.CardHandler.cards.Clear();
+
+        InvokeHandlers(new BJRequestData("OnGameEnd", currentWinner.UserData.Id.ToString(), "Win", new() { currentWinner.PlayerBet.ToString() }));*/
     }
 
     public override void SetCardToHandler(BJPlayer player)

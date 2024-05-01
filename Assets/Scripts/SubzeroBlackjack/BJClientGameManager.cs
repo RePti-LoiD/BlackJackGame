@@ -2,20 +2,26 @@ using System;
 
 public class BJClientGameManager : BJGameManager
 {
+    //TODO: разобраться с проблемой того, что сервер не видит сообщения клиента. Вернуть в старт ListenNetworkStream()
+    protected override void Start()
+    {
+        ListenNetworkStream();
+    }
+
     protected void Awake()
     {
         BindMethods();
     }
 
-    protected override void Start() { }
-
     public override void StartGame()
     {
-        ListenNetworkStream();
+
     }
 
     protected void BindMethods()
     {
+        AddNetworkMessageListener("OnBet", ReceiveBet);
+        AddNetworkMessageListener("OnBetFinish", OnBetFinish);
         AddNetworkMessageListener("StepState", StepStateNetworkMethod);
         AddNetworkMessageListener("StartStep", StartStepNetworkMethod);
         AddNetworkMessageListener("SetCard", SetCardNetworkMethod);
@@ -56,15 +62,41 @@ public class BJClientGameManager : BJGameManager
 
     public override void PlayerStep(BJPlayer sender, BJStepState stepState)
     {
+        print(currentPlayer);
+
         if (currentPlayer != null && sender != currentPlayer) 
             return;
 
         if (sender == localPlayer)
             SendNetworkMessage(new("StepState", sender.UserData.Id.ToString(), "StepState", new() { stepState.ToString() }));
-
+        
+        print((sender, stepState));
         sender.EndMove();
 
         currentPlayer = localPlayer == currentPlayer ? enemyPlayer : localPlayer;
+    }
+
+    public override void OnBet(int bet, int previousBet)
+    {
+        SendNetworkMessage(new("OnBet", UserDataWrapper.UserData.Id.ToString(), "OnBet", new() { bet.ToString() }));
+    }
+
+    private void ReceiveBet(BJRequestData data)
+    {
+        Bet.CurrentBet = int.Parse(data.Args[0]);
+    }
+
+    public void OnBetFinish(BJRequestData data)
+    {
+        localPlayer.PlayerBet = Bet.CurrentBet;
+        enemyPlayer.PlayerBet = Bet.CurrentBet;
+
+        foreach (var item in FindObjectsByType<BJPlayerDataVizualization>(UnityEngine.FindObjectsSortMode.None))
+            item.UpdateData();
+
+        Bet.gameObject.SetActive(false);
+
+        StartGame();
     }
 
     public override void GameEnd()
